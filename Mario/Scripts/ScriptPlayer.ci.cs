@@ -136,7 +136,8 @@
             velY = constJumpVelocity;
         }
 
-        if (CollisionHelper.IsEmpty(game, -1, newx, e.draw.y, e.draw.width, e.draw.height))
+        if (CollisionHelper.IsEmpty(game, -1, newx, e.draw.y, e.draw.width, e.draw.height)
+            && newx >= game.scrollx)
         {
             e.draw.x = newx;
         }
