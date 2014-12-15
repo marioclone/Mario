@@ -94,8 +94,10 @@ public class EntityAttackableTouch
     public EntityAttackableTouch()
     {
         touched = false;
+        touchedEntity = -1;
     }
     internal bool touched;
+    internal int touchedEntity;
 
     public void Delete()
     {

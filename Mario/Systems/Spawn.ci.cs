@@ -229,6 +229,8 @@ public class SystemSpawn : GameSystem
                         t2.x = t.x + p.x + x * patternWidth;
                         t2.y = t.y + p.y;
                         t2.type = p.thingType;
+                        t2.width = p.width;
+                        t2.height = p.height;
                         SpawnThing(game, map, t2);
 
                         if (p.x > patternWidth)
@@ -333,6 +335,64 @@ public class SystemSpawn : GameSystem
             e.draw.mirrorx = true;
             e.collider = new EntityCollider();
         }
+        if (t.type == ThingType.SceneryFlagPole)
+        {
+            Entity e = Spawn(game, "SceneryFlagPole", t.x, t.y);
+            e.draw.width = 2;
+            e.draw.height = 16;
+            e.draw.yrepeat = 10;
+            e.draw.z = 0;
+            ScriptFlagPole script = new ScriptFlagPole();
+            script.targetLevelOrEntrance = t.transport;
+            script.flag = Spawn(game, "SceneryFlagNormal", t.x, t.y);
+            script.flag.draw.z = 2;
+            e.scripts[e.scriptsCount++] = script;
+        }
+        if (t.type == ThingType.SceneryFlagTop)
+        {
+            Entity e = Spawn(game, "SceneryFlagTop", t.x - one / 2, t.y);
+            e.draw.width = 8;
+            e.draw.height = 8;
+            e.draw.z = 2;
+        }
+        if (t.type == ThingType.SceneryBrickPlain)
+        {
+            Entity e = Spawn(game, "SceneryBrickPlainNormal", t.x, t.y);
+            e.draw.xrepeat = t.width;
+            e.draw.yrepeat = t.height;
+        }
+        if (t.type == ThingType.SceneryCastleRailing)
+        {
+            Entity e = Spawn(game, "SceneryCastleRailingNormal", t.x, t.y);
+            e.draw.xrepeat = t.width;
+            e.draw.yrepeat = t.height;
+        }
+        if (t.type == ThingType.SceneryCastleTop)
+        {
+            Entity e = Spawn(game, "SceneryCastleTopNormal", t.x, t.y);
+            e.draw.width = 8;
+            e.draw.height = 8;
+            e.draw.xrepeat = t.width;
+            e.draw.yrepeat = t.height;
+            e.draw.z = 0;
+        }
+        if (t.type == ThingType.SceneryCastleWindow)
+        {
+            Entity e = Spawn(game, "SceneryCastleWindow", t.x, t.y);
+            e.draw.width = 8;
+            e.draw.height = 16;
+            e.draw.z = 0;
+        }
+        if (t.type == ThingType.SceneryCastleDoor)
+        {
+            Entity e = Spawn(game, "SceneryCastleDoor", t.x, t.y);
+            e.draw.width = 16;
+            e.draw.height = 24;
+            e.draw.z = 1;
+        }
+        if (t.type == ThingType.CastleOutside)
+        {
+        }
 
         // Characters
 
@@ -393,7 +453,7 @@ public class SystemSpawn : GameSystem
         return e;
     }
 
-    Entity Spawn(Game game, string p, int x, int y)
+    Entity Spawn(Game game, string p, float x, float y)
     {
         Entity e = new Entity();
         e.draw = new EntityDraw();

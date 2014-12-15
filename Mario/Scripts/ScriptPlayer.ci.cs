@@ -67,11 +67,15 @@
 
         bool crouchingSlide = crouching && onGround;
 
-        if (game.keysDown[GlKeys.Left] && (!crouchingSlide))
+        bool controlsLeft = game.keysDown[GlKeys.Left] || (game.controlsOverride.active && game.controlsOverride.left);
+        bool controlsRight = game.keysDown[GlKeys.Right] || (game.controlsOverride.active && game.controlsOverride.right);
+        bool controlsJump = game.keysDown[GlKeys.Period] || game.keysDown[GlKeys.Up] || (game.controlsOverride.active && game.controlsOverride.jump);
+        
+        if (controlsLeft && (!crouchingSlide))
         {
             velX -= constAcceleration;
         }
-        if (game.keysDown[GlKeys.Right] && (!crouchingSlide))
+        if (controlsRight && (!crouchingSlide))
         {
             velX += constAcceleration;
         }
@@ -86,9 +90,7 @@
 
         // Jump
         {
-            bool jumpKeyPressed = game.keysDown[GlKeys.Period] || game.keysDown[GlKeys.Up];
-
-            if (jumpKeyPressed && onGround && (!dead))
+            if (controlsJump && onGround && (!dead))
             {
                 jumptime = 0;
                 if (growth == 0)
@@ -101,12 +103,12 @@
                 }
             }
 
-            if (jumpKeyPressed && (onGround || (jumptime >= 0 && jumptime < constMaxJumpTime)))
+            if (controlsJump && (onGround || (jumptime >= 0 && jumptime < constMaxJumpTime)))
             {
                 velY = constJumpVelocity;
             }
 
-            if (!jumpKeyPressed)
+            if (!controlsJump)
             {
                 jumptime = -1;
             }
@@ -261,10 +263,11 @@
             if (e2 == null) { continue; }
             if (e2 == e) { continue; }
             if (e2.attackableTouch == null) { continue; }
-            if (Misc.RectIntersect(e.draw.x, e.draw.y, e.draw.width, e.draw.height,
-                e2.draw.x, e2.draw.y, e2.draw.width, e2.draw.height))
+            if (Misc.RectIntersect(e.draw.x, e.draw.y, e.draw.width * e.draw.xrepeat, e.draw.height * e.draw.yrepeat,
+                e2.draw.x, e2.draw.y, e2.draw.width * e2.draw.xrepeat, e2.draw.height * e2.draw.yrepeat))
             {
                 e2.attackableTouch.touched = true;
+                e2.attackableTouch.touchedEntity = entity;
                 return;
             }
         }
@@ -480,4 +483,12 @@ public class AttackHelper
         }
         return side;
     }
+}
+
+public class ControlsOverride
+{
+    internal bool active;
+    internal bool left;
+    internal bool right;
+    internal bool jump;
 }

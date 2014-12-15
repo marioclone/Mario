@@ -41,6 +41,14 @@ public class ThingType
     public const int CoinAnimation = 20;
     public const int PipeHorizontal = 21;
     public const int PipeVertical = 22;
+    public const int CastleOutside = 23;
+    public const int SceneryCastleTop = 24;
+    public const int SceneryCastleWindow = 25;
+    public const int SceneryCastleDoor = 26;
+    public const int SceneryCastleRailing = 27;
+    public const int SceneryFlagTop = 28;
+    public const int SceneryFlagPole = 29;
+    public const int SceneryBrickPlain = 30;
 }
 
 public class Map
@@ -77,10 +85,17 @@ public class Thing
 
 public class Pattern
 {
+    public Pattern()
+    {
+        width = 1;
+        height = 1;
+    }
     internal string patternName;
     internal int thingType;
     internal int x;
     internal int y;
+    internal int width;
+    internal int height;
 }
 
 public class Level
@@ -132,6 +147,8 @@ public class MapBinding : TableBinding
             if (column == "type") { k.thingType = GetType(value); }
             if (column == "x") { k.x = IntParse(value); }
             if (column == "y") { k.y = IntParse(value); }
+            if (column == "width") { k.width = IntParse(value); }
+            if (column == "height") { k.height = IntParse(value); }
         }
         if (table == "levels")
         {
@@ -192,6 +209,14 @@ public class MapBinding : TableBinding
         if (value == "Bush3") { return ThingType.Bush3; }
         if (value == "PipeHorizontal") { return ThingType.PipeHorizontal; }
         if (value == "PipeVertical") { return ThingType.PipeVertical; }
+        if (value == "CastleOutside") { return ThingType.CastleOutside; }
+        if (value == "SceneryCastleTop") { return ThingType.SceneryCastleTop; }
+        if (value == "SceneryCastleWindow") { return ThingType.SceneryCastleWindow; }
+        if (value == "SceneryCastleDoor") { return ThingType.SceneryCastleDoor; }
+        if (value == "SceneryCastleRailing") { return ThingType.SceneryCastleRailing; }
+        if (value == "SceneryFlagTop") { return ThingType.SceneryFlagTop; }
+        if (value == "SceneryFlagPole") { return ThingType.SceneryFlagPole; }
+        if (value == "SceneryBrickPlain") { return ThingType.SceneryBrickPlain; }
         return -1;
     }
 

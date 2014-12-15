@@ -54,6 +54,7 @@
         restart = false;
         restartPositionX = 0;
         restartPositionY = 0;
+        controlsOverride = new ControlsOverride();
 
         audio = new AudioControl();
 
@@ -136,6 +137,7 @@
     internal bool restart;
     internal int restartPositionX;
     internal int restartPositionY;
+    internal ControlsOverride controlsOverride;
 
     internal AudioControl audio;
 

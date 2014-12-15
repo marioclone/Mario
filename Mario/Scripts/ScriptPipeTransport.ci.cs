@@ -50,27 +50,35 @@
         if (enteringTime >= 1)
         {
             enteringTime = -1;
-            game.restart = true;
+            TransportHelper.Transport(game, targetLevelOrEntrance);
+        }
+    }
+}
 
-            // Target is level name
-            for (int i = 0; i < game.maps.map.levelsCount; i++)
+public class TransportHelper
+{
+    public static void Transport(Game game, string targetLevelOrEntrance)
+    {
+        game.restart = true;
+
+        // Target is level name
+        for (int i = 0; i < game.maps.map.levelsCount; i++)
+        {
+            if (game.maps.map.levels[i].level == targetLevelOrEntrance)
             {
-                if (game.maps.map.levels[i].level == targetLevelOrEntrance)
-                {
-                    game.level = targetLevelOrEntrance;
-                }
+                game.level = targetLevelOrEntrance;
             }
+        }
 
-            // Target is entrance name
-            for (int i = 0; i < game.maps.map.thingsCount; i++)
+        // Target is entrance name
+        for (int i = 0; i < game.maps.map.thingsCount; i++)
+        {
+            Thing t = game.maps.map.things[i];
+            if (t.entrance == targetLevelOrEntrance)
             {
-                Thing t = game.maps.map.things[i];
-                if (t.entrance == targetLevelOrEntrance)
-                {
-                    game.level = t.level;
-                    game.restartPositionX = t.x * 2;
-                    game.restartPositionY = 240 - t.y * 2 - 16 * 5;
-                }
+                game.level = t.level;
+                game.restartPositionX = t.x * 2;
+                game.restartPositionY = 240 - t.y * 2 - 16 * 5;
             }
         }
     }

@@ -69,6 +69,7 @@
     <Compile Include="Scripts\ScriptBrickBumpAnimation.ci.cs" />
     <Compile Include="Scripts\ScriptCoinInQuestionBlock.ci.cs" />
     <Compile Include="Scripts\ScriptCoinStatic.ci.cs" />
+    <Compile Include="Scripts\ScriptFlagPole.ci.cs" />
     <Compile Include="Scripts\ScriptPipeTransport.ci.cs" />
     <Compile Include="Scripts\ScriptText.ci.cs" />
     <Compile Include="Systems\Audio.ci.cs" />
