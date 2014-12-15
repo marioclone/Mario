@@ -36,7 +36,7 @@ public class SystemSpawn : GameSystem
                     game.levelStatic = l.static_;
                 }
             }
-            
+
             // Spawn things
             for (int i = 0; i < map.thingsCount; i++)
             {
@@ -230,7 +230,7 @@ public class SystemSpawn : GameSystem
                         t2.y = t.y + p.y;
                         t2.type = p.thingType;
                         SpawnThing(game, map, t2);
-                        
+
                         if (p.x > patternWidth)
                         {
                             patternWidth = p.x;
@@ -289,20 +289,26 @@ public class SystemSpawn : GameSystem
             Entity e = Spawn(game, "SolidsPipeNormalTop", t.x, t.y + t.pipeHeight);
             e.draw.width = 32;
             e.draw.height = 16;
+            e.draw.z = 2;
             e.collider = new EntityCollider();
+            ScriptPipeTransport transport = null;
             if (t.transport != null && t.transport != "")
             {
-                ScriptPipeTransport transport = new ScriptPipeTransport();
+                transport = new ScriptPipeTransport();
                 transport.targetLevelOrEntrance = t.transport;
                 e.scripts[e.scriptsCount++] = transport;
             }
 
-            for (int k = 0; k < t.pipeHeight / 8 - 1; k++)
+            Entity e2 = Spawn(game, "SolidsPipeNormalMiddle", t.x, t.y + t.pipeHeight - 8);
+            e2.draw.width = 32;
+            e2.draw.height = 16;
+            e2.draw.yrepeat = t.pipeHeight / 8 - 1;
+            e2.draw.z = 2;
+            e2.collider = new EntityCollider();
+
+            if (transport != null)
             {
-                Entity e2 = Spawn(game, "SolidsPipeNormalMiddle", t.x, t.y + t.pipeHeight - 8 - k * 8);
-                e2.draw.width = 32;
-                e2.draw.height = 16;
-                e2.collider = new EntityCollider();
+                transport.pipeMiddle = e2;
             }
         }
         if (t.type == ThingType.PipeHorizontal)
@@ -310,7 +316,7 @@ public class SystemSpawn : GameSystem
             Entity e = Spawn(game, "SolidsPipeHorizontal", t.x, t.y);
             e.draw.width = 48;
             e.draw.height = 32;
-            e.draw.z = 0;
+            e.draw.z = 2;
             e.collider = new EntityCollider();
             ScriptPipeTransport transport = new ScriptPipeTransport();
             transport.horizontal = true;
@@ -322,7 +328,7 @@ public class SystemSpawn : GameSystem
             Entity e = Spawn(game, "SolidsPipeNormalMiddle", t.x, t.y);
             e.draw.width = 32;
             e.draw.height = 16;
-            e.draw.z = 1;
+            e.draw.z = 3;
             e.draw.yrepeat = t.pipeHeight / 8;
             e.draw.mirrorx = true;
             e.collider = new EntityCollider();
@@ -381,7 +387,7 @@ public class SystemSpawn : GameSystem
 
     Entity SpawnScenery(Game game, string p, int x, int y, int width, int height)
     {
-        Entity e = Spawn(game, p, x, y + height/2);
+        Entity e = Spawn(game, p, x, y + height / 2);
         e.draw.width = width;
         e.draw.height = height;
         return e;

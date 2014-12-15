@@ -105,7 +105,7 @@ public class EntityAttackableTouch
 public enum PushSide
 {
     None,
-    Left,
+    LeftPipeEnter,
     Right,
     // Player jumps after attack
     TopJumpOnEnemy,

@@ -13,6 +13,8 @@
         deadT = 0;
         invulnerable = 0;
         crouching = false;
+        topPipeEnter = -1;
+        leftPipeEnter = -1;
 
         constAcceleration = 50 * one / 10;
         constGravity = 50 * one / 10;
@@ -34,6 +36,8 @@
     float deadT;
     float invulnerable;
     bool crouching;
+    float topPipeEnter;
+    float leftPipeEnter;
 
     float constAcceleration;
     float constGravity;
@@ -119,6 +123,16 @@
             jumptime = -1;
         }
 
+        if (topPipeEnter != -1)
+        {
+            velY = constMaxVel / 2;
+            velX = 0;
+        }
+        if (leftPipeEnter != -1)
+        {
+            velX = constMaxVel / 2;
+        }
+
         // Move
         float oldx = e.draw.x;
         float oldy = e.draw.y;
@@ -135,6 +149,17 @@
             jumptime = 0;
             velY = constJumpVelocity;
         }
+
+        if (side == PushSide.TopPipeKeyDown)
+        {
+            topPipeEnter = 0;
+        }
+
+        if (side == PushSide.LeftPipeEnter)
+        {
+            leftPipeEnter = 0;
+        }
+
 
         if (CollisionHelper.IsEmpty(game, -1, newx, e.draw.y, e.draw.width, e.draw.height)
             && newx >= game.scrollx)
@@ -423,17 +448,22 @@ public class AttackHelper
                         }
                         if (e.attackablePush.pushSide == PushSide.TopPipeKeyDown && keyDownPressed)
                         {
-                            e.attackablePush.pushed = pushType;
-                            side = PushSide.TopPipeKeyDown;
+                            // Only on center of pipe
+                            if (x + w / 2 > e.draw.x + e.draw.width / 3
+                                && x + w / 2 < e.draw.x + e.draw.width - e.draw.width / 3)
+                            {
+                                e.attackablePush.pushed = pushType;
+                                side = PushSide.TopPipeKeyDown;
+                            }
                         }
                     }
                     bool right = x > oldx;
                     if (right && x + w >= e.draw.x && x + w < e.draw.x + 3)
                     {
-                        if (e.attackablePush.pushSide == PushSide.Left)
+                        if (e.attackablePush.pushSide == PushSide.LeftPipeEnter)
                         {
                             e.attackablePush.pushed = pushType;
-                            side = PushSide.Left;
+                            side = PushSide.LeftPipeEnter;
                         }
                     }
                     bool left = x < oldx;

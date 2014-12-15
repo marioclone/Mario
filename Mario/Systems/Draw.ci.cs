@@ -31,7 +31,7 @@ public class SystemDraw : GameSystem
         DrawBackground(game);
         int addY = game.platform.FloatToInt(canvasHeight - 240 * scale); // align to screen bottom
         LoadOrigSprites(game);
-        for (int z = 0; z < 2; z++)
+        for (int z = 0; z < 4; z++)
         {
             for (int i = 0; i < game.entitiesCount; i++)
             {

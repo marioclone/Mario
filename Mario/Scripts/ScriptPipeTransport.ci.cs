@@ -3,12 +3,14 @@
     public ScriptPipeTransport()
     {
         targetLevelOrEntrance = null;
-        enteringTime = -1;
         horizontal = false;
+        pipeMiddle = null;
+        enteringTime = -1;
     }
 
     internal string targetLevelOrEntrance;
     internal bool horizontal;
+    internal Entity pipeMiddle;
     float enteringTime;
 
     public override void Update(Game game, int entity, float dt)
@@ -19,42 +21,55 @@
             e.attackablePush = new EntityAttackablePush();
             if (horizontal)
             {
-                e.attackablePush.pushSide = PushSide.Left;
+                e.attackablePush.pushSide = PushSide.LeftPipeEnter;
             }
             else
             {
                 e.attackablePush.pushSide = PushSide.TopPipeKeyDown;
             }
         }
-        if (e.attackablePush.pushed != PushType.None)
+
+        if (e.attackablePush.pushed != PushType.None
+            && enteringTime == -1)
         {
             // Enter pipe
-            if (enteringTime == -1)
+            game.AudioPlay("Pipe");
+            enteringTime = 0;
+            e.collider = null;
+            if (pipeMiddle != null)
             {
-                enteringTime = 0;
-                game.AudioPlay("Pipe");
-                
-                game.restart = true;
+                pipeMiddle.collider = null;
+            }
+        }
 
-                // Target is level name
-                for (int i = 0; i < game.maps.map.levelsCount; i++)
+        if (enteringTime != -1)
+        {
+            enteringTime += dt;
+        }
+
+        if (enteringTime >= 1)
+        {
+            enteringTime = -1;
+            game.restart = true;
+
+            // Target is level name
+            for (int i = 0; i < game.maps.map.levelsCount; i++)
+            {
+                if (game.maps.map.levels[i].level == targetLevelOrEntrance)
                 {
-                    if (game.maps.map.levels[i].level == targetLevelOrEntrance)
-                    {
-                        game.level = targetLevelOrEntrance;
-                    }
+                    game.level = targetLevelOrEntrance;
                 }
+            }
 
-                // Target is entrance name
-                for (int i = 0; i < game.maps.map.thingsCount; i++)
+            // Target is entrance name
+            for (int i = 0; i < game.maps.map.thingsCount; i++)
+            {
+                Thing t = game.maps.map.things[i];
+                if (t.entrance == targetLevelOrEntrance)
                 {
-                    Thing t = game.maps.map.things[i];
-                    if (t.entrance == targetLevelOrEntrance)
-                    {
-                        game.level = t.level;
-                        game.restartPositionX = t.x * 2;
-                        game.restartPositionY = 240 - t.y * 2 - 16 * 5;
-                    }
+                    game.level = t.level;
+                    game.restartPositionX = t.x * 2;
+                    game.restartPositionY = 240 - t.y * 2 - 16 * 5;
                 }
             }
         }
