@@ -1,0 +1,539 @@
+<html>
+
+<head>
+
+<script type="text/javascript" src="Mario.js"></script>
+<script src="zlib.js"></script>
+<script src="png.js"></script>
+
+<script type="text/javascript">
+var canvas;
+var canvasContext;
+var audioContext;
+
+function PlatformJs()
+{
+}
+
+PlatformJs.prototype = new GamePlatform();
+
+PlatformJs.prototype.start = function() {
+}
+
+// Primitive
+
+PlatformJs.prototype.floatToInt = function(value) {
+	return value | 0;
+}
+
+PlatformJs.prototype.mathSqrt = function(value) {
+	return Math.sqrt(value);
+}
+
+PlatformJs.prototype.stringLength = function(value) {
+if(!value)
+{
+return 0;
+}
+	return value.length;
+}
+
+PlatformJs.prototype.stringTrim = function(value) {
+	return value.trim();
+}
+
+PlatformJs.prototype.stringStartsWithIgnoreCase = function(a, b) {
+	return a.toLowerCase().indexOf(b.toLowerCase()) == 0;
+}
+
+PlatformJs.prototype.stringReplace = function(s, from, to) {
+	return s.replace(from, to);
+}
+
+PlatformJs.prototype.stringSplit = function(value, separator, returnLength) {
+	var ret = value.split(separator);
+	returnLength.value = ret.length;
+	return ret;
+}
+
+PlatformJs.prototype.floatTryParse = function(s, ret) {
+	if (!isNaN(s))
+	{
+		ret.value = parseFloat(s);
+		return true;
+	}
+	return false;
+}
+
+PlatformJs.prototype.stringFromUtf8ByteArray = function(value, valueLength) {
+	var arr = new Uint8Array(valueLength);
+	for(var i = 0; i < valueLength;i++)
+	{
+		arr[i] = value[i];
+	}
+	var encodedString = String.fromCharCode.apply(null, arr),
+	decodedString = decodeURIComponent(escape(encodedString));
+	return decodedString;
+}
+
+
+// Window
+
+var windowEventHandler;
+PlatformJs.prototype.addEventHandler = function(handler) {
+	windowEventHandler = handler;
+}
+
+PlatformJs.prototype.getCanvasHeight = function() {
+	return canvas.height;
+}
+
+PlatformJs.prototype.getCanvasWidth = function() {
+	return canvas.width;
+}
+
+// Bitmap
+
+var textureCanvas;
+var textureCanvasContext;
+
+PlatformJs.prototype.bitmapCreate = function(width, height) {
+	var c = document.createElement('canvas');
+	c.width = width;
+	c.height = height;
+	c.loaded = true;
+	return c;
+}
+
+    var BASE64_CHUNK_SIZE = 100;
+    var toBase64 = function(data) {
+      var str = "";
+      for (var i = 0; i < data.length; i += BASE64_CHUNK_SIZE) {
+        str += String.fromCharCode.apply(String, data.subarray(i, i + BASE64_CHUNK_SIZE));
+      }
+      return btoa(str);
+    };
+
+PlatformJs.prototype.bitmapCreateFromPng = function(data, dataLength) {
+	var c = document.createElement('canvas');
+	// "data:image/png;base64" is buggy in Firefox.
+	// Use custom png decoder instead.
+	var png = new PNG(data);
+	png.render(c);
+	c.loaded = true;
+	return c;
+}
+
+PlatformJs.prototype.bitmapDelete = function(bmp) {
+}
+
+PlatformJs.prototype.bitmapGetHeight = function(bmp) {
+	if(bmp==null){return 100;}
+	return bmp.height;
+}
+
+var colorA = function(color) {
+	var a = Misc.intToByte(color >> 24);
+	return a;
+}
+
+var colorB = function(color) {
+	var b = Misc.intToByte(color);
+	return b;
+}
+
+var colorG = function(color) {
+	var g = Misc.intToByte(color >> 8);
+	return g;
+}
+
+var colorR = function(color) {
+	var r = Misc.intToByte(color >> 16);
+	return r;
+}
+
+var colorFromArgb = function(a, r, g, b) {
+	var iCol = a << 24 | r << 16 | g << 8 | b;
+	return iCol;
+}
+
+PlatformJs.prototype.bitmapGetPixelsArgb = function(bitmap, bmpPixels) {
+	var imageData = bitmap.getContext("2d").getImageData(0, 0, bitmap.width, bitmap.height);
+	var width = bitmap.width;
+	var height = bitmap.height;
+	
+	for(var x=0;x<width;x++)
+	{
+		for(var y=0;y<height;y++)
+		{
+			var pos = y*width + x;
+			var r = imageData.data[pos * 4 + 0];
+			var g = imageData.data[pos * 4 + 1];
+			var b = imageData.data[pos * 4 + 2];
+			var a = imageData.data[pos * 4 + 3];
+			bmpPixels[pos] = colorFromArgb(a,r,g,b);
+		}
+	}
+	bitmap.getContext("2d").putImageData(imageData, 0, 0);
+}
+
+PlatformJs.prototype.bitmapGetWidth = function(bmp) {
+	if(bmp==null){return 100;}
+	return bmp.width;
+}
+
+PlatformJs.prototype.bitmapSetPixelsArgb = function(bmp, pixels) {
+	var imageData = bmp.getContext("2d").createImageData(bmp.width, bmp.height);
+	var arr = imageData.data;
+	var width = bmp.width;
+	var height = bmp.height;
+	for (var x = 0; x < width; x++)
+	{
+		for (var y = 0; y < height; y++)
+		{
+			var pos = y*width + x;
+			var color = pixels[pos];
+			var r = colorR(color);
+			var g = colorG(color);
+			var b = colorB(color);
+			var a = colorA(color);
+			arr[pos * 4 + 0] = r;
+			arr[pos * 4 + 1] = g;
+			arr[pos * 4 + 2] = b;
+			arr[pos * 4 + 3] = a;
+		}
+	}
+	bmp.getContext("2d").putImageData(imageData,0,0);
+}
+
+PlatformJs.prototype.bitmapIsLoaded = function(bmp) {
+	return bmp.loaded;
+}
+
+
+// 2D
+
+PlatformJs.prototype.fillRect = function(x, y, w, h, r, g, b) {
+	canvasContext.fillStyle ='rgb('+r+','+g+','+b+')';
+	canvasContext.fillRect(x, y, w, h);
+}
+
+var done = false;
+PlatformJs.prototype.drawBitmap = function(bmp, sx, sy, sw, sh, dx, dy, dw, dh) {
+	try
+	{
+	canvasContext.drawImage(bmp, sx, sy, sw, sh, dx, dy, dw, dh);
+	}
+	catch (ex)
+	{
+		console.log(ex.message);
+	}
+}
+
+// Audio
+
+PlatformJs.prototype.audioCreate = function(data, dataLength) {
+	var sound = {};
+	sound.play = 0;
+	sound.stop = 0;
+	var arr = new ArrayBuffer(dataLength);
+	var arr8 = new Uint8Array(arr);
+	for(var i=0;i<dataLength;i++)
+	{
+		arr8[i]=data[i];
+	}
+	audioContext.decodeAudioData(arr, function(buffer) {
+		sound.buffer = buffer;
+		if(sound.stop){return;}
+		if(sound.play>0)
+		{
+			sound.play=0;
+			sound.src = audioContext.createBufferSource();
+			sound.src.buffer = sound.buffer;
+			sound.src.connect(audioContext.destination);
+			sound.startedAt = Date.now();
+			sound.src.start(0);
+		}
+	});
+	return sound;
+}
+
+PlatformJs.prototype.audioPlay = function(audio) {
+if(!audio.buffer){ audio.play++; return;}
+	audio.src = audioContext.createBufferSource();
+	audio.src.buffer = audio.buffer;
+	audio.src.connect(audioContext.destination);
+	if (audio.pausedAt)
+	{
+		audio.startedAt = Date.now() - audio.pausedAt;
+		audio.src.start(0, audio.pausedAt / 1000);
+	}
+	else
+	{
+		audio.startedAt = Date.now();
+		audio.src.start(0);
+	}
+}
+
+PlatformJs.prototype.audioPause = function(audio) {
+if(!audio.src){audio.stop++;return;}
+	audio.src.stop();
+	audio.pausedAt = Date.now() - audio.startedAt;
+}
+
+// Assets
+
+//this function will work cross-browser for loading scripts asynchronously
+function loadScript(src, callback)
+{
+  var s,
+      r,
+      t;
+  r = false;
+  s = document.createElement('script');
+  s.type = 'text/javascript';
+  s.src = src;
+  s.onload = s.onreadystatechange = function() {
+    //console.log( this.readyState ); //uncomment this line to see which ready states are called.
+    if ( !r && (!this.readyState || this.readyState == 'complete') )
+    {
+      r = true;
+      callback();
+    }
+  };
+  t = document.getElementsByTagName('script')[0];
+  t.parentNode.insertBefore(s, t);
+}
+
+var assets;
+PlatformJs.prototype.loadAssetsAsyc = function(list, progress) {
+
+loadScript("Assets2.js", function()
+{
+assets = new Assets();
+list.count = assets.count;
+list.items = {};
+for(var i = 0; i < assets.count; i++)
+{
+	var item = {};
+	item.name = assets.name[i];
+	item.data = assets.data[i];
+	item.dataLength = assets.length[i];
+	list.items[i] = item;
+}
+progress.value = 1;
+});
+}
+
+
+	function handleKeyDown(event) {
+		if(event.keyCode == 8
+			)
+		{
+			var args = new KeyPressEventArgs();
+			args.keyChar  = 8;
+			windowEventHandler.onKeyPress(args);
+			event.stopPropagation();
+			event.preventDefault();
+			return;
+		}
+		var args = new KeyEventArgs();
+		args.keyCode = event.keyCode;
+		windowEventHandler.onKeyDown(args);
+	}
+
+	function handleKeyUp(event) {
+		var args = new KeyEventArgs();
+		args.keyCode = event.keyCode;
+		windowEventHandler.onKeyUp(args);
+	}
+	
+	function handleKeyPress(event) {
+		var args = new KeyPressEventArgs();
+		args.keyChar  = event.charCode;
+		windowEventHandler.onKeyPress(args);
+	}
+
+	function handleMouseDown(event) {
+		var args = new MouseEventArgs();
+		args.x = event.pageX;
+		args.y = event.pageY;
+		args.button = event.button;
+		windowEventHandler.onMouseDown(args);
+	}
+
+	function handleMouseUp(event) {
+		var args = new MouseEventArgs();
+		args.x = event.pageX;
+		args.y = event.pageY;
+		args.button = event.button;
+		windowEventHandler.onMouseUp(args);
+	}
+
+	function handleMouseMove(event) {
+		var args = new MouseEventArgs();
+		args.x = event.pageX;
+		args.y = event.pageY;
+		windowEventHandler.onMouseMove(args);
+	}
+
+	function handleMouseWheel(event) {
+		var args = new MouseEventArgs();
+		args.x = event.pageX;
+		args.y = event.pageY;
+		windowEventHandler.onMouseMove(args);
+	}
+	
+	
+	function handleTouchStart(event) {
+		var args = new TouchEventArgs();
+		for (var i = 0; i < event.changedTouches.length; i++)
+		{
+			var touch = event.changedTouches[i];
+			args.x = touch.pageX;
+			args.y = touch.pageY;
+			args.id = touch.identifier;
+			windowEventHandler.onTouchStart(args);
+		}
+		event.stopPropagation();
+		event.preventDefault();
+	}
+
+	function handleTouchEnd(event) {
+		var args = new TouchEventArgs();
+		
+		for (var i = 0; i < event.changedTouches.length; i++)
+		{
+			var touch = event.changedTouches[i];
+			args.x = touch.pageX;
+			args.y = touch.pageY;
+			args.id = touch.identifier;
+			windowEventHandler.onTouchEnd(args);
+		}
+		
+		event.stopPropagation();
+		event.preventDefault();
+	}
+
+	function handleTouchMove(event) {
+		var args = new TouchEventArgs();
+		for (var i = 0; i < event.changedTouches.length; i++)
+		{
+			var touch = event.changedTouches[i];
+			args.x = touch.pageX;
+			args.y = touch.pageY;
+			args.id = touch.identifier;
+			windowEventHandler.onTouchMove(args);
+		}
+		event.stopPropagation();
+		event.preventDefault();
+	}
+
+
+var lastTime = 0;
+var newFrameArgs = {};
+newFrameArgs.dt = 0;
+newFrameArgs.getDt = function() { return this.dt; }
+newFrameArgs.setDt = function(dt_) { this.dt = dt_; }
+
+var oldCanvasWidth = 0;
+var oldCanvasHeight = 0;
+function resizeCanvas()
+{
+	if (window.innerWidth != oldCanvasWidth
+		|| window.innerHeight != oldCanvasHeight)
+	{
+		oldCanvasWidth = window.innerWidth;
+		oldCanvasHeight = window.innerHeight;
+		canvas.width  = window.innerWidth;
+		canvas.height = window.innerHeight;
+	}
+}
+
+/**
+ * Provides requestAnimationFrame in a cross browser way.
+ */
+window.requestAnimFrame = (function() {
+  return window.requestAnimationFrame ||
+         window.webkitRequestAnimationFrame ||
+         window.mozRequestAnimationFrame ||
+         window.oRequestAnimationFrame ||
+         window.msRequestAnimationFrame ||
+         function(/* function FrameRequestCallback */ callback, /* DOMElement Element */ element) {
+           window.setTimeout(callback, 1000/60);
+         };
+})();
+
+// http://stackoverflow.com/a/19519701
+var vis = (function(){
+    var stateKey, eventKey, keys = {
+        hidden: "visibilitychange",
+        webkitHidden: "webkitvisibilitychange",
+        mozHidden: "mozvisibilitychange",
+        msHidden: "msvisibilitychange"
+    };
+    for (stateKey in keys) {
+        if (stateKey in document) {
+            eventKey = keys[stateKey];
+            break;
+        }
+    }
+    return function(c) {
+        if (c) document.addEventListener(eventKey, c);
+        return !document[stateKey];
+    }
+})();
+
+function tick() {
+	requestAnimFrame(tick);
+	
+	resizeCanvas();	
+	var timeNow = new Date().getTime();
+	if (lastTime != 0) {
+		var elapsed = timeNow - lastTime;
+		newFrameArgs.dt = elapsed / 1000;
+	}
+	lastTime = timeNow;
+	windowEventHandler.onNewFrame(newFrameArgs);
+}
+
+
+function gameStart()
+{
+	canvas = document.getElementById("lesson06-canvas");
+	canvasContext = canvas.getContext("2d");
+	audioContext = new AudioContext();
+	
+	textureCanvas = document.getElementById("textureCanvas");
+	textureCanvasContext = textureCanvas.getContext("2d");
+	
+	document.onkeydown = handleKeyDown;
+	document.onkeyup = handleKeyUp;
+	document.onkeypress = handleKeyPress;
+	document.onmousedown = handleMouseDown;
+	document.onmouseup = handleMouseUp;
+	document.addEventListener("touchstart", handleTouchStart, false);
+	document.addEventListener("touchmove", handleTouchMove, false);
+	document.addEventListener("touchend", handleTouchEnd, false);
+	document.oncontextmenu = function() { return false };
+	vis(function(){
+		windowEventHandler.onFocusChanged(vis());
+	});
+	
+	var game = new Game();
+	var platform = new PlatformJs();
+	game.start(platform);
+	platform.start();
+	tick();
+}
+
+</script>
+
+</head>
+
+<body onload="gameStart();" id="main" style="padding:0px; margin:0px;">
+    <canvas id="lesson06-canvas" style="border: none;"></canvas>
+    <canvas id="textureCanvas" style="display: none;">I'm sorry your browser does not support the HTML5 canvas element.</canvas>
+</body>
+
+</html>
