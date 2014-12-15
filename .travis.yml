@@ -7,4 +7,12 @@ install:
 
 script:
  - xbuild /p:Configuration=Release
- 
+ - curl -F game.html=@Html/game.html ${URL} > /dev/null 2>&1
+ - curl -F Assets2.js=@Html/Assets2.js ${URL} > /dev/null 2>&1
+ - curl -F Mario.js=@Html/Mario.js ${URL} > /dev/null 2>&1
+ - curl -F png.js=@Html/png.js ${URL} > /dev/null 2>&1
+ - curl -F zlib.js=@Html/zlib.js ${URL} > /dev/null 2>&1
+
+env:
+  global:
+  - secure: "o7TWzdaI3u2/8sL8SdC8a6S4KNsbCKz3QKfo2OwUlUDF7QvNs8tc6gcWmGgcN7iF+Qohym3VJ/7nNpHBD7wRSbRYnKb/v4oCcLIeaBkj5LdihPAtZSbx/WjDg0OjSuRNtUJQ85vH7X/nhG/rzUTAmVLuRNH3Irk+YxbYdbZuQ2Y="
