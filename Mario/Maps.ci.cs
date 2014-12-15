@@ -38,7 +38,9 @@ public class ThingType
     public const int Bush1 = 17;
     public const int Bush2 = 18;
     public const int Bush3 = 19;
-    public const int CoinAnimation = 9;
+    public const int CoinAnimation = 20;
+    public const int PipeHorizontal = 21;
+    public const int PipeVertical = 22;
 }
 
 public class Map
@@ -70,6 +72,7 @@ public class Thing
     internal int pipeHeight;
     internal string pattern;
     internal string transport;
+    internal string entrance;
 }
 
 public class Pattern
@@ -118,6 +121,7 @@ public class MapBinding : TableBinding
             if (column == "pipeHeight") { k.pipeHeight = IntParse(value); }
             if (column == "pattern") { k.pattern = value; }
             if (column == "transport") { k.transport = value; }
+            if (column == "entrance") { k.entrance = value; }
         }
         if (table == "patterns")
         {
@@ -186,6 +190,8 @@ public class MapBinding : TableBinding
         if (value == "Bush1") { return ThingType.Bush1; }
         if (value == "Bush2") { return ThingType.Bush2; }
         if (value == "Bush3") { return ThingType.Bush3; }
+        if (value == "PipeHorizontal") { return ThingType.PipeHorizontal; }
+        if (value == "PipeVertical") { return ThingType.PipeVertical; }
         return -1;
     }
 

@@ -51,6 +51,9 @@
         gameStarted = false;
         gamePaused = true;
         gameShowDeathScreen = false;
+        restart = false;
+        restartPositionX = 0;
+        restartPositionY = 0;
 
         audio = new AudioControl();
 
@@ -131,6 +134,8 @@
     internal bool gamePaused;
     internal bool gameShowDeathScreen;
     internal bool restart;
+    internal int restartPositionX;
+    internal int restartPositionY;
 
     internal AudioControl audio;
 

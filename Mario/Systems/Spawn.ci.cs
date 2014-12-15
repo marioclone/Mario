@@ -48,10 +48,20 @@ public class SystemSpawn : GameSystem
             }
 
             // Player
+            int spawnX = game.restartPositionX;
+            int spawnY = game.restartPositionY;
+            if (spawnX == 0 && spawnY == 0)
+            {
+                spawnX = 32 - 8;
+                spawnY = 192;
+            }
+            game.restartPositionX = 0;
+            game.restartPositionY = 0;
+
             player = new Entity();
             player.draw = new EntityDraw();
-            player.draw.x = 32 - 8;
-            player.draw.y = 192;
+            player.draw.x = spawnX;
+            player.draw.y = spawnY;
             player.draw.z = 1;
             player.growable = new EntityGrowable();
             player.attackableTouch = new EntityAttackableTouch();
@@ -196,6 +206,8 @@ public class SystemSpawn : GameSystem
         if (t.width == 0) { t.width = 1; }
         if (t.height == 0) { t.height = 1; }
 
+        // Solids
+
         if (t.type == ThingType.Floor)
         {
             Entity e = Spawn(game, "SolidsFloorNormal", t.x, t.y);
@@ -278,10 +290,10 @@ public class SystemSpawn : GameSystem
             e.draw.width = 32;
             e.draw.height = 16;
             e.collider = new EntityCollider();
-            if (t.transport != null)
+            if (t.transport != null && t.transport != "")
             {
                 ScriptPipeTransport transport = new ScriptPipeTransport();
-                transport.targetLevel = t.transport;
+                transport.targetLevelOrEntrance = t.transport;
                 e.scripts[e.scriptsCount++] = transport;
             }
 
@@ -293,6 +305,31 @@ public class SystemSpawn : GameSystem
                 e2.collider = new EntityCollider();
             }
         }
+        if (t.type == ThingType.PipeHorizontal)
+        {
+            Entity e = Spawn(game, "SolidsPipeHorizontal", t.x, t.y);
+            e.draw.width = 48;
+            e.draw.height = 32;
+            e.draw.z = 0;
+            e.collider = new EntityCollider();
+            ScriptPipeTransport transport = new ScriptPipeTransport();
+            transport.horizontal = true;
+            transport.targetLevelOrEntrance = t.transport;
+            e.scripts[e.scriptsCount++] = transport;
+        }
+        if (t.type == ThingType.PipeVertical)
+        {
+            Entity e = Spawn(game, "SolidsPipeNormalMiddle", t.x, t.y);
+            e.draw.width = 32;
+            e.draw.height = 16;
+            e.draw.z = 1;
+            e.draw.yrepeat = t.pipeHeight / 8;
+            e.draw.mirrorx = true;
+            e.collider = new EntityCollider();
+        }
+
+        // Characters
+
         if (t.type == ThingType.Goomba)
         {
             Entity e = Spawn(game, "CharactersGoombaNormal", t.x, t.y);
@@ -301,6 +338,8 @@ public class SystemSpawn : GameSystem
             e.scripts[e.scriptsCount++] = new ScriptGoomba();
             e.scripts[e.scriptsCount++] = new ScriptMoving();
         }
+
+        // Scenery
         if (t.type == ThingType.HillLarge)
         {
             SpawnScenery(game, "SceneryHillLarge", t.x, t.y, 80, 35);
