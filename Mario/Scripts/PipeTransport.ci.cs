@@ -78,6 +78,10 @@ public class TransportHelper
             {
                 game.level = t.level;
                 game.restartPositionX = t.x * 2;
+                if (t.x == 0)
+                {
+                    game.restartPositionX = 32;
+                }
                 game.restartPositionY = 240 - t.y * 2 - 16 * 5;
             }
         }

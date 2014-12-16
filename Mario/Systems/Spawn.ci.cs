@@ -231,6 +231,7 @@ public class SystemSpawn : GameSystem
                         t2.type = p.thingType;
                         t2.width = p.width;
                         t2.height = p.height;
+                        t2.transport = t.transport;
                         SpawnThing(game, map, t2);
 
                         if (p.x > patternWidth)
@@ -241,30 +242,34 @@ public class SystemSpawn : GameSystem
                 }
             }
         }
-        if (t.type == ThingType.Block)
-        {
-            Entity e = Spawn(game, "SolidsBlockNormalNormalNormal", t.x, t.y);
-            e.collider = new EntityCollider();
-            e.attackablePush = new EntityAttackablePush();
-            e.attackablePush.pushSide = PushSide.BottomBrickDestroy;
-            ScriptQuestionBlock script = new ScriptQuestionBlock();
-            ActionSpawnThing action = new ActionSpawnThing();
-            int contents = t.contents;
-            if (contents == 0)
-            {
-                contents = ThingType.CoinAnimation;
-            }
-            action.thingType = contents;
-            action.x = t.x;
-            action.y = t.y + 8;
-            script.onUse = action;
-            e.scripts[e.scriptsCount++] = script;
-            e.scripts[e.scriptsCount++] = new ScriptBrickBumpAnimation();
-        }
         for (int x = 0; x < t.width; x++)
         {
             for (int y = 0; y < t.height; y++)
             {
+                if (t.type == ThingType.Block)
+                {
+                    Entity e = Spawn(game, "SolidsBlockNormalNormalNormal", t.x + x * 8, t.y + y * 8);
+                    if (t.hidden)
+                    {
+                        e.draw.hidden = true;
+                    }
+                    e.collider = new EntityCollider();
+                    e.attackablePush = new EntityAttackablePush();
+                    e.attackablePush.pushSide = PushSide.BottomBrickDestroy;
+                    ScriptQuestionBlock script = new ScriptQuestionBlock();
+                    ActionSpawnThing action = new ActionSpawnThing();
+                    int contents = t.contents;
+                    if (contents == 0)
+                    {
+                        contents = ThingType.CoinAnimation;
+                    }
+                    action.thingType = contents;
+                    action.x = t.x + x * 8;
+                    action.y = t.y + y * 8 + 8;
+                    script.onUse = action;
+                    e.scripts[e.scriptsCount++] = script;
+                    e.scripts[e.scriptsCount++] = new ScriptBrickBumpAnimation();
+                }
                 if (t.type == ThingType.Brick)
                 {
                     Entity e = Spawn(game, "SolidsBrickNormalNormal", t.x + x * 8, t.y + y * 8);
@@ -535,16 +540,34 @@ public class ActionSpawnThing
     {
         int spawnX = x * 2;
         int spawnY = 240 - y * 2 - 16 * 2;
-        if (thingType == ThingType.Mushroom)
+        if (thingType == ThingType.Mushroom
+            || thingType == ThingType.Mushroom1Up
+            || thingType == ThingType.MushroomDeathly)
         {
             Entity e = new Entity();
             e.draw = new EntityDraw();
-            e.draw.sprite = "CharactersMushroom";
             e.draw.x = spawnX;
             e.draw.y = spawnY;
+            ScriptMushroom script = new ScriptMushroom();
             e.scripts[e.scriptsCount++] = new ScriptMushroom();
             game.AddEntity(e);
             game.AudioPlay("MushroomAppear");
+            
+            if (thingType == ThingType.Mushroom)
+            {
+                script.mushroomType = MushroomType.Mushroom;
+                e.draw.sprite = "CharactersMushroom";
+            }
+            if (thingType == ThingType.Mushroom1Up)
+            {
+                script.mushroomType = MushroomType.Mushroom1Up;
+                e.draw.sprite = "CharactersMushroom1Up";
+            }
+            if (thingType == ThingType.MushroomDeathly)
+            {
+                script.mushroomType = MushroomType.MushroomDeathly;
+                e.draw.sprite = "CharactersMushroomDeathly";
+            }
         }
         if (thingType == ThingType.CoinAnimation)
         {

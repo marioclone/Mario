@@ -167,6 +167,7 @@ public class EntityDraw
         absoluteScreenPosition = false;
         xrepeat = 1;
         yrepeat = 1;
+        hidden = false;
         
         loadedSprite = -1;
         loadedSpriteName = null;
@@ -184,6 +185,7 @@ public class EntityDraw
     internal bool absoluteScreenPosition;
     internal int xrepeat;
     internal int yrepeat;
+    internal bool hidden;
 
     internal int loadedSprite;
     internal string loadedSpriteName;

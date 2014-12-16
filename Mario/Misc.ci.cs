@@ -1,4 +1,4 @@
-﻿public class GameSystem
+﻿public class GameSystem : WindowEventHandler
 {
     public GameSystem()
     {
@@ -7,6 +7,18 @@
     internal float one;
     public virtual void Render(Game game, float dt) { }
     public virtual void Update(Game game, float dt) { }
+    
+    public virtual void OnNewFrame(Game game, NewFrameEventArgs args) { }
+    public virtual void OnKeyDown(Game game, KeyEventArgs e) { }
+    public virtual void OnKeyPress(Game game, KeyPressEventArgs e) { }
+    public virtual void OnKeyUp(Game game, KeyEventArgs e) { }
+    public virtual void OnMouseDown(Game game, MouseEventArgs e) { }
+    public virtual void OnMouseUp(Game game, MouseEventArgs e) { }
+    public virtual void OnMouseMove(Game game, MouseEventArgs e) { }
+    public virtual void OnMouseWheel(Game game, MouseWheelEventArgs e) { }
+    public virtual void OnTouchStart(Game game, TouchEventArgs e) { }
+    public virtual void OnTouchMove(Game game, TouchEventArgs e) { }
+    public virtual void OnTouchEnd(Game game, TouchEventArgs e) { }
     public virtual void OnFocusChanged(Game game, bool focus) { }
 }
 

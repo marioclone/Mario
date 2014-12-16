@@ -34,6 +34,7 @@
             {
                 e.draw.sprite = "SolidsBlockNormalUsed";
                 used = true;
+                e.draw.hidden = false;
                 onUse.Spawn(game);
 
                 // remove ScriptBlock

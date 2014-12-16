@@ -5,12 +5,14 @@
         t = 0;
         done = false;
         constGrowTime = one / 2;
+        mushroomType = MushroomType.Mushroom;
     }
 
     float t;
     bool done;
     float constGrowTime;
     const int constScoreMushroom = 1000;
+    internal MushroomType mushroomType;
 
     public override void Update(Game game, int entity, float dt)
     {
@@ -53,4 +55,11 @@
             }
         }
     }
+}
+
+public enum MushroomType
+{
+    Mushroom,
+    Mushroom1Up,
+    MushroomDeathly
 }

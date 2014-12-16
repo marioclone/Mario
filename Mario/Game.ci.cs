@@ -39,7 +39,7 @@
         maps = new MapsLoader();
         accum = 0;
         backgroundColor = 0;
-        level = "1-1";
+        level = "1-1-0";
         setting = SettingType.Overworld;
         levelStatic = false;
         time = 0;
@@ -216,10 +216,18 @@
             gamePaused = !gamePaused;
             AudioPlay("Pause");
         }
+        for (int i = 0; i < systemsCount; i++)
+        {
+            systems[i].OnKeyDown(this, e);
+        }
     }
 
     public override void OnKeyPress(KeyPressEventArgs e)
     {
+        for (int i = 0; i < systemsCount; i++)
+        {
+            systems[i].OnKeyPress(this, e);
+        }
     }
 
     public override void OnKeyUp(KeyEventArgs e)
@@ -229,6 +237,10 @@
             return;
         }
         keysDown[e.GetKeyCode()] = false;
+        for (int i = 0; i < systemsCount; i++)
+        {
+            systems[i].OnKeyUp(this, e);
+        }
     }
 
     public override void OnTouchStart(TouchEventArgs e)
@@ -236,11 +248,19 @@
         keysDown[GlKeys.Up] = true;
         keysDown[GlKeys.Right] = true;
         gameStarted = true;
+        for (int i = 0; i < systemsCount; i++)
+        {
+            systems[i].OnTouchStart(this, e);
+        }
     }
 
     public override void OnTouchEnd(TouchEventArgs e)
     {
         keysDown[GlKeys.Up] = false;
+        for (int i = 0; i < systemsCount; i++)
+        {
+            systems[i].OnTouchEnd(this, e);
+        }
     }
 
     public override void OnMouseDown(MouseEventArgs e)
@@ -263,6 +283,10 @@
             }
         }
         gameStarted = true;
+        for (int i = 0; i < systemsCount; i++)
+        {
+            systems[i].OnMouseDown(this, e);
+        }
     }
 
     public override void OnMouseUp(MouseEventArgs e)
@@ -275,6 +299,10 @@
         {
             keysDown[GlKeys.Left] = false;
             keysDown[GlKeys.Right] = false;
+        }
+        for (int i = 0; i < systemsCount; i++)
+        {
+            systems[i].OnMouseUp(this, e);
         }
     }
 

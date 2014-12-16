@@ -44,6 +44,7 @@ public class SystemDraw : GameSystem
                     continue;
                 }
                 PrepareSprite(game, e.draw, scale);
+                if (e.draw.hidden) { continue; }
                 for (int x = 0; x < e.draw.xrepeat; x++)
                 {
                     for (int y = 0; y < e.draw.yrepeat; y++)

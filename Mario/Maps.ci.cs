@@ -49,13 +49,14 @@ public class ThingType
     public const int SceneryFlagTop = 28;
     public const int SceneryFlagPole = 29;
     public const int SceneryBrickPlain = 30;
+    public const int MushroomDeathly = 31;
 }
 
 public class Map
 {
     public Map()
     {
-        things = new Thing[1024];
+        things = new Thing[1024 * 8];
         patterns = new Pattern[1024];
         levels = new Level[128];
     }
@@ -81,6 +82,7 @@ public class Thing
     internal string pattern;
     internal string transport;
     internal string entrance;
+    internal bool hidden;
 }
 
 public class Pattern
@@ -137,6 +139,7 @@ public class MapBinding : TableBinding
             if (column == "pattern") { k.pattern = value; }
             if (column == "transport") { k.transport = value; }
             if (column == "entrance") { k.entrance = value; }
+            if (column == "hidden") { k.hidden = value != null && value != ""; }
         }
         if (table == "patterns")
         {
