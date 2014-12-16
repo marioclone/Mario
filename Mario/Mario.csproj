@@ -66,28 +66,28 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PlatformWindows.cs">
     </Compile>
-    <Compile Include="Scripts\ScriptBrickBumpAnimation.ci.cs" />
-    <Compile Include="Scripts\ScriptCoinInQuestionBlock.ci.cs" />
-    <Compile Include="Scripts\ScriptCoinStatic.ci.cs" />
-    <Compile Include="Scripts\ScriptFlagPole.ci.cs" />
-    <Compile Include="Scripts\ScriptPipeTransport.ci.cs" />
-    <Compile Include="Scripts\ScriptText.ci.cs" />
+    <Compile Include="Scripts\BrickBumpAnimation.ci.cs" />
+    <Compile Include="Scripts\CoinInQuestionBlock.ci.cs" />
+    <Compile Include="Scripts\CoinStatic.ci.cs" />
+    <Compile Include="Scripts\FlagPole.ci.cs" />
+    <Compile Include="Scripts\PipeTransport.ci.cs" />
+    <Compile Include="Scripts\Text.ci.cs" />
     <Compile Include="Systems\Audio.ci.cs" />
     <Compile Include="Systems\Draw.ci.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Scripts\ScriptQuestionBlock.ci.cs">
+    <Compile Include="Scripts\QuestionBlock.ci.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Scripts\ScriptBrickDestroy.ci.cs" />
-    <Compile Include="Scripts\ScriptGoomba.ci.cs">
+    <Compile Include="Scripts\BrickDestroy.ci.cs" />
+    <Compile Include="Scripts\Goomba.ci.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Scripts\ScriptMoving.ci.cs" />
-    <Compile Include="Scripts\ScriptMushroom.ci.cs">
+    <Compile Include="Scripts\Moving.ci.cs" />
+    <Compile Include="Scripts\Mushroom.ci.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Scripts\ScriptPlayer.ci.cs">
+    <Compile Include="Scripts\Player.ci.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Systems\DrawDeathScreen.ci.cs" />
