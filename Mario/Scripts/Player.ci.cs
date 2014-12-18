@@ -143,11 +143,15 @@
         {
             velY = constMaxVel / 2;
             velX = 0;
+            topPipeEnter += dt;
         }
         if (leftPipeEnter != -1)
         {
             velX = constMaxVel / 2;
+            leftPipeEnter += dt;
         }
+        if (topPipeEnter > 1) { topPipeEnter = -1; }
+        if (leftPipeEnter > 1) { leftPipeEnter = -1; }
 
         // Move
         float oldx = e.draw.x;
@@ -251,6 +255,7 @@
         // Death from falling down into hole
         if (e.draw.y > 240)
         {
+            growth = 0;
             game.AudioPlay("Death");
             game.audio.audioPlayMusic = null;
             game.gameShowDeathScreen = true;

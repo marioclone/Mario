@@ -82,7 +82,7 @@ public class TransportHelper
                 {
                     game.restartPositionX = 32;
                 }
-                game.restartPositionY = 240 - t.y * 2 - 16 * 5;
+                game.restartPositionY = 240 - t.y * 2 - 16 * 6;
             }
         }
     }

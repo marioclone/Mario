@@ -32,7 +32,10 @@
             {
                 if (game.entities[i] != null)
                 {
-                    game.DeleteEntity(i);
+                    if (game.entities[i].draw != null)
+                    {
+                        game.entities[i].draw.hidden = true;
+                    }
                 }
             }
             game.entitiesCount = 0;

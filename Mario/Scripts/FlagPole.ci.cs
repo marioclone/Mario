@@ -105,7 +105,7 @@
             }
             if (t > 2 + one / 4)
             {
-                game.entities[playerEntityId].draw.xOffset = 9999;
+                game.entities[playerEntityId].draw.hidden = true;
             }
 
             if (t > 3)

@@ -9,7 +9,6 @@ public class SystemSpawn : GameSystem
     void Restart()
     {
         loaded = false;
-        player = null;
         wasGameStarted = false;
     }
 
@@ -59,14 +58,18 @@ public class SystemSpawn : GameSystem
             game.restartPositionX = 0;
             game.restartPositionY = 0;
 
-            player = new Entity();
-            player.draw = new EntityDraw();
+            if (player == null)
+            {
+                player = new Entity();
+                player.draw = new EntityDraw();
+                player.draw.z = 1;
+                player.growable = new EntityGrowable();
+                player.attackableTouch = new EntityAttackableTouch();
+                player.scripts[player.scriptsCount++] = new ScriptPlayer();
+            }
             player.draw.x = spawnX;
             player.draw.y = spawnY;
-            player.draw.z = 1;
-            player.growable = new EntityGrowable();
-            player.attackableTouch = new EntityAttackableTouch();
-            player.scripts[player.scriptsCount++] = new ScriptPlayer();
+            player.draw.hidden = false;
             game.AddEntity(player);
 
             game.scrollx = 0;
@@ -188,7 +191,16 @@ public class SystemSpawn : GameSystem
             for (int i = 0; i < game.entitiesCount; i++)
             {
                 if (game.entities[i] == null) { continue; }
-                game.DeleteEntity(i);
+                if (game.entities[i] == player)
+                {
+                    // Keep player, only remove from list
+                    game.entities[i] = null;
+                }
+                else
+                {
+                    // Delete entity memory
+                    game.DeleteEntity(i);
+                }
             }
             game.entitiesCount = 0;
         }
@@ -577,7 +589,7 @@ public class ActionSpawnThing
             e.scripts[e.scriptsCount++] = new ScriptMushroom();
             game.AddEntity(e);
             game.AudioPlay("MushroomAppear");
-            
+
             if (thingType == ThingType.Mushroom)
             {
                 script.mushroomType = MushroomType.Mushroom;
