@@ -52,8 +52,14 @@ public class SystemSpawn : GameSystem
             int spawnY = game.restartPositionY;
             if (spawnX == 0 && spawnY == 0)
             {
+                int playerHeight = 16;
+                if (player != null)
+                {
+                    playerHeight = player.draw.height;
+                }
+
                 spawnX = 32 - 8;
-                spawnY = 192;
+                spawnY = 208 - playerHeight;
             }
             game.restartPositionX = 0;
             game.restartPositionY = 0;
