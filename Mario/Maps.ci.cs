@@ -51,6 +51,7 @@ public class ThingType
     public const int SceneryBrickPlain = 30;
     public const int MushroomDeathly = 31;
     public const int Ceiling = 32;
+    public const int PlatformGenerator = 33;
 }
 
 public class Map
@@ -84,6 +85,7 @@ public class Thing
     internal string transport;
     internal string entrance;
     internal bool hidden;
+    internal int direction;
 }
 
 public class Pattern
@@ -140,6 +142,7 @@ public class MapBinding : TableBinding
             if (column == "transport") { k.transport = value; }
             if (column == "entrance") { k.entrance = value; }
             if (column == "hidden") { k.hidden = value != null && value != ""; }
+            if (column == "direction") { k.direction = IntParse(value); }
         }
         if (table == "patterns")
         {
@@ -220,6 +223,7 @@ public class MapBinding : TableBinding
         if (value == "SceneryFlagPole") { return ThingType.SceneryFlagPole; }
         if (value == "SceneryBrickPlain") { return ThingType.SceneryBrickPlain; }
         if (value == "Ceiling") { return ThingType.Ceiling; }
+        if (value == "PlatformGenerator") { return ThingType.PlatformGenerator; }
         return -1;
     }
 

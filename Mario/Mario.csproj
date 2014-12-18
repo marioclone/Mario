@@ -71,6 +71,8 @@
     <Compile Include="Scripts\CoinStatic.ci.cs" />
     <Compile Include="Scripts\FlagPole.ci.cs" />
     <Compile Include="Scripts\PipeTransport.ci.cs" />
+    <Compile Include="Scripts\Platform.ci.cs" />
+    <Compile Include="Scripts\PlatformGenerator.ci.cs" />
     <Compile Include="Scripts\Text.ci.cs" />
     <Compile Include="Systems\Audio.ci.cs" />
     <Compile Include="Systems\Draw.ci.cs">

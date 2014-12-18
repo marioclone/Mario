@@ -429,6 +429,13 @@ public class SystemSpawn : GameSystem
         if (t.type == ThingType.CastleOutside)
         {
         }
+        if (t.type == ThingType.PlatformGenerator)
+        {
+            Entity e = Spawn(game, "", t.x, t.y);
+            PlatformGenerator script = new PlatformGenerator();
+            script.direction = t.direction;
+            e.scripts[e.scriptsCount++] = script;
+        }
 
         // Characters
 
