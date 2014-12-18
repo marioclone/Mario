@@ -206,6 +206,23 @@
             velY = 0;
         }
 
+        if (e.draw.x - game.platform.FloatToInt(e.draw.x) < one * 10 / 100)
+        {
+            e.draw.x = game.platform.FloatToInt(e.draw.x);
+        }
+        if (e.draw.x - game.platform.FloatToInt(e.draw.x) > one * 90 / 100)
+        {
+            e.draw.x = game.platform.FloatToInt(e.draw.x) + 1;
+        }
+        if (e.draw.y - game.platform.FloatToInt(e.draw.y) < one * 10 / 100)
+        {
+            e.draw.y = game.platform.FloatToInt(e.draw.y);
+        }
+        if (e.draw.y - game.platform.FloatToInt(e.draw.y) > one * 90 / 100)
+        {
+            e.draw.y = game.platform.FloatToInt(e.draw.y) + 1;
+        }
+
         // Growth
         if (e.growable.grow)
         {
