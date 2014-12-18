@@ -104,7 +104,6 @@ public class Level
 {
     internal string level;
     internal SettingType setting;
-    internal bool static_;
 }
 
 public enum SettingType
@@ -160,10 +159,9 @@ public class MapBinding : TableBinding
             Level k = m.levels[index];
             if (column == "level") { k.level = value; }
             if (column == "setting") { k.setting = GetSetting(value); }
-            if (column == "static") { k.static_ = (value == "1"); }
         }
     }
-
+    
     SettingType GetSetting(string value)
     {
         if (value == "Overworld")

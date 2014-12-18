@@ -33,7 +33,6 @@ public class SystemSpawn : GameSystem
                 if (l.level == game.level)
                 {
                     game.setting = l.setting;
-                    game.levelStatic = l.static_;
                 }
             }
 
@@ -46,6 +45,8 @@ public class SystemSpawn : GameSystem
                     SpawnThing(game, map, t);
                 }
             }
+
+            game.levelStatic = LevelStatic(game);
 
             // Player
             int spawnX = game.restartPositionX;
@@ -201,6 +202,22 @@ public class SystemSpawn : GameSystem
         }
     }
 
+    static bool LevelStatic(Game game)
+    {
+        float maxX = 0;
+        for (int i = 0; i < game.entitiesCount; i++)
+        {
+            Entity e = game.entities[i];
+            if (e == null) { continue; }
+            if (e.draw == null) { continue; }
+            if (e.draw.x > maxX)
+            {
+                maxX = e.draw.x;
+            }
+        }
+        return maxX <= 256;
+    }
+
     void SpawnThing(Game game, Map map, Thing t)
     {
         if (t.width == 0) { t.width = 1; }
@@ -332,12 +349,11 @@ public class SystemSpawn : GameSystem
         }
         if (t.type == ThingType.PipeVertical)
         {
-            Entity e = Spawn(game, "SolidsPipeNormalMiddle", t.x, t.y);
-            e.draw.width = 32;
+            Entity e = Spawn(game, "SolidsPipeVerticalNormal", t.x, t.y);
+            e.draw.width = 16;
             e.draw.height = 16;
-            e.draw.z = 3;
-            e.draw.yrepeat = t.pipeHeight / 8;
-            e.draw.mirrorx = true;
+            e.draw.z = 1;
+            e.draw.yrepeat = t.height;
             e.collider = new EntityCollider();
         }
         if (t.type == ThingType.SceneryFlagPole)
