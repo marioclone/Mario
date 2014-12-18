@@ -50,6 +50,7 @@ public class ThingType
     public const int SceneryFlagPole = 29;
     public const int SceneryBrickPlain = 30;
     public const int MushroomDeathly = 31;
+    public const int Ceiling = 32;
 }
 
 public class Map
@@ -218,6 +219,7 @@ public class MapBinding : TableBinding
         if (value == "SceneryFlagTop") { return ThingType.SceneryFlagTop; }
         if (value == "SceneryFlagPole") { return ThingType.SceneryFlagPole; }
         if (value == "SceneryBrickPlain") { return ThingType.SceneryBrickPlain; }
+        if (value == "Ceiling") { return ThingType.Ceiling; }
         return -1;
     }
 

@@ -232,6 +232,11 @@ public class SystemSpawn : GameSystem
             e.draw.xrepeat = t.width;
             e.draw.yrepeat = 2;
         }
+        if (t.type == ThingType.Ceiling)
+        {
+            t.type = ThingType.Brick;
+            t.y = 8 * 11;
+        }
         if (t.type == ThingType.Pattern)
         {
             int patternWidth = 0;
