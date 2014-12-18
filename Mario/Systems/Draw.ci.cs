@@ -29,6 +29,14 @@ public class SystemDraw : GameSystem
             oldScale = scale;
         }
         DrawBackground(game);
+        // Level setting
+        for (int i = 0; i < game.entitiesCount; i++)
+        {
+            Entity e = game.entities[i];
+            if (e == null) { continue; }
+            if (e.draw == null) { continue; }
+            e.draw.sprite = SettingApply.Apply(game, e.draw.sprite);
+        }
         int addY = game.platform.FloatToInt(canvasHeight - 240 * scale); // align to screen bottom
         LoadOrigSprites(game);
         for (int z = 0; z < 4; z++)

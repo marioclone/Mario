@@ -192,14 +192,6 @@ public class SystemSpawn : GameSystem
             }
             game.entitiesCount = 0;
         }
-        // Level setting
-        for (int i = 0; i < game.entitiesCount; i++)
-        {
-            Entity e = game.entities[i];
-            if (e == null) { continue; }
-            if (e.draw == null) { continue; }
-            e.draw.sprite = SettingApply.Apply(game, e.draw.sprite);
-        }
     }
 
     static bool LevelStatic(Game game)
@@ -523,6 +515,10 @@ public class SettingApply
             {
                 sprite = "CharactersGoombaUnderworld";
             }
+            if (sprite == "SolidsDeadGoombaNormal")
+            {
+                sprite = "SolidsDeadGoombaUnderworld";
+            }
             if (sprite == "SolidsBlockNormalNormalNormal")
             {
                 sprite = "SolidsBlockUnderworldNormalNormal";
@@ -538,6 +534,14 @@ public class SettingApply
             if (sprite == "SolidsFloorNormal")
             {
                 sprite = "SolidsFloorUnderworld";
+            }
+            if (sprite == "SolidsStoneNormal")
+            {
+                sprite = "SolidsStoneUnderworld";
+            }
+            if (sprite == "SolidsBlockNormalUsed")
+            {
+                sprite = "SolidsBlockUnderworldUsed";
             }
         }
         return sprite;
