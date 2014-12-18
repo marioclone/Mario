@@ -67,9 +67,23 @@
 
         bool crouchingSlide = crouching && onGround;
 
-        bool controlsLeft = game.keysDown[GlKeys.Left] || (game.controlsOverride.active && game.controlsOverride.left);
-        bool controlsRight = game.keysDown[GlKeys.Right] || (game.controlsOverride.active && game.controlsOverride.right);
-        bool controlsJump = game.keysDown[GlKeys.Period] || game.keysDown[GlKeys.Up] || (game.controlsOverride.active && game.controlsOverride.jump);
+        bool controlsLeft;
+        bool controlsRight;
+        bool controlsJump;
+        if (game.controlsOverride.active)
+        {
+            controlsLeft = game.controlsOverride.left;
+            controlsRight = game.controlsOverride.right;
+            controlsJump = game.controlsOverride.jump;
+        }
+        else
+        {
+            controlsLeft = game.keysDown[GlKeys.Left];
+            controlsRight = game.keysDown[GlKeys.Right];
+            controlsJump = game.keysDown[GlKeys.Period] || game.keysDown[GlKeys.Up];
+        }
+        game.controlsOverride.active = false;
+        game.controlsOverride.Clear();
         
         if (controlsLeft && (!crouchingSlide))
         {
@@ -491,4 +505,11 @@ public class ControlsOverride
     internal bool left;
     internal bool right;
     internal bool jump;
+
+    internal void Clear()
+    {
+        left = false;
+        right = false;
+        jump = false;
+    }
 }

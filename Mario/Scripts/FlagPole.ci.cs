@@ -80,6 +80,12 @@
             }
         }
 
+        if (!flagDone && t != -1)
+        {
+            game.controlsOverride.active = true;
+            game.controlsOverride.Clear();
+        }
+
         if (flagDone)
         {
             if (t > 1)
@@ -95,9 +101,7 @@
 
             if (t > 2 - one / 4)
             {
-                game.controlsOverride.active = false;
-                game.controlsOverride.right = false;
-                game.controlsOverride.jump = false;
+                game.controlsOverride.Clear();
             }
             if (t > 2 + one / 4)
             {
@@ -106,6 +110,7 @@
 
             if (t > 3)
             {
+                game.controlsOverride.active = false;
                 t = -1;
                 TransportHelper.Transport(game, targetLevelOrEntrance);
             }

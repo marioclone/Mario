@@ -1,4 +1,4 @@
-﻿public class GameSystem : WindowEventHandler
+﻿public class GameSystem
 {
     public GameSystem()
     {
@@ -8,7 +8,6 @@
     public virtual void Render(Game game, float dt) { }
     public virtual void Update(Game game, float dt) { }
     
-    public virtual void OnNewFrame(Game game, NewFrameEventArgs args) { }
     public virtual void OnKeyDown(Game game, KeyEventArgs e) { }
     public virtual void OnKeyPress(Game game, KeyPressEventArgs e) { }
     public virtual void OnKeyUp(Game game, KeyEventArgs e) { }

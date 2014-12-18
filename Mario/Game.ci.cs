@@ -15,6 +15,7 @@
             systems[systemsCount++] = new SystemSpawn();
             systems[systemsCount++] = new SystemAudio();
             systems[systemsCount++] = new DrawDeathScreen();
+            systems[systemsCount++] = new SystemLevelScript();
         }
 
         {
