@@ -289,6 +289,8 @@
             if (deadT > 3)
             {
                 game.gameShowDeathScreen = true;
+                dead = false;
+                e.draw.yOffset = 0;
             }
         }
 
