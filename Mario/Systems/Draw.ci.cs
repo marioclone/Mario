@@ -19,7 +19,15 @@ public class SystemDraw : GameSystem
     {
         int canvasWidth = game.platform.GetCanvasWidth();
         int canvasHeight = game.platform.GetCanvasHeight();
-        float scale = one * canvasHeight / 240;
+        float scale;
+        if (canvasWidth > canvasHeight)
+        {
+            scale = one * canvasHeight / 240;
+        }
+        else
+        {
+            scale = one * canvasWidth / 256;
+        }
         // Round to one pixel, to avoid gaps. After scaling tile size must be an integer.
         scale = (one * game.platform.FloatToInt(scale * 8)) / 8;
         if (scale < 1) { scale = 1; }
