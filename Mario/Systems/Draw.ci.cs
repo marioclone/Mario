@@ -28,6 +28,7 @@ public class SystemDraw : GameSystem
         {
             scale = one * canvasWidth / 256;
         }
+        game.scale = scale;
         // Round to one pixel, to avoid gaps. After scaling tile size must be an integer.
         scale = (one * game.platform.FloatToInt(scale * 8)) / 8;
         if (scale < 1) { scale = 1; }
@@ -36,7 +37,6 @@ public class SystemDraw : GameSystem
             Rescale(game, game.platform);
             oldScale = scale;
         }
-        DrawBackground(game);
         // Level setting
         for (int i = 0; i < game.entitiesCount; i++)
         {
@@ -46,6 +46,13 @@ public class SystemDraw : GameSystem
             e.draw.sprite = SettingApply.Apply(game, e.draw.sprite);
         }
         int addY = game.platform.FloatToInt(canvasHeight - 240 * scale); // align to screen bottom
+        if (canvasHeight > canvasWidth)
+        {
+            // Leave space for touch buttons
+            addY -= game.platform.FloatToInt(SystemTouchControls.TouchButtonsHeight * scale);
+        }
+        game.addY = addY;
+        DrawBackground(game, scale, addY);
         LoadOrigSprites(game);
         for (int z = 0; z < 4; z++)
         {
@@ -137,7 +144,7 @@ public class SystemDraw : GameSystem
         }
     }
 
-    void DrawBackground(Game game)
+    void DrawBackground(Game game, float scale, float addY)
     {
         game.platform.FillRect(0, 0,
             game.platform.GetCanvasWidth(), game.platform.GetCanvasHeight(),

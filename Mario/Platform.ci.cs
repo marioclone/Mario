@@ -124,7 +124,8 @@ public class GlKeys
     public const int Enter = 13;
     public const int Escape = 27;
     public const int Space = 32;
-    public const int Period = 110;
+    public const int Comma = 188;
+    public const int Period = 190;
 }
 
 public class WindowEventHandler

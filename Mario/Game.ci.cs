@@ -16,6 +16,7 @@
             systems[systemsCount++] = new SystemAudio();
             systems[systemsCount++] = new DrawDeathScreen();
             systems[systemsCount++] = new SystemLevelScript();
+            systems[systemsCount++] = new SystemTouchControls();
         }
 
         {
@@ -132,6 +133,8 @@
     internal float scrollx; // in original pixels
     internal float gameScreenWidth; // in original pixels
     internal float gameScreenHeight; // in original pixels
+    internal float scale;
+    internal float addY;
     internal bool gameStarted;
     internal bool gamePaused;
     internal bool gameShowDeathScreen;
@@ -246,8 +249,6 @@
 
     public override void OnTouchStart(TouchEventArgs e)
     {
-        keysDown[GlKeys.Up] = true;
-        keysDown[GlKeys.Right] = true;
         gameStarted = true;
         for (int i = 0; i < systemsCount; i++)
         {
@@ -255,9 +256,16 @@
         }
     }
 
+    public override void OnTouchMove(TouchEventArgs e)
+    {
+        for (int i = 0; i < systemsCount; i++)
+        {
+            systems[i].OnTouchMove(this, e);
+        }
+    }
+
     public override void OnTouchEnd(TouchEventArgs e)
     {
-        keysDown[GlKeys.Up] = false;
         for (int i = 0; i < systemsCount; i++)
         {
             systems[i].OnTouchEnd(this, e);

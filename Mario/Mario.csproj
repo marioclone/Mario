@@ -98,6 +98,7 @@
     <Compile Include="Systems\Spawn.ci.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Systems\TouchControls.ci.cs" />
     <Compile Include="TableSerializer.ci.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
