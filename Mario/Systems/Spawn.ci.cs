@@ -45,7 +45,7 @@ public class SystemSpawn : GameSystem
                 }
             }
 
-            game.levelStatic = LevelStatic(game);
+            game.scrollxMax = MaxX(game);
 
             // Player
             int spawnX = game.restartPositionX;
@@ -212,7 +212,7 @@ public class SystemSpawn : GameSystem
         }
     }
 
-    static bool LevelStatic(Game game)
+    static int MaxX(Game game)
     {
         float maxX = 0;
         for (int i = 0; i < game.entitiesCount; i++)
@@ -225,7 +225,7 @@ public class SystemSpawn : GameSystem
                 maxX = e.draw.x;
             }
         }
-        return maxX <= 256;
+        return game.platform.FloatToInt(maxX);
     }
 
     void SpawnThing(Game game, Map map, Thing t)

@@ -43,7 +43,7 @@
         backgroundColor = 0;
         level = "1-1-0";
         setting = SettingType.Overworld;
-        levelStatic = false;
+        scrollxMax = 1000 * 1000;
         time = 0;
         score = 0;
         coins = 0;
@@ -125,12 +125,12 @@
     internal int backgroundColor;
     internal string level;
     internal SettingType setting;
-    internal bool levelStatic;
     internal float time;
     internal int score;
     internal int coins;
     internal int lifesLeft;
     internal float scrollx; // in original pixels
+    internal int scrollxMax; // in original pixels. Maximum x position of any entity on map
     internal float gameScreenWidth; // in original pixels
     internal float gameScreenHeight; // in original pixels
     internal float scale;

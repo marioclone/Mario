@@ -53,14 +53,15 @@
 
         UpdateSprite(game, dt, e);
 
-        if (!game.levelStatic)
+        // Scroll
+        float scrollX = e.draw.x - 256 / 2 + 8;
+        if (scrollX >= game.scrollxMax - 256)
         {
-            // Scroll
-            float scrollX = e.draw.x - 256 / 2 + 8;
-            if (scrollX >= game.scrollx)
-            {
-                game.scrollx = scrollX;
-            }
+            scrollX = game.scrollxMax - 256;
+        }
+        if (scrollX >= game.scrollx)
+        {
+            game.scrollx = scrollX;
         }
 
         if (game.gamePaused) { return; }
@@ -84,7 +85,7 @@
         }
         game.controlsOverride.active = false;
         game.controlsOverride.Clear();
-        
+
         if (controlsLeft && (!crouchingSlide))
         {
             velX -= constAcceleration;
