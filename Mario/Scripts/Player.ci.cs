@@ -16,13 +16,15 @@
         topPipeEnter = -1;
         leftPipeEnter = -1;
 
-        constAcceleration = 50 * one / 10;
-        constGravity = 50 * one / 10;
+        constAcceleration = one * 50 / 10;
+        constAccelerationInAir = one * 30 / 10;
+        constGravity = one * 50 / 10;
         constMaxVel = 100;
         constAnimSpeed = 10;
-        constMaxJumpTime = 2 * one / 10;
+        constMaxJumpTime = one * 2 / 10;
         constJumpVelocity = -200;
         constInvulnerableTime = 3;
+        constRunningMultiplier = one * 16 / 10;
     }
 
     float t;
@@ -40,18 +42,40 @@
     float leftPipeEnter;
 
     float constAcceleration;
+    float constAccelerationInAir;
     float constGravity;
     float constMaxVel;
     float constAnimSpeed;
     float constMaxJumpTime;
     float constJumpVelocity;
     float constInvulnerableTime;
+    float constRunningMultiplier;
 
     public override void Update(Game game, int entity, float dt)
     {
         Entity e = game.entities[entity];
 
-        UpdateSprite(game, dt, e);
+        bool controlsLeft;
+        bool controlsRight;
+        bool controlsJump;
+        bool controlsFire = false;
+        if (game.controlsOverride.active)
+        {
+            controlsLeft = game.controlsOverride.left;
+            controlsRight = game.controlsOverride.right;
+            controlsJump = game.controlsOverride.jump;
+        }
+        else
+        {
+            controlsLeft = game.keysDown[GlKeys.Left];
+            controlsRight = game.keysDown[GlKeys.Right];
+            controlsJump = game.keysDown[GlKeys.Period] || game.keysDown[GlKeys.Up];
+            controlsFire = game.keysDown[GlKeys.Comma];
+        }
+        game.controlsOverride.active = false;
+        game.controlsOverride.Clear();
+
+        UpdateSprite(game, dt, e, controlsFire);
 
         // Scroll
         float scrollX = e.draw.x - 256 / 2 + 8;
@@ -68,38 +92,36 @@
 
         bool crouchingSlide = crouching && onGround;
 
-        bool controlsLeft;
-        bool controlsRight;
-        bool controlsJump;
-        if (game.controlsOverride.active)
+        float acceleration;
+        if (onGround)
         {
-            controlsLeft = game.controlsOverride.left;
-            controlsRight = game.controlsOverride.right;
-            controlsJump = game.controlsOverride.jump;
+            acceleration = constAcceleration;
         }
         else
         {
-            controlsLeft = game.keysDown[GlKeys.Left];
-            controlsRight = game.keysDown[GlKeys.Right];
-            controlsJump = game.keysDown[GlKeys.Period] || game.keysDown[GlKeys.Up];
+            acceleration = constAccelerationInAir;
         }
-        game.controlsOverride.active = false;
-        game.controlsOverride.Clear();
 
         if (controlsLeft && (!crouchingSlide))
         {
-            velX -= constAcceleration;
+            velX -= acceleration;
         }
         if (controlsRight && (!crouchingSlide))
         {
-            velX += constAcceleration;
+            velX += acceleration;
         }
 
         velX = Misc.MakeCloserToZero(velX, one / 1);
         velY = Misc.MakeCloserToZero(velY, one / 1);
 
-        if (velX > constMaxVel) { velX = constMaxVel; }
-        if (velX < -constMaxVel) { velX = -constMaxVel; }
+        float maxVel = constMaxVel;
+        if (controlsFire)
+        {
+            maxVel = maxVel * constRunningMultiplier;
+        }
+
+        if (velX > maxVel) { velX = maxVel; }
+        if (velX < -maxVel) { velX = -maxVel; }
 
         velY += constGravity;
 
@@ -328,7 +350,7 @@
         }
     }
 
-    void UpdateSprite(Game game, float dt, Entity e)
+    void UpdateSprite(Game game, float dt, Entity e, bool controlsFire)
     {
         // Sprite
         if (velX == 0)
@@ -351,7 +373,14 @@
         {
             if (!game.gamePaused)
             {
-                t += dt;
+                if (controlsFire)
+                {
+                    t += dt * constRunningMultiplier;
+                }
+                else
+                {
+                    t += dt;
+                }
             }
             float stagesCount = 4;
             int stage = game.platform.FloatToInt(t * constAnimSpeed % stagesCount);
@@ -443,6 +472,30 @@
             lookLeft = false;
         }
         e.draw.mirrorx = lookLeft;
+    }
+
+    float Max(float a, float b)
+    {
+        if (a >= b)
+        {
+            return a;
+        }
+        else
+        {
+            return b;
+        }
+    }
+
+    float Abs(float value)
+    {
+        if (value >= 0)
+        {
+            return value;
+        }
+        else
+        {
+            return -value;
+        }
     }
 }
 
