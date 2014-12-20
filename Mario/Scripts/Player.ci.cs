@@ -448,12 +448,12 @@
                 }
                 e.draw.height = 32 - 8;
             }
-            if (game.keysDown[GlKeys.Down] && growth > 0 && (!crouching))
+            if (game.keysDown[GlKeys.Down] && growth > 0 && (!crouching) && onGround)
             {
                 e.draw.y += 8;
                 crouching = true;
             }
-            if (!game.keysDown[GlKeys.Down] && crouching)
+            if ((!game.keysDown[GlKeys.Down]) && crouching)
             {
                 e.draw.y -= 9;
                 crouching = false;
