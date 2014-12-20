@@ -15,6 +15,8 @@
         crouching = false;
         topPipeEnter = -1;
         leftPipeEnter = -1;
+        fireballTime = 999;
+        controlsFirePreviously = false;
 
         constAcceleration = one * 50 / 10;
         constAccelerationInAir = one * 30 / 10;
@@ -25,6 +27,7 @@
         constJumpVelocity = -200;
         constInvulnerableTime = 3;
         constRunningMultiplier = one * 16 / 10;
+        constFireballFrequency = one * 50 / 10;
     }
 
     float t;
@@ -40,6 +43,7 @@
     bool crouching;
     float topPipeEnter;
     float leftPipeEnter;
+    float fireballTime;
 
     float constAcceleration;
     float constAccelerationInAir;
@@ -50,6 +54,7 @@
     float constJumpVelocity;
     float constInvulnerableTime;
     float constRunningMultiplier;
+    float constFireballFrequency;
 
     public override void Update(Game game, int entity, float dt)
     {
@@ -332,7 +337,30 @@
                 return;
             }
         }
+
+        fireballTime += dt;
+        if (growth == 2
+            && controlsFire
+            && (fireballTime > one / constFireballFrequency)
+            && (!controlsFirePreviously))
+        {
+            fireballTime = 0;
+            Entity fireball = new Entity();
+            fireball.draw = new EntityDraw();
+            fireball.draw.x = e.draw.x;
+            fireball.draw.y = e.draw.y;
+            fireball.draw.width = 8;
+            fireball.draw.height = 8;
+            fireball.draw.z = 3;
+            ScriptFireball script = new ScriptFireball();
+            script.dirLeft = lookLeft;
+            fireball.scripts[fireball.scriptsCount++] = script;
+            game.AddEntity(fireball);
+            game.AudioPlay("Fireball");
+        }
+        controlsFirePreviously = controlsFire;
     }
+    bool controlsFirePreviously;
 
     float DeathAnimation(float time)
     {
@@ -471,7 +499,14 @@
         {
             lookLeft = false;
         }
-        e.draw.mirrorx = lookLeft;
+        if (lookLeft)
+        {
+            e.draw.mirror = MirrorType.MirrorX;
+        }
+        else
+        {
+            e.draw.mirror = MirrorType.None;
+        }
     }
 
     float Max(float a, float b)

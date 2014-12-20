@@ -28,6 +28,7 @@
     // Touched from any side by enemy
     // Example: Player dies when touched by enemies
     internal EntityAttackableTouch attackableTouch;
+    internal EntityAttackableFireball attackableFireball;
     // Touched by mushroom
     internal EntityGrowable growable;
 
@@ -65,6 +66,13 @@
             delete attackableTouch;
 #endif
         }
+        if (attackableFireball != null)
+        {
+            attackableFireball.Delete();
+#if CITO
+            delete attackableFireball;
+#endif
+        }
         if (growable != null)
         {
             growable.Delete();
@@ -86,6 +94,20 @@
 #if CITO
         delete scripts;
 #endif
+    }
+}
+
+public class EntityAttackableFireball
+{
+    public EntityAttackableFireball()
+    {
+        attacked = false;
+    }
+
+    internal bool attacked;
+
+    public void Delete()
+    {
     }
 }
 
@@ -161,7 +183,7 @@ public class EntityDraw
         height = 16;
         sprite = null;
         z = 0;
-        mirrorx = false;
+        mirror = MirrorType.None;
         xOffset = 0;
         yOffset = 0;
         absoluteScreenPosition = false;
@@ -171,7 +193,7 @@ public class EntityDraw
         
         loadedSprite = -1;
         loadedSpriteName = null;
-        loadedMirrorX = false;
+        loadedMirror = MirrorType.None;
     }
     internal float x;
     internal float y;
@@ -179,7 +201,7 @@ public class EntityDraw
     internal int height;
     internal string sprite;
     internal int z;
-    internal bool mirrorx;
+    internal MirrorType mirror;
     internal float xOffset;
     internal float yOffset;
     internal bool absoluteScreenPosition;
@@ -189,11 +211,18 @@ public class EntityDraw
 
     internal int loadedSprite;
     internal string loadedSpriteName;
-    internal bool loadedMirrorX;
+    internal MirrorType loadedMirror;
 
     public void Delete()
     {
     }
+}
+
+public enum MirrorType
+{
+    None,
+    MirrorX,
+    MirrorY
 }
 
 public class EntityCollider

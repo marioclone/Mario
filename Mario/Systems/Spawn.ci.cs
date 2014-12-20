@@ -444,6 +444,7 @@ public class SystemSpawn : GameSystem
             Entity e = Spawn(game, "CharactersGoombaNormal", t.x, t.y);
             e.attackablePush = new EntityAttackablePush();
             e.attackablePush.pushSide = PushSide.TopJumpOnEnemy;
+            e.attackableFireball = new EntityAttackableFireball();
             e.scripts[e.scriptsCount++] = new ScriptGoomba();
             e.scripts[e.scriptsCount++] = new ScriptMoving();
         }

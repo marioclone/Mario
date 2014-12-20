@@ -4,12 +4,14 @@
     {
         t = 0;
         dead = false;
+        deadFromFireball = false;
         constAnimSpeed = 4;
         constDeadTime = one / 2;
     }
 
     float t;
     bool dead;
+    bool deadFromFireball;
     float constAnimSpeed;
     float constDeadTime;
 
@@ -18,7 +20,7 @@
         Entity e = game.entities[entity];
         if (game.gamePaused) { return; }
         if (!IsActiveHelper.IsActive(game, e.draw.x)) { return; }
-        
+
         t += dt;
         // If player jumps on goomba, the goomba dies
         if (e.attackablePush != null)
@@ -39,6 +41,32 @@
                 t = 0;
                 game.AudioPlay("Stomp");
             }
+        }
+
+        // If touched by fireball, the goomba dies
+        if (e.attackableFireball != null)
+        {
+            if (e.attackableFireball.attacked
+                && (!dead))
+            {
+                e.draw.mirror = MirrorType.MirrorY;
+                if (e.collider != null)
+                {
+#if CITO
+                    delete e.collider;
+#endif
+                    e.collider = null;
+                }
+                dead = true;
+                deadFromFireball = true;
+                t = 0;
+                game.AudioPlay("Shot");
+            }
+        }
+
+        if (deadFromFireball)
+        {
+            e.draw.y += dt * 100;
         }
 
         // Remove dead goomba
@@ -64,7 +92,14 @@
             }
 
             // Walk animation
-            e.draw.mirrorx = (game.platform.FloatToInt(t * constAnimSpeed) % 2) == 1;
+            if ((game.platform.FloatToInt(t * constAnimSpeed) % 2) == 1)
+            {
+                e.draw.mirror = MirrorType.MirrorX;
+            }
+            else
+            {
+                e.draw.mirror = MirrorType.None;
+            }
         }
     }
 }

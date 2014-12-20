@@ -6,13 +6,15 @@ public class SystemDraw : GameSystem
     {
         spritesOrig = new DictionaryStringBitmap();
         sprites = new DictionaryStringBitmap();
-        spritesMirrored = new DictionaryStringBitmap();
+        spritesMirrorX = new DictionaryStringBitmap();
+        spritesMirrorY = new DictionaryStringBitmap();
         oldScale = 2;
     }
 
     DictionaryStringBitmap spritesOrig;
     DictionaryStringBitmap sprites;
-    DictionaryStringBitmap spritesMirrored;
+    DictionaryStringBitmap spritesMirrorX;
+    DictionaryStringBitmap spritesMirrorY;
 
     float oldScale;
     public override void Render(Game game, float dt)
@@ -81,9 +83,13 @@ public class SystemDraw : GameSystem
                             continue;
                         }
                         DictionaryStringBitmap d;
-                        if (e.draw.mirrorx)
+                        if (e.draw.mirror == MirrorType.MirrorX)
                         {
-                            d = spritesMirrored;
+                            d = spritesMirrorX;
+                        }
+                        else if (e.draw.mirror == MirrorType.MirrorY)
+                        {
+                            d = spritesMirrorY;
                         }
                         else
                         {
@@ -117,12 +123,19 @@ public class SystemDraw : GameSystem
             sprites.keys[i] = null;
             sprites.values[i] = null;
 
-            if (spritesMirrored.keys[i] != null)
+            if (spritesMirrorX.keys[i] != null)
             {
-                platform.BitmapDelete(spritesMirrored.values[i]);
+                platform.BitmapDelete(spritesMirrorX.values[i]);
             }
-            spritesMirrored.keys[i] = null;
-            spritesMirrored.values[i] = null;
+            spritesMirrorX.keys[i] = null;
+            spritesMirrorX.values[i] = null;
+
+            if (spritesMirrorY.keys[i] != null)
+            {
+                platform.BitmapDelete(spritesMirrorY.values[i]);
+            }
+            spritesMirrorY.keys[i] = null;
+            spritesMirrorY.values[i] = null;
         }
         for (int i = 0; i < game.entitiesCount; i++)
         {
@@ -131,7 +144,7 @@ public class SystemDraw : GameSystem
             if (e.draw == null) { continue; }
             e.draw.loadedSprite = -1;
             e.draw.loadedSpriteName = null;
-            e.draw.loadedMirrorX = false;
+            e.draw.loadedMirror = MirrorType.None;
         }
     }
 
@@ -196,7 +209,7 @@ public class SystemDraw : GameSystem
     {
         if (draw.loadedSprite != -1
             && draw.loadedSpriteName == draw.sprite
-            && draw.loadedMirrorX == draw.mirrorx)
+            && draw.loadedMirror == draw.mirror)
         {
             return;
         }
@@ -214,9 +227,13 @@ public class SystemDraw : GameSystem
         }
 
         DictionaryStringBitmap d;
-        if (draw.mirrorx)
+        if (draw.mirror == MirrorType.MirrorX)
         {
-            d = spritesMirrored;
+            d = spritesMirrorX;
+        }
+        else if (draw.mirror == MirrorType.MirrorY)
+        {
+            d = spritesMirrorY;
         }
         else
         {
@@ -228,9 +245,15 @@ public class SystemDraw : GameSystem
             BitmapCi bmp = origSprite;
 
             BitmapCi bmp2 = ScaleBitmap(game.platform, bmp, scale);
-            if (draw.mirrorx)
+            if (draw.mirror == MirrorType.MirrorX)
             {
                 BitmapCi bmp3 = MirrorXBitmap(game.platform, bmp2);
+                game.platform.BitmapDelete(bmp2);
+                bmp2 = bmp3;
+            }
+            else if (draw.mirror == MirrorType.MirrorY)
+            {
+                BitmapCi bmp3 = MirrorYBitmap(game.platform, bmp2);
                 game.platform.BitmapDelete(bmp2);
                 bmp2 = bmp3;
             }
@@ -240,7 +263,7 @@ public class SystemDraw : GameSystem
         }
         draw.loadedSprite = d.GetId(draw.sprite);
         draw.loadedSpriteName = draw.sprite;
-        draw.loadedMirrorX = draw.mirrorx;
+        draw.loadedMirror = draw.mirror;
     }
 
     BitmapCi ScaleBitmap(GamePlatform platform, BitmapCi a, float scale)
@@ -295,6 +318,26 @@ public class SystemDraw : GameSystem
             for (int y = 0; y < height; y++)
             {
                 bPixels[x + y * width] = aPixels[(width - x - 1) + y * width];
+            }
+        }
+        platform.BitmapSetPixelsArgb(b, bPixels);
+        return b;
+    }
+
+    BitmapCi MirrorYBitmap(GamePlatform platform, BitmapCi a)
+    {
+        int width = platform.FloatToInt(platform.BitmapGetWidth(a));
+        int height = platform.FloatToInt(platform.BitmapGetHeight(a));
+
+        int[] aPixels = new int[width * height];
+        platform.BitmapGetPixelsArgb(a, aPixels);
+        BitmapCi b = platform.BitmapCreate(width, height);
+        int[] bPixels = new int[width * height];
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                bPixels[x + y * width] = aPixels[x + (height - y - 1) * width];
             }
         }
         platform.BitmapSetPixelsArgb(b, bPixels);
