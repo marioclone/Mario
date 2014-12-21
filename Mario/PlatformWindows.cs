@@ -371,6 +371,11 @@ namespace Mario
         {
             progress.value = 1;
         }
+
+        public override bool AudioFinished(AudioCi audio)
+        {
+            return false;
+        }
     }
 
     public class BitmapCiCs : BitmapCi

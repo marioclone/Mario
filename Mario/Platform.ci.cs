@@ -35,6 +35,7 @@
     public abstract AudioCi AudioCreate(byte[] data, int dataLength);
     public abstract void AudioPlay(AudioCi audio);
     public abstract void AudioPause(AudioCi audio);
+    public abstract bool AudioFinished(AudioCi audio);
     public abstract void LoadAssetsAsyc(AssetList list, FloatRef progress);
 }
 

@@ -48,6 +48,15 @@
             game.platform.AudioPlay(currentMusicAudio);
         }
 
+        // Loop music
+        if (currentMusic != null)
+        {
+            if (game.platform.AudioFinished(currentMusicAudio))
+            {
+                game.platform.AudioPlay(currentMusicAudio);
+            }
+        }
+
         // Play sounds
         for (int i = 0; i < game.audio.audioPlaySoundsCount; i++)
         {

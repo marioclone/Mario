@@ -267,6 +267,7 @@ if(!audio.buffer){ audio.play++; return;}
 	{
 		audio.startedAt = Date.now() - audio.pausedAt;
 		audio.src.start(0, audio.pausedAt / 1000);
+		audio.pausedAt = null;
 	}
 	else
 	{
@@ -279,6 +280,11 @@ PlatformJs.prototype.audioPause = function(audio) {
 if(!audio.src){audio.stop++;return;}
 	audio.src.stop();
 	audio.pausedAt = Date.now() - audio.startedAt;
+}
+
+PlatformJs.prototype.audioFinished = function(audio) {
+if(!audio.src){return false;}
+	return (Date.now() - audio.startedAt) > audio.buffer.duration * 1000;
 }
 
 // Assets
