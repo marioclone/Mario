@@ -32,10 +32,15 @@
             e.draw.yOffset = 0;
             if (!done)
             {
-                ScriptMoving moving = new ScriptMoving();
-                moving.direction = 1;
-                e.scripts[e.scriptsCount++] = moving;
                 done = true;
+                if (mushroomType == MushroomType.Mushroom
+                    || mushroomType == MushroomType.Mushroom1Up
+                    || mushroomType == MushroomType.MushroomDeathly)
+                {
+                    ScriptMoving moving = new ScriptMoving();
+                    moving.direction = 1;
+                    e.scripts[e.scriptsCount++] = moving;
+                }
             }
         }
 
@@ -61,5 +66,6 @@ public enum MushroomType
 {
     Mushroom,
     Mushroom1Up,
-    MushroomDeathly
+    MushroomDeathly,
+    FireFlower
 }

@@ -149,7 +149,8 @@
     internal Controls controlsOverride;
     internal bool controlsOverrideActive;
     internal float playerx; // for mouse controls
-
+    internal int playerGrowth; // for FireFlower
+    
     internal AudioControl audio;
 
     const int constFps = 120;

@@ -76,6 +76,7 @@
         game.controlsOverrideActive = false;
         game.controlsOverride.Clear();
         game.playerx = e.draw.x;
+        game.playerGrowth = growth;
 
         UpdateSprite(game, dt, e, controls);
 

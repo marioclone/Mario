@@ -5,6 +5,7 @@
         t = 0;
         constAnimSpeed = 1;
         constAnimCount = 0;
+        constGlobalTime = false;
         deleteAfter = false;
     }
 
@@ -12,6 +13,7 @@
 
     internal float constAnimSpeed;
     internal int constAnimCount;
+    internal bool constGlobalTime;
     internal string[] constAnims;
     internal bool deleteAfter;
 
@@ -23,7 +25,16 @@
         {
             return;
         }
-        int stage = (game.platform.FloatToInt(t * constAnimSpeed) % constAnimCount);
+        float time;
+        if (constGlobalTime)
+        {
+            time = game.t;
+        }
+        else
+        {
+            time = t;
+        }
+        int stage = (game.platform.FloatToInt(time * constAnimSpeed) % constAnimCount);
         e.draw.sprite = constAnims[stage];
         if (deleteAfter)
         {

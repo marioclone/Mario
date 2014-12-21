@@ -569,6 +569,22 @@ public class SettingApply
             {
                 sprite = "SolidsBlockUnderworldUsed";
             }
+            if (sprite == "CharactersFireFlowerNormalNormal")
+            {
+                sprite = "CharactersFireFlowerUnderworldNormal";
+            }
+            if (sprite == "CharactersFireFlowerNormalTwo")
+            {
+                sprite = "CharactersFireFlowerUnderworldTwo";
+            }
+            if (sprite == "CharactersFireFlowerNormalThree")
+            {
+                sprite = "CharactersFireFlowerUnderworldThree";
+            }
+            if (sprite == "CharactersFireFlowerNormalFour")
+            {
+                sprite = "CharactersFireFlowerUnderworldFour";
+            }
         }
         return sprite;
     }
@@ -600,14 +616,29 @@ public class ActionSpawnThing
             e.draw.x = spawnX;
             e.draw.y = spawnY;
             ScriptMushroom script = new ScriptMushroom();
-            e.scripts[e.scriptsCount++] = new ScriptMushroom();
-            game.AddEntity(e);
-            game.AudioPlay("MushroomAppear");
 
             if (thingType == ThingType.Mushroom)
             {
-                script.mushroomType = MushroomType.Mushroom;
-                e.draw.sprite = "CharactersMushroom";
+                if (game.playerGrowth == 0)
+                {
+                    script.mushroomType = MushroomType.Mushroom;
+                    e.draw.sprite = "CharactersMushroom";
+                }
+                else
+                {
+                    script.mushroomType = MushroomType.FireFlower;
+                    e.draw.sprite = "CharactersFireFlowerNormalNormal";
+                    ScriptAnimation animation = new ScriptAnimation();
+                    animation.constAnimCount = 4;
+                    animation.constAnimSpeed = 20;
+                    animation.constAnims = new string[4];
+                    animation.constAnims[0]= "CharactersFireFlowerNormalNormal";
+                    animation.constAnims[1]= "CharactersFireFlowerNormalTwo.png";
+                    animation.constAnims[2]= "CharactersFireFlowerNormalThree";
+                    animation.constAnims[3]= "CharactersFireFlowerNormalFour";
+                    animation.constGlobalTime = true;
+                    e.scripts[e.scriptsCount++] = animation;
+                }
             }
             if (thingType == ThingType.Mushroom1Up)
             {
@@ -619,6 +650,10 @@ public class ActionSpawnThing
                 script.mushroomType = MushroomType.MushroomDeathly;
                 e.draw.sprite = "CharactersMushroomDeathly";
             }
+
+            e.scripts[e.scriptsCount++] = script;
+            game.AddEntity(e);
+            game.AudioPlay("MushroomAppear");
         }
         if (thingType == ThingType.CoinAnimation)
         {
