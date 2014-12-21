@@ -632,10 +632,10 @@ public class ActionSpawnThing
                     animation.constAnimCount = 4;
                     animation.constAnimSpeed = 20;
                     animation.constAnims = new string[4];
-                    animation.constAnims[0]= "CharactersFireFlowerNormalNormal";
-                    animation.constAnims[1]= "CharactersFireFlowerNormalTwo.png";
-                    animation.constAnims[2]= "CharactersFireFlowerNormalThree";
-                    animation.constAnims[3]= "CharactersFireFlowerNormalFour";
+                    animation.constAnims[0] = "CharactersFireFlowerNormalNormal";
+                    animation.constAnims[1] = "CharactersFireFlowerNormalTwo";
+                    animation.constAnims[2] = "CharactersFireFlowerNormalThree";
+                    animation.constAnims[3] = "CharactersFireFlowerNormalFour";
                     animation.constGlobalTime = true;
                     e.scripts[e.scriptsCount++] = animation;
                 }
@@ -664,13 +664,76 @@ public class ActionSpawnThing
             e.draw.y = spawnY;
             e.scripts[e.scriptsCount++] = new ScriptCoinInQuestionBlock();
             game.AddEntity(e);
-
-            game.score += Game.ScoreCoin;
+            
             game.coins++;
             game.AudioPlay("Coin");
         }
         if (thingType == ThingType.Score)
         {
+        }
+    }
+}
+
+public class Spawn_
+{
+    public const int Score1Up = 0;
+    public static void Score(Game game, float x, float y, int score)
+    {
+        game.score += score;
+
+        Entity e = new Entity();
+        e.draw = new EntityDraw();
+        e.draw.x = x;
+        e.draw.y = y;
+        e.draw.z = 3;
+        ScriptScore script = new ScriptScore();
+        script.score = score;
+        e.scripts[e.scriptsCount++] = script;
+        game.AddEntity(e);
+
+        if (score == 100)
+        {
+            e.draw.sprite = "SceneryText100";
+        }
+        if (score == 200)
+        {
+            e.draw.sprite = "SceneryText200";
+        }
+        if (score == 400)
+        {
+            e.draw.sprite = "SceneryText400";
+        }
+        if (score == 500)
+        {
+            e.draw.sprite = "SceneryText500";
+        }
+        if (score == 800)
+        {
+            e.draw.sprite = "SceneryText800";
+        }
+        if (score == 1000)
+        {
+            e.draw.sprite = "SceneryText1000";
+        }
+        if (score == 2000)
+        {
+            e.draw.sprite = "SceneryText2000";
+        }
+        if (score == 4000)
+        {
+            e.draw.sprite = "SceneryText4000";
+        }
+        if (score == 5000)
+        {
+            e.draw.sprite = "SceneryText5000";
+        }
+        if (score == 8000)
+        {
+            e.draw.sprite = "SceneryText8000";
+        }
+        if (score == Score1Up)
+        {
+            e.draw.sprite = "SceneryText1Up";
         }
     }
 }

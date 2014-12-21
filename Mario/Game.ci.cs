@@ -374,7 +374,9 @@
         return 0;
     }
 
+    public const int ScoreGoomba = 100;
     public const int ScoreCoin = 200;
+    public const int ScoreMushroom = 1000;
 }
 
 public class AudioControl

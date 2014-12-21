@@ -27,6 +27,7 @@
         e.draw.yOffset = -Anim(t * coinSpeed) * constCoinMaxHeight * 16;
         if (t > one / coinSpeed)
         {
+            Spawn_.Score(game, e.draw.x, e.draw.y, Game.ScoreCoin);
             game.DeleteEntity(entity);
         }
     }

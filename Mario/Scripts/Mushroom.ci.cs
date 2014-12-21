@@ -11,7 +11,6 @@
     float t;
     bool done;
     float constGrowTime;
-    const int constScoreMushroom = 1000;
     internal MushroomType mushroomType;
 
     public override void Update(Game game, int entity, float dt)
@@ -54,7 +53,15 @@
                 e2.draw.x, e2.draw.y, e2.draw.width, e2.draw.height))
             {
                 e2.growable.grow = true;
-                game.score += constScoreMushroom;
+                if (mushroomType == MushroomType.Mushroom
+                    || mushroomType == MushroomType.FireFlower)
+                {
+                    Spawn_.Score(game, e.draw.x, e.draw.y, Game.ScoreMushroom);
+                }
+                else if (mushroomType == MushroomType.Mushroom1Up)
+                {
+                    Spawn_.Score(game, e.draw.x, e.draw.y, Spawn_.Score1Up);
+                }
                 game.DeleteEntity(entity);
                 return;
             }

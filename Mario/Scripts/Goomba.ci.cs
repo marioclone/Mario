@@ -40,6 +40,7 @@
                 dead = true;
                 t = 0;
                 game.AudioPlay("Stomp");
+                Spawn_.Score(game, e.draw.x, e.draw.y, Game.ScoreGoomba);
             }
         }
 
@@ -61,6 +62,7 @@
                 deadFromFireball = true;
                 t = 0;
                 game.AudioPlay("Shot");
+                Spawn_.Score(game, e.draw.x, e.draw.y, Game.ScoreGoomba);
             }
         }
 
