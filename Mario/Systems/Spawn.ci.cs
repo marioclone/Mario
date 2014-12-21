@@ -585,6 +585,22 @@ public class SettingApply
             {
                 sprite = "CharactersFireFlowerUnderworldFour";
             }
+            if (sprite == "CharactersBrickShard1")
+            {
+                sprite = "CharactersBrickShardUnderworld1";
+            }
+            if (sprite == "CharactersBrickShard2")
+            {
+                sprite = "CharactersBrickShardUnderworld2";
+            }
+            if (sprite == "CharactersBrickShard3")
+            {
+                sprite = "CharactersBrickShardUnderworld3";
+            }
+            if (sprite == "CharactersBrickShard4")
+            {
+                sprite = "CharactersBrickShardUnderworld4";
+            }
         }
         return sprite;
     }
