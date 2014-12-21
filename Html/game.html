@@ -384,10 +384,10 @@ progress.value = 1;
 	}
 
 	function handleMouseWheel(event) {
-		var args = new MouseEventArgs();
-		args.x = event.pageX;
-		args.y = event.pageY;
-		windowEventHandler.onMouseMove(args);
+		var args = new MouseWheelEventArgs();
+		args.delta = event.wheelDelta;
+		args.deltaPrecise = event.wheelDelta;
+		windowEventHandler.onMouseWheel(args);
 	}
 	
 	
@@ -518,6 +518,7 @@ function gameStart()
 	document.onkeypress = handleKeyPress;
 	document.onmousedown = handleMouseDown;
 	document.onmouseup = handleMouseUp;
+	document.onmousewheel = handleMouseWheel;
 	document.addEventListener("touchstart", handleTouchStart, false);
 	document.addEventListener("touchmove", handleTouchMove, false);
 	document.addEventListener("touchend", handleTouchEnd, false);
