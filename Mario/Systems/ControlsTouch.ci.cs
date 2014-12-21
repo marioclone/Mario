@@ -1,6 +1,6 @@
-﻿public class SystemTouchControls : GameSystem
+﻿public class SystemControlsTouch : GameSystem
 {
-    public SystemTouchControls()
+    public SystemControlsTouch()
     {
         enabled = false;
         loaded = false;
@@ -88,6 +88,7 @@
     public override void OnTouchStart(Game game, TouchEventArgs e)
     {
         enabled = true;
+        game.gameStarted = true;
         StartTouch(game, e);
     }
 
@@ -95,27 +96,27 @@
     {
         if (ButtonPressed(game, e.GetX(), e.GetY(), left))
         {
-            game.keysDown[GlKeys.Left] = true;
+            game.controls.left = true;
             touchLeft = e.GetId();
         }
         if (ButtonPressed(game, e.GetX(), e.GetY(), right))
         {
-            game.keysDown[GlKeys.Right] = true;
+            game.controls.right = true;
             touchRight = e.GetId();
         }
         if (ButtonPressed(game, e.GetX(), e.GetY(), jump))
         {
-            game.keysDown[GlKeys.Up] = true;
+            game.controls.jump = true;
             touchJump = e.GetId();
         }
         if (ButtonPressed(game, e.GetX(), e.GetY(), fire))
         {
-            game.keysDown[GlKeys.Comma] = true;
+            game.controls.fire = true;
             touchFire = e.GetId();
         }
         if (ButtonPressed(game, e.GetX(), e.GetY(), down))
         {
-            game.keysDown[GlKeys.Down] = true;
+            game.controls.down = true;
             touchDown = e.GetId();
         }
     }
@@ -141,27 +142,27 @@
     {
         if (e.GetId() == touchLeft)
         {
-            game.keysDown[GlKeys.Left] = false;
+            game.controls.left = false;
             touchLeft = -1;
         }
         if (e.GetId() == touchRight)
         {
-            game.keysDown[GlKeys.Right] = false;
+            game.controls.right = false;
             touchRight = -1;
         }
         if (e.GetId() == touchJump)
         {
-            game.keysDown[GlKeys.Up] = false;
+            game.controls.jump = false;
             touchJump = -1;
         }
         if (e.GetId() == touchFire)
         {
-            game.keysDown[GlKeys.Comma] = false;
+            game.controls.fire = false;
             touchFire = -1;
         }
         if (e.GetId() == touchDown)
         {
-            game.keysDown[GlKeys.Down] = false;
+            game.controls.down = false;
             touchDown = -1;
         }
     }

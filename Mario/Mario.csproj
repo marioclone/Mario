@@ -77,6 +77,8 @@
     <Compile Include="Scripts\PlatformGenerator.ci.cs" />
     <Compile Include="Scripts\Text.ci.cs" />
     <Compile Include="Systems\Audio.ci.cs" />
+    <Compile Include="Systems\ControlsKeyboard.ci.cs" />
+    <Compile Include="Systems\ControlsMouse.ci.cs" />
     <Compile Include="Systems\Draw.ci.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -100,7 +102,7 @@
     <Compile Include="Systems\Spawn.ci.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Systems\TouchControls.ci.cs" />
+    <Compile Include="Systems\ControlsTouch.ci.cs" />
     <Compile Include="TableSerializer.ci.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

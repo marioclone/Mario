@@ -5,7 +5,7 @@
         if (game.level == "1-2-0")
         {
             game.gameStarted = true;
-            game.controlsOverride.active = true;
+            game.controlsOverrideActive = true;
             game.controlsOverride.right = true;
         }
     }

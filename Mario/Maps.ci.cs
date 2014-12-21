@@ -62,7 +62,6 @@ public class Map
         patterns = new Pattern[1024];
         levels = new Level[128];
     }
-    internal string name;
     internal Thing[] things;
     internal int thingsCount;
     internal Pattern[] patterns;

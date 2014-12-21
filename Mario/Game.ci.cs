@@ -16,7 +16,9 @@
             systems[systemsCount++] = new SystemAudio();
             systems[systemsCount++] = new DrawDeathScreen();
             systems[systemsCount++] = new SystemLevelScript();
-            systems[systemsCount++] = new SystemTouchControls();
+            systems[systemsCount++] = new SystemControlsTouch();
+            systems[systemsCount++] = new SystemControlsMouse();
+            systems[systemsCount++] = new SystemControlsKeyboard();
         }
 
         {
@@ -56,7 +58,9 @@
         restart = false;
         restartPositionX = 0;
         restartPositionY = 0;
-        controlsOverride = new ControlsOverride();
+        controls = new Controls();
+        controlsOverride = new Controls();
+        controlsOverrideActive = false;
 
         audio = new AudioControl();
 
@@ -141,7 +145,10 @@
     internal bool restart;
     internal int restartPositionX;
     internal int restartPositionY;
-    internal ControlsOverride controlsOverride;
+    internal Controls controls;
+    internal Controls controlsOverride;
+    internal bool controlsOverrideActive;
+    internal float playerx; // for mouse controls
 
     internal AudioControl audio;
 
@@ -209,17 +216,6 @@
 
     public override void OnKeyDown(KeyEventArgs e)
     {
-        if (e.GetKeyCode() < 0 || e.GetKeyCode() > 255)
-        {
-            return;
-        }
-        keysDown[e.GetKeyCode()] = true;
-        gameStarted = true;
-        if (keysDown[GlKeys.Enter])
-        {
-            gamePaused = !gamePaused;
-            AudioPlay("Pause");
-        }
         for (int i = 0; i < systemsCount; i++)
         {
             systems[i].OnKeyDown(this, e);
@@ -236,11 +232,6 @@
 
     public override void OnKeyUp(KeyEventArgs e)
     {
-        if (e.GetKeyCode() < 0 || e.GetKeyCode() > 255)
-        {
-            return;
-        }
-        keysDown[e.GetKeyCode()] = false;
         for (int i = 0; i < systemsCount; i++)
         {
             systems[i].OnKeyUp(this, e);
@@ -249,7 +240,6 @@
 
     public override void OnTouchStart(TouchEventArgs e)
     {
-        gameStarted = true;
         for (int i = 0; i < systemsCount; i++)
         {
             systems[i].OnTouchStart(this, e);
@@ -274,41 +264,31 @@
 
     public override void OnMouseDown(MouseEventArgs e)
     {
-        if (e.GetButton() == MouseButtonEnum.Right)
-        {
-            keysDown[GlKeys.Up] = true;
-        }
-        if (e.GetButton() == MouseButtonEnum.Left)
-        {
-            if (e.GetX() > one * platform.GetCanvasWidth() * 50 / 256)
-            {
-                keysDown[GlKeys.Left] = false;
-                keysDown[GlKeys.Right] = true;
-            }
-            else
-            {
-                keysDown[GlKeys.Left] = true;
-                keysDown[GlKeys.Right] = false;
-            }
-        }
-        gameStarted = true;
         for (int i = 0; i < systemsCount; i++)
         {
             systems[i].OnMouseDown(this, e);
         }
     }
 
+
+    public override void OnMouseMove(MouseEventArgs e)
+    {
+        for (int i = 0; i < systemsCount; i++)
+        {
+            systems[i].OnMouseMove(this, e);
+        }
+    }
+
+    public override void OnMouseWheel(MouseWheelEventArgs e)
+    {
+        for (int i = 0; i < systemsCount; i++)
+        {
+            systems[i].OnMouseWheel(this, e);
+        }
+    }
+
     public override void OnMouseUp(MouseEventArgs e)
     {
-        if (e.GetButton() == MouseButtonEnum.Right)
-        {
-            keysDown[GlKeys.Up] = false;
-        }
-        if (e.GetButton() == MouseButtonEnum.Left)
-        {
-            keysDown[GlKeys.Left] = false;
-            keysDown[GlKeys.Right] = false;
-        }
         for (int i = 0; i < systemsCount; i++)
         {
             systems[i].OnMouseUp(this, e);

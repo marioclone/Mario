@@ -51,7 +51,7 @@ public class SystemDraw : GameSystem
         if (canvasHeight > canvasWidth)
         {
             // Leave space for touch buttons
-            addY -= game.platform.FloatToInt(SystemTouchControls.TouchButtonsHeight * scale);
+            addY -= game.platform.FloatToInt(SystemControlsTouch.TouchButtonsHeight * scale);
         }
         game.addY = addY;
         DrawBackground(game, scale, addY);

@@ -18,6 +18,8 @@
         fireballTime = 999;
         controlsFirePreviously = false;
 
+        controlsTemp = new Controls();
+
         constAcceleration = one * 50 / 10;
         constAccelerationInAir = one * 30 / 10;
         constGravity = one * 50 / 10;
@@ -45,6 +47,8 @@
     float leftPipeEnter;
     float fireballTime;
 
+    Controls controlsTemp;
+
     float constAcceleration;
     float constAccelerationInAir;
     float constGravity;
@@ -60,27 +64,20 @@
     {
         Entity e = game.entities[entity];
 
-        bool controlsLeft;
-        bool controlsRight;
-        bool controlsJump;
-        bool controlsFire = false;
-        if (game.controlsOverride.active)
+        Controls controls = controlsTemp;
+        if (game.controlsOverrideActive)
         {
-            controlsLeft = game.controlsOverride.left;
-            controlsRight = game.controlsOverride.right;
-            controlsJump = game.controlsOverride.jump;
+            controls.CopyFrom(game.controlsOverride);
         }
         else
         {
-            controlsLeft = game.keysDown[GlKeys.Left];
-            controlsRight = game.keysDown[GlKeys.Right];
-            controlsJump = game.keysDown[GlKeys.Period] || game.keysDown[GlKeys.Up];
-            controlsFire = game.keysDown[GlKeys.Comma];
+            controls.CopyFrom(game.controls);
         }
-        game.controlsOverride.active = false;
+        game.controlsOverrideActive = false;
         game.controlsOverride.Clear();
+        game.playerx = e.draw.x;
 
-        UpdateSprite(game, dt, e, controlsFire);
+        UpdateSprite(game, dt, e, controls);
 
         // Scroll
         float scrollX = e.draw.x - 256 / 2 + 8;
@@ -107,11 +104,11 @@
             acceleration = constAccelerationInAir;
         }
 
-        if (controlsLeft && (!crouchingSlide))
+        if (controls.left && (!crouchingSlide))
         {
             velX -= acceleration;
         }
-        if (controlsRight && (!crouchingSlide))
+        if (controls.right && (!crouchingSlide))
         {
             velX += acceleration;
         }
@@ -120,7 +117,7 @@
         velY = Misc.MakeCloserToZero(velY, one / 1);
 
         float maxVel = constMaxVel;
-        if (controlsFire)
+        if (controls.fire)
         {
             maxVel = maxVel * constRunningMultiplier;
         }
@@ -132,7 +129,7 @@
 
         // Jump
         {
-            if (controlsJump && onGround && (!dead))
+            if (controls.jump && onGround && (!dead))
             {
                 jumptime = 0;
                 if (growth == 0)
@@ -145,12 +142,12 @@
                 }
             }
 
-            if (controlsJump && (onGround || (jumptime >= 0 && jumptime < constMaxJumpTime)))
+            if (controls.jump && (onGround || (jumptime >= 0 && jumptime < constMaxJumpTime)))
             {
                 velY = constJumpVelocity;
             }
 
-            if (!controlsJump)
+            if (!controls.jump)
             {
                 jumptime = -1;
             }
@@ -188,9 +185,7 @@
         float newx = e.draw.x + velX * dt;
         float newy = e.draw.y + velY * dt;
 
-        bool keyDownPressed = game.keysDown[GlKeys.Down];
-
-        PushSide side = AttackHelper.Attack(game, e.draw.x, e.draw.y, newx, newy, e.draw.width, e.draw.height, growth > 0, keyDownPressed);
+        PushSide side = AttackHelper.Attack(game, e.draw.x, e.draw.y, newx, newy, e.draw.width, e.draw.height, growth > 0, controls.down);
         if (side == PushSide.TopJumpOnEnemy)
         {
             // Bump
@@ -338,9 +333,10 @@
             }
         }
 
+        // Fire
         fireballTime += dt;
         if (growth == 2
-            && controlsFire
+            && controls.fire
             && (fireballTime > one / constFireballFrequency)
             && (!controlsFirePreviously))
         {
@@ -358,7 +354,7 @@
             game.AddEntity(fireball);
             game.AudioPlay("Fireball");
         }
-        controlsFirePreviously = controlsFire;
+        controlsFirePreviously = controls.fire;
     }
     bool controlsFirePreviously;
 
@@ -378,7 +374,7 @@
         }
     }
 
-    void UpdateSprite(Game game, float dt, Entity e, bool controlsFire)
+    void UpdateSprite(Game game, float dt, Entity e, Controls controls)
     {
         // Sprite
         if (velX == 0)
@@ -401,7 +397,7 @@
         {
             if (!game.gamePaused)
             {
-                if (controlsFire)
+                if (controls.fire)
                 {
                     t += dt * constRunningMultiplier;
                 }
@@ -476,12 +472,12 @@
                 }
                 e.draw.height = 32 - 8;
             }
-            if (game.keysDown[GlKeys.Down] && growth > 0 && (!crouching) && onGround)
+            if (controls.down && growth > 0 && (!crouching) && onGround)
             {
                 e.draw.y += 8;
                 crouching = true;
             }
-            if ((!game.keysDown[GlKeys.Down]) && crouching)
+            if ((!controls.down) && crouching)
             {
                 e.draw.y -= 9;
                 crouching = false;
@@ -612,17 +608,34 @@ public class AttackHelper
     }
 }
 
-public class ControlsOverride
+public class Controls
 {
-    internal bool active;
+    public Controls()
+    {
+        Clear();
+    }
+
     internal bool left;
     internal bool right;
     internal bool jump;
+    internal bool fire;
+    internal bool down;
 
     internal void Clear()
     {
         left = false;
         right = false;
         jump = false;
+        fire = false;
+        down = false;
+    }
+
+    internal void CopyFrom(Controls other)
+    {
+        left = other.left;
+        right = other.right;
+        jump = other.jump;
+        fire = other.fire;
+        down = other.down;
     }
 }
