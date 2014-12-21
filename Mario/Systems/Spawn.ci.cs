@@ -677,6 +677,7 @@ public class ActionSpawnThing
 public class Spawn_
 {
     public const int Score1Up = 0;
+
     public static void Score(Game game, float x, float y, int score)
     {
         game.score += score;
@@ -734,6 +735,47 @@ public class Spawn_
         if (score == Score1Up)
         {
             e.draw.sprite = "SceneryText1Up";
+        }
+    }
+
+    public static void BrickShards(Game game, float x, float y)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            Entity shard = new Entity();
+            shard.draw = new EntityDraw();
+            shard.draw.x = x;
+            shard.draw.y = y;
+            shard.draw.z = 3;
+            shard.draw.sprite = "CharactersBrickShard1";
+            ScriptBrickShard script = new ScriptBrickShard();
+            if (i == 0 || i == 1)
+            {
+                script.velX = -60;
+            }
+            else
+            {
+                script.velX = 60;
+            }
+            if (i == 1 || i == 3)
+            {
+                script.velY = -150;
+            }
+            else
+            {
+                script.velY = 0;
+            }
+            shard.scripts[shard.scriptsCount++] = script;
+            ScriptAnimation animation = new ScriptAnimation();
+            animation.constAnimCount = 4;
+            animation.constAnims = new string[4];
+            animation.constAnims[0] = "CharactersBrickShard1";
+            animation.constAnims[1] = "CharactersBrickShard2";
+            animation.constAnims[2] = "CharactersBrickShard3";
+            animation.constAnims[3] = "CharactersBrickShard4";
+            animation.constAnimSpeed = 10;
+            shard.scripts[shard.scriptsCount++] = animation;
+            game.AddEntity(shard);
         }
     }
 }

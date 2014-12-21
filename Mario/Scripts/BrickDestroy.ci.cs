@@ -11,10 +11,9 @@
 
         if (e.attackablePush.pushed == PushType.BigMario)
         {
+            Spawn_.BrickShards(game, e.draw.x + 4, e.draw.y + 4);
             game.AudioPlay("Blockbreak");
             game.DeleteEntity(entity);
-            // Todo: Animation
-            // "CharactersBrickShardNormal"
         }
     }
 }
