@@ -763,6 +763,8 @@ public class Spawn_
             shard.draw.x = x;
             shard.draw.y = y;
             shard.draw.z = 3;
+            shard.draw.width = 8;
+            shard.draw.height = 8;
             shard.draw.sprite = "CharactersBrickShard1";
             ScriptBrickShard script = new ScriptBrickShard();
             if (i == 0 || i == 1)
