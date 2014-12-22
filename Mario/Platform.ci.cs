@@ -32,7 +32,8 @@
     public abstract void DrawBitmap(BitmapCi bmp, int sx, int sy, int sw, int sh, int dx, int dy, int dw, int dh);
 
     // Audio
-    public abstract AudioCi AudioCreate(byte[] data, int dataLength);
+    public abstract AudioData AudioDataCreate(byte[] data, int dataLength);
+    public abstract AudioCi AudioCreate(AudioData data);
     public abstract void AudioPlay(AudioCi audio);
     public abstract void AudioPause(AudioCi audio);
     public abstract bool AudioFinished(AudioCi audio);
@@ -59,6 +60,10 @@ public class AssetList
 
     public Asset[] GetItems() { return items; } public void SetItems(Asset[] value) { items = value; }
     public int GetCount() { return count; } public void SetCount(int value) { count = value; }
+}
+
+public abstract class AudioData
+{
 }
 
 public abstract class AudioCi

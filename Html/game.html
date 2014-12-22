@@ -232,7 +232,7 @@ PlatformJs.prototype.drawBitmap = function(bmp, sx, sy, sw, sh, dx, dy, dw, dh) 
 
 // Audio
 
-PlatformJs.prototype.audioCreate = function(data, dataLength) {
+PlatformJs.prototype.audioDataCreate = function(data, dataLength) {
 	var sound = {};
 	sound.play = 0;
 	sound.stop = 0;
@@ -256,6 +256,11 @@ PlatformJs.prototype.audioCreate = function(data, dataLength) {
 		}
 	});
 	return sound;
+}
+
+PlatformJs.prototype.audioCreate = function(data) {
+	data.pausedAt = null;
+	return data;
 }
 
 PlatformJs.prototype.audioPlay = function(audio) {

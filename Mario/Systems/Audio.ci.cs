@@ -5,21 +5,13 @@
         currentMusic = null;
         currentMusicAudio = null;
         wasPaused = false;
-        audio = new DictionaryStringAudio[audioMax];
-        for (int i = 0; i < audioMax; i++)
-        {
-            audio[i] = new DictionaryStringAudio();
-        }
-        currentAudio = 0;
+        audio = new DictionaryStringAudioData();
         wasLoaded = false;
     }
 
     string currentMusic;
     AudioCi currentMusicAudio;
-    // Multiple dictionaries, to allow playing multiple sounds of the same type
-    DictionaryStringAudio[] audio;
-    const int audioMax = 5;
-    int currentAudio;
+    DictionaryStringAudioData audio;
     bool wasPaused;
     bool wasLoaded;
 
@@ -34,6 +26,7 @@
         {
             wasLoaded = true;
             game.audio.ClearSounds();
+            Preload(game);
         }
 
         // Play music
@@ -44,7 +37,8 @@
                 game.platform.AudioPause(currentMusicAudio);
             }
             currentMusic = game.audio.audioPlayMusic;
-            currentMusicAudio = game.platform.AudioCreate(game.GetFile(currentMusic), game.GetFileLength(currentMusic));
+            AudioData data = GetAudioData(game, currentMusic);
+            currentMusicAudio = game.platform.AudioCreate(data);
             game.platform.AudioPlay(currentMusicAudio);
         }
 
@@ -66,15 +60,10 @@
                 continue;
             }
 
-            if (!audio[currentAudio].Contains(sound))
-            {
-                AudioCi a = game.platform.AudioCreate(game.GetFile(sound), game.GetFileLength(sound));
-                audio[currentAudio].Set(sound, a);
-            }
-            game.platform.AudioPlay(audio[currentAudio].GetById(audio[currentAudio].GetId(sound)));
+            AudioData data = GetAudioData(game, sound);
+            AudioCi audio_ = game.platform.AudioCreate(data);
+            game.platform.AudioPlay(audio_);
             game.audio.audioPlaySounds[i] = null;
-            currentAudio++;
-            currentAudio = currentAudio % audioMax;
         }
         game.audio.audioPlaySoundsCount = 0;
 
@@ -91,6 +80,30 @@
             }
             wasPaused = game.gamePaused;
         }
+    }
+
+    void Preload(Game game)
+    {
+        for (int k = 0; k < game.assets2.count; k++)
+        {
+            string s = game.assets2.items[k].name;
+            string sound = game.platform.StringReplace(s, ".ogg", "");
+            if (s == sound)
+            {
+                continue;
+            }
+            GetAudioData(game, s);
+        }
+    }
+
+    AudioData GetAudioData(Game game, string sound)
+    {
+        if (!audio.Contains(sound))
+        {
+            AudioData a = game.platform.AudioDataCreate(game.GetFile(sound), game.GetFileLength(sound));
+            audio.Set(sound, a);
+        }
+        return audio.GetById(audio.GetId(sound));
     }
 
     public override void OnFocusChanged(Game game, bool focus)

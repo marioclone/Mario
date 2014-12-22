@@ -63,47 +63,6 @@
         controlsOverrideActive = false;
 
         audio = new AudioControl();
-
-        audio.audioPreload[audio.audioPreloadCount++] = "Blockbreak";
-        audio.audioPreload[audio.audioPreloadCount++] = "Blockhit";
-        audio.audioPreload[audio.audioPreloadCount++] = "Boom";
-        audio.audioPreload[audio.audioPreloadCount++] = "Bowserfall";
-        audio.audioPreload[audio.audioPreloadCount++] = "Bridgebreak";
-        audio.audioPreload[audio.audioPreloadCount++] = "Bulletbill";
-        audio.audioPreload[audio.audioPreloadCount++] = "Castle";
-        audio.audioPreload[audio.audioPreloadCount++] = "CastleEnd";
-        audio.audioPreload[audio.audioPreloadCount++] = "CastleFast";
-        audio.audioPreload[audio.audioPreloadCount++] = "Coin";
-        audio.audioPreload[audio.audioPreloadCount++] = "Death";
-        audio.audioPreload[audio.audioPreloadCount++] = "Fire";
-        audio.audioPreload[audio.audioPreloadCount++] = "Fireball";
-        audio.audioPreload[audio.audioPreloadCount++] = "Gameover";
-        audio.audioPreload[audio.audioPreloadCount++] = "Intermission";
-        audio.audioPreload[audio.audioPreloadCount++] = "Jump";
-        audio.audioPreload[audio.audioPreloadCount++] = "JumpBig";
-        audio.audioPreload[audio.audioPreloadCount++] = "LevelEnd";
-        audio.audioPreload[audio.audioPreloadCount++] = "LowTime";
-        audio.audioPreload[audio.audioPreloadCount++] = "MushroomAppear";
-        audio.audioPreload[audio.audioPreloadCount++] = "MushroomEat";
-        audio.audioPreload[audio.audioPreloadCount++] = "OneUp";
-        audio.audioPreload[audio.audioPreloadCount++] = "Overworld";
-        audio.audioPreload[audio.audioPreloadCount++] = "OverworldFast";
-        audio.audioPreload[audio.audioPreloadCount++] = "Pause";
-        audio.audioPreload[audio.audioPreloadCount++] = "Pipe";
-        audio.audioPreload[audio.audioPreloadCount++] = "PrincessMusic";
-        audio.audioPreload[audio.audioPreloadCount++] = "Rainboom";
-        audio.audioPreload[audio.audioPreloadCount++] = "Scorering";
-        audio.audioPreload[audio.audioPreloadCount++] = "Shot";
-        audio.audioPreload[audio.audioPreloadCount++] = "Shrink";
-        audio.audioPreload[audio.audioPreloadCount++] = "StarMusic";
-        audio.audioPreload[audio.audioPreloadCount++] = "StarMusicFast";
-        audio.audioPreload[audio.audioPreloadCount++] = "Stomp";
-        audio.audioPreload[audio.audioPreloadCount++] = "Swim";
-        audio.audioPreload[audio.audioPreloadCount++] = "Underground";
-        audio.audioPreload[audio.audioPreloadCount++] = "UndergroundFast";
-        audio.audioPreload[audio.audioPreloadCount++] = "Underwater";
-        audio.audioPreload[audio.audioPreloadCount++] = "UnderwaterFast";
-        audio.audioPreload[audio.audioPreloadCount++] = "Vine";
     }
 
     float one;
@@ -383,12 +342,6 @@ public class AudioControl
 {
     public AudioControl()
     {
-        audioPreload = new string[audioPreloadMax];
-        for (int i = 0; i < audioPreloadMax; i++)
-        {
-            audioPreload[i] = null;
-        }
-        audioPreloadCount = 0;
         audioPlayMusic = null;
         audioPlaySoundsCount = 0;
         audioPlaySounds = new string[audioPlaySoundsMax];
@@ -398,9 +351,6 @@ public class AudioControl
         }
     }
 
-    internal string[] audioPreload;
-    internal int audioPreloadCount;
-    const int audioPreloadMax = 256;
     internal string audioPlayMusic;
     internal string[] audioPlaySounds;
     internal int audioPlaySoundsCount;

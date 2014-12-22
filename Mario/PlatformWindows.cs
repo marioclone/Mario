@@ -354,7 +354,12 @@ namespace Mario
             graphics.FillRectangle(brush, x, y, width, height);
         }
 
-        public override AudioCi AudioCreate(byte[] data, int dataLength)
+        public override AudioData AudioDataCreate(byte[] data, int dataLength)
+        {
+            return null;
+        }
+
+        public override AudioCi AudioCreate(AudioData data)
         {
             return null;
         }

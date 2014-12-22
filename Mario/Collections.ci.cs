@@ -61,26 +61,26 @@
     }
 }
 
-public class DictionaryStringAudio
+public class DictionaryStringAudioData
 {
-    public DictionaryStringAudio()
+    public DictionaryStringAudioData()
     {
         keys = new string[max];
         for (int i = 0; i < max; i++)
         {
             keys[i] = null;
         }
-        values = new AudioCi[max];
+        values = new AudioData[max];
         for (int i = 0; i < max; i++)
         {
             values[i] = null;
         }
     }
     internal string[] keys;
-    internal AudioCi[] values;
+    internal AudioData[] values;
     internal const int max = 1024;
 
-    internal AudioCi GetById(int id)
+    internal AudioData GetById(int id)
     {
         return values[id];
     }
@@ -103,7 +103,7 @@ public class DictionaryStringAudio
         return -1;
     }
 
-    internal int Set(string key, AudioCi bmp)
+    internal int Set(string key, AudioData bmp)
     {
         int id = GetId(key);
         if (id != -1)
