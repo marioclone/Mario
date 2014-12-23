@@ -21,6 +21,11 @@ public class SystemSpawn : GameSystem
     {
         Map map = game.maps.map;
 
+        if (game.assetsLoaded.value != 1)
+        {
+            return;
+        }
+
         if (!loaded)
         {
             loaded = true;
@@ -168,7 +173,7 @@ public class SystemSpawn : GameSystem
             }
             else
             {
-                game.backgroundColor = Misc.ColorFromArgb(255, 92, 148, 252);
+                game.backgroundColor = game.constBlueBackgroundColor;
             }
         }
 

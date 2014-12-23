@@ -14,7 +14,8 @@
             systems[systemsCount++] = new SystemDrawScore();
             systems[systemsCount++] = new SystemSpawn();
             systems[systemsCount++] = new SystemAudio();
-            systems[systemsCount++] = new DrawDeathScreen();
+            systems[systemsCount++] = new SystemDrawDeathScreen();
+            systems[systemsCount++] = new SystemDrawLoading();
             systems[systemsCount++] = new SystemLevelScript();
             systems[systemsCount++] = new SystemControlsTouch();
             systems[systemsCount++] = new SystemControlsMouse();
@@ -61,6 +62,8 @@
         controls = new Controls();
         controlsOverride = new Controls();
         controlsOverrideActive = false;
+        constBlueBackgroundColor = Misc.ColorFromArgb(255, 92, 148, 252);
+        backgroundColor = constBlueBackgroundColor;
 
         audio = new AudioControl();
     }
@@ -114,6 +117,7 @@
 
     const int constFps = 120;
     const int maxDt = 1;
+    internal int constBlueBackgroundColor;
 
     public void Start(GamePlatform p)
     {

@@ -99,6 +99,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Systems\DrawDeathScreen.ci.cs" />
+    <Compile Include="Systems\DrawLoading.ci.cs" />
     <Compile Include="Systems\DrawScore.ci.cs" />
     <Compile Include="Systems\LevelScript.ci.cs" />
     <Compile Include="Systems\Spawn.ci.cs">

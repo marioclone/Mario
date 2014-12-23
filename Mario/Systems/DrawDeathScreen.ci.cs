@@ -1,6 +1,6 @@
-﻿public class DrawDeathScreen : GameSystem
+﻿public class SystemDrawDeathScreen : GameSystem
 {
-    public DrawDeathScreen()
+    public SystemDrawDeathScreen()
     {
         deathScreenWorld = null;
         deathScreenWorldValue = null;

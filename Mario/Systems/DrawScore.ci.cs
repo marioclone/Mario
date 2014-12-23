@@ -30,6 +30,10 @@
 
     public override void Render(Game game, float dt)
     {
+        if (game.assetsLoaded.value != 1)
+        {
+            return;
+        }
         bool worldRestarted = false;
         if (coinEntityId != -1)
         {
