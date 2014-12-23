@@ -561,8 +561,11 @@ public class AttackHelper
                     {
                         if (e.attackablePush.pushSide == PushSide.BottomBrickDestroy)
                         {
-                            e.attackablePush.pushed = pushType;
-                            side = PushSide.BottomBrickDestroy;
+                            if (IsEmptyBelow(game, i))
+                            {
+                                e.attackablePush.pushed = pushType;
+                                side = PushSide.BottomBrickDestroy;
+                            }
                         }
                     }
                     bool down = y > oldy;
@@ -606,6 +609,25 @@ public class AttackHelper
             }
         }
         return side;
+    }
+
+    static bool IsEmptyBelow(Game game, int entity)
+    {
+        Entity e = game.entities[entity];
+        for (int i = 0; i < game.entitiesCount; i++)
+        {
+            Entity e2 = game.entities[i];
+            if (e2 == null) { continue; }
+            if (e2.collider == null) { continue; }
+            if (Misc.RectIntersect(e.draw.x, e.draw.y + e.draw.height,
+                e.draw.width, 1,
+                e2.draw.x, e2.draw.y, e2.draw.width * e2.draw.xrepeat, e2.draw.height * e2.draw.yrepeat)
+                )
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
 
