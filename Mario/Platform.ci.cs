@@ -33,6 +33,7 @@
 
     // Audio
     public abstract AudioData AudioDataCreate(byte[] data, int dataLength);
+    public abstract bool AudioDataLoaded(AudioData data);
     public abstract AudioCi AudioCreate(AudioData data);
     public abstract void AudioPlay(AudioCi audio);
     public abstract void AudioPause(AudioCi audio);

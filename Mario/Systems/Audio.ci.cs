@@ -35,11 +35,19 @@
             if (currentMusic != null)
             {
                 game.platform.AudioPause(currentMusicAudio);
+                currentMusic = null;
+                currentMusicAudio = null;
             }
-            currentMusic = game.audio.audioPlayMusic;
-            AudioData data = GetAudioData(game, currentMusic);
-            currentMusicAudio = game.platform.AudioCreate(data);
-            game.platform.AudioPlay(currentMusicAudio);
+            if (game.audio.audioPlayMusic != null)
+            {
+                AudioData data = GetAudioData(game, game.audio.audioPlayMusic);
+                if (game.platform.AudioDataLoaded(data))
+                {
+                    currentMusic = game.audio.audioPlayMusic;
+                    currentMusicAudio = game.platform.AudioCreate(data);
+                    game.platform.AudioPlay(currentMusicAudio);
+                }
+            }
         }
 
         // Loop music
@@ -52,6 +60,7 @@
         }
 
         // Play sounds
+        bool allLoaded = true;
         for (int i = 0; i < game.audio.audioPlaySoundsCount; i++)
         {
             string sound = game.audio.audioPlaySounds[i];
@@ -61,11 +70,21 @@
             }
 
             AudioData data = GetAudioData(game, sound);
-            AudioCi audio_ = game.platform.AudioCreate(data);
-            game.platform.AudioPlay(audio_);
-            game.audio.audioPlaySounds[i] = null;
+            if (game.platform.AudioDataLoaded(data))
+            {
+                AudioCi audio_ = game.platform.AudioCreate(data);
+                game.platform.AudioPlay(audio_);
+                game.audio.audioPlaySounds[i] = null;
+            }
+            else
+            {
+                allLoaded = false;
+            }
         }
-        game.audio.audioPlaySoundsCount = 0;
+        if (allLoaded)
+        {
+            game.audio.audioPlaySoundsCount = 0;
+        }
 
         // Stop playing music when game is paused
         if (currentMusicAudio != null)

@@ -381,6 +381,11 @@ namespace Mario
         {
             return false;
         }
+
+        public override bool AudioDataLoaded(AudioData data)
+        {
+            return true;
+        }
     }
 
     public class BitmapCiCs : BitmapCi

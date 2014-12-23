@@ -234,8 +234,7 @@ PlatformJs.prototype.drawBitmap = function(bmp, sx, sy, sw, sh, dx, dy, dw, dh) 
 
 PlatformJs.prototype.audioDataCreate = function(data, dataLength) {
 	var sound = {};
-	sound.play = 0;
-	sound.stop = 0;
+	sound.loaded = false;
 	var arr = new ArrayBuffer(dataLength);
 	var arr8 = new Uint8Array(arr);
 	for(var i=0;i<dataLength;i++)
@@ -244,29 +243,25 @@ PlatformJs.prototype.audioDataCreate = function(data, dataLength) {
 	}
 	audioContext.decodeAudioData(arr, function(buffer) {
 		sound.buffer = buffer;
-		if(sound.stop){return;}
-		if(sound.play>0)
-		{
-			sound.play=0;
-			sound.src = audioContext.createBufferSource();
-			sound.src.buffer = sound.buffer;
-			sound.src.connect(audioContext.destination);
-			sound.startedAt = Date.now();
-			sound.src.start(0);
-		}
+		sound.loaded = true;
 	});
 	return sound;
 }
 
+PlatformJs.prototype.audioDataLoaded = function(data) {
+	return data.loaded;
+}
+
 PlatformJs.prototype.audioCreate = function(data) {
-	data.pausedAt = null;
-	return data;
+	var audio = {};
+	audio.data = data;
+	audio.pausedAt = null;
+	return audio;
 }
 
 PlatformJs.prototype.audioPlay = function(audio) {
-if(!audio.buffer){ audio.play++; return;}
 	audio.src = audioContext.createBufferSource();
-	audio.src.buffer = audio.buffer;
+	audio.src.buffer = audio.data.buffer;
 	audio.src.connect(audioContext.destination);
 	if (audio.pausedAt)
 	{
@@ -282,14 +277,12 @@ if(!audio.buffer){ audio.play++; return;}
 }
 
 PlatformJs.prototype.audioPause = function(audio) {
-if(!audio.src){audio.stop++;return;}
 	audio.src.stop();
 	audio.pausedAt = Date.now() - audio.startedAt;
 }
 
 PlatformJs.prototype.audioFinished = function(audio) {
-if(!audio.src){return false;}
-	return (Date.now() - audio.startedAt) > audio.buffer.duration * 1000;
+	return (Date.now() - audio.startedAt) > audio.data.buffer.duration * 1000;
 }
 
 // Assets
