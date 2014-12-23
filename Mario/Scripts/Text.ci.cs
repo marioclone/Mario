@@ -36,7 +36,10 @@
         {
             if (loadedEntities[i] != -1)
             {
-                game.DeleteEntity(loadedEntities[i]);
+                if (game.entities[loadedEntities[i]] != null)
+                {
+                    game.DeleteEntity(loadedEntities[i]);
+                }
             }
         }
     }
