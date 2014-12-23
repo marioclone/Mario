@@ -179,6 +179,11 @@
         if (topPipeEnter > 1) { topPipeEnter = -1; }
         if (leftPipeEnter > 1) { leftPipeEnter = -1; }
 
+        e.draw.collisionOffsetX = 2;
+        e.draw.collisionOffsetY = 0;
+        e.draw.collisionOffsetWidth = -4;
+        e.draw.collisionOffsetHeight = 0;
+
         // Move
         float oldx = e.draw.x;
         float oldy = e.draw.y;
@@ -186,7 +191,7 @@
         float newx = e.draw.x + velX * dt;
         float newy = e.draw.y + velY * dt;
 
-        PushSide side = AttackHelper.Attack(game, e.draw.x, e.draw.y, newx, newy, e.draw.width, e.draw.height, growth > 0, controls.down);
+        PushSide side = AttackHelper.Attack(game, e.draw.x + e.draw.collisionOffsetX, e.draw.y + e.draw.collisionOffsetY, newx + e.draw.collisionOffsetX, newy + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight, growth > 0, controls.down);
         if (side == PushSide.TopJumpOnEnemy)
         {
             // Bump
@@ -205,13 +210,13 @@
         }
 
 
-        if (CollisionHelper.IsEmpty(game, -1, newx, e.draw.y, e.draw.width, e.draw.height)
+        if (CollisionHelper.IsEmpty(game, -1, newx + e.draw.collisionOffsetX, e.draw.y + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight)
             && newx >= game.scrollx)
         {
             e.draw.x = newx;
         }
 
-        if (CollisionHelper.IsEmpty(game, -1, e.draw.x, newy, e.draw.width, e.draw.height))
+        if (CollisionHelper.IsEmpty(game, -1, e.draw.x + e.draw.collisionOffsetX, newy + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight))
         {
             e.draw.y = newy;
         }

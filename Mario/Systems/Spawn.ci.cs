@@ -73,7 +73,7 @@ public class SystemSpawn : GameSystem
             {
                 player = new Entity();
                 player.draw = new EntityDraw();
-                player.draw.z = 1;
+                player.draw.z = 2;
                 player.growable = new EntityGrowable();
                 player.attackableTouch = new EntityAttackableTouch();
                 player.scripts[player.scriptsCount++] = new ScriptPlayer();
@@ -360,7 +360,7 @@ public class SystemSpawn : GameSystem
             Entity e = Spawn(game, "SolidsPipeHorizontal", t.x, t.y);
             e.draw.width = 48;
             e.draw.height = 32;
-            e.draw.z = 2;
+            e.draw.z = 3;
             e.collider = new EntityCollider();
             ScriptPipeTransport transport = new ScriptPipeTransport();
             transport.horizontal = true;

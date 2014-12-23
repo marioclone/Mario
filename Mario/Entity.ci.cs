@@ -190,6 +190,10 @@ public class EntityDraw
         xrepeat = 1;
         yrepeat = 1;
         hidden = false;
+        collisionOffsetX = 0;
+        collisionOffsetY = 0;
+        collisionOffsetWidth = 0;
+        collisionOffsetHeight = 0;
         
         loadedSprite = -1;
         loadedSpriteName = null;
@@ -208,6 +212,10 @@ public class EntityDraw
     internal int xrepeat;
     internal int yrepeat;
     internal bool hidden;
+    internal int collisionOffsetX;
+    internal int collisionOffsetY;
+    internal int collisionOffsetWidth;
+    internal int collisionOffsetHeight;
 
     internal int loadedSprite;
     internal string loadedSpriteName;
