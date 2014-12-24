@@ -52,6 +52,7 @@ public class ThingType
     public const int MushroomDeathly = 31;
     public const int Ceiling = 32;
     public const int PlatformGenerator = 33;
+    public const int Koopa = 34;
 }
 
 public class Map
@@ -223,6 +224,7 @@ public class MapBinding : TableBinding
         if (value == "SceneryBrickPlain") { return ThingType.SceneryBrickPlain; }
         if (value == "Ceiling") { return ThingType.Ceiling; }
         if (value == "PlatformGenerator") { return ThingType.PlatformGenerator; }
+        if (value == "Koopa") { return ThingType.Koopa; }
         return -1;
     }
 

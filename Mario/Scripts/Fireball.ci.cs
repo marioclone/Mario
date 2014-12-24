@@ -79,20 +79,7 @@
             velY = -constBounceVel;
         }
 
-        bool explosion = false;
-        for (int i = 0; i < game.entitiesCount; i++)
-        {
-            Entity e2 = game.entities[i];
-            if (e2 == null) { continue; }
-            if (e2.attackableFireball == null) { continue; }
-            if (Misc.RectIntersect(e.draw.x, e.draw.y, e.draw.width, e.draw.height,
-                e2.draw.x, e2.draw.y, e2.draw.width * e2.draw.xrepeat, e2.draw.height * e2.draw.yrepeat))
-            {
-                e2.attackableFireball.attacked = true;
-                explosion = true;
-
-            }
-        }
+        bool explosion = HelperAttackWithFireball.Update(game, e);
         if (explosion)
         {
             Explosion(game, entity);
@@ -119,5 +106,27 @@
         game.AddEntity(firework);
 
         game.DeleteEntity(entity);
+    }
+}
+
+public class HelperAttackWithFireball
+{
+    public static bool Update(Game game, Entity e)
+    {
+        bool explosion = false;
+        for (int i = 0; i < game.entitiesCount; i++)
+        {
+            Entity e2 = game.entities[i];
+            if (e2 == null) { continue; }
+            if (e2 == e) { continue; }
+            if (e2.attackableFireball == null) { continue; }
+            if (Misc.RectIntersect(e.draw.x, e.draw.y, e.draw.width, e.draw.height,
+                e2.draw.x, e2.draw.y, e2.draw.width * e2.draw.xrepeat, e2.draw.height * e2.draw.yrepeat))
+            {
+                e2.attackableFireball.attacked = true;
+                explosion = true;
+            }
+        }
+        return explosion;
     }
 }

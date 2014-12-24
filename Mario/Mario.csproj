@@ -73,6 +73,7 @@
     <Compile Include="Scripts\Fireball.ci.cs" />
     <Compile Include="Scripts\Animation.ci.cs" />
     <Compile Include="Scripts\FlagPole.ci.cs" />
+    <Compile Include="Scripts\Koopa.ci.cs" />
     <Compile Include="Scripts\PipeTransport.ci.cs" />
     <Compile Include="Scripts\Platform.ci.cs" />
     <Compile Include="Scripts\PlatformGenerator.ci.cs" />

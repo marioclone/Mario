@@ -135,7 +135,8 @@ public enum PushSide
     TopJumpOnEnemy,
     // Player must press down key to enter
     TopPipeKeyDown,
-    BottomBrickDestroy
+    BottomBrickDestroy,
+    LeftRightKoopa
 }
 
 public class EntityAttackablePush
@@ -144,16 +145,24 @@ public class EntityAttackablePush
     {
         pushSide = PushSide.None;
         pushed = PushType.None;
+        pushSideLeftRight = PushSideLeftRight.Left;
     }
     internal PushSide pushSide;
     internal PushType pushed;
+    internal PushSideLeftRight pushSideLeftRight;
 
     public void Delete()
     {
     }
 }
 
-enum PushType
+public enum PushSideLeftRight
+{
+    Left,
+    Right
+}
+
+public enum PushType
 {
     None,
     SmallMario,

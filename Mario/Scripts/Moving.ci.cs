@@ -17,6 +17,7 @@ public class ScriptMoving : Script
         Entity e = game.entities[entity];
         if (game.gamePaused) { return; }
         if (!IsActiveHelper.IsActive(game, e.draw.x)) { return; }
+        if (direction == 0) { return; }
         t += dt;
         float oldx = e.draw.x;
         float oldy = e.draw.y;

@@ -66,6 +66,7 @@ public class SystemSpawn : GameSystem
                 spawnX = 32 - 8;
                 spawnY = 208 - playerHeight;
             }
+            
             game.restartPositionX = 0;
             game.restartPositionY = 0;
 
@@ -454,6 +455,11 @@ public class SystemSpawn : GameSystem
             e.scripts[e.scriptsCount++] = new ScriptMoving();
         }
 
+        if (t.type == ThingType.Koopa)
+        {
+            SpawnKoopa.Spawn(game, t.x, t.y);
+        }
+
         // Scenery
         if (t.type == ThingType.HillLarge)
         {
@@ -502,7 +508,7 @@ public class SystemSpawn : GameSystem
         return e;
     }
 
-    Entity Spawn(Game game, string p, float x, float y)
+    public static Entity Spawn(Game game, string p, float x, float y)
     {
         Entity e = new Entity();
         e.draw = new EntityDraw();
@@ -605,6 +611,22 @@ public class SettingApply
             if (sprite == "CharactersBrickShard4")
             {
                 sprite = "CharactersBrickShardUnderworld4";
+            }
+            if (sprite == "CharactersKoopaStoppedNormalNormal")
+            {
+                sprite = "CharactersKoopaStoppedUnderworldNormal";
+            }
+            if (sprite == "CharactersKoopaStoppedNormalTwo")
+            {
+                sprite = "CharactersKoopaStoppedUnderworldTwo";
+            }
+            if (sprite == "CharactersKoopaNormalNormalNormalNormalNormal")
+            {
+                sprite = "CharactersKoopaNormalNormalNormalUnderworldNormal";
+            }
+            if (sprite == "CharactersKoopaNormalNormalNormalNormalTwo")
+            {
+                sprite = "CharactersKoopaNormalNormalNormalUnderworldTwo";
             }
         }
         return sprite;

@@ -591,6 +591,18 @@ public class AttackHelper
                                 side = PushSide.TopPipeKeyDown;
                             }
                         }
+                        if (e.attackablePush.pushSide == PushSide.LeftRightKoopa)
+                        {
+                            e.attackablePush.pushed = pushType;
+                            if (x + w / 2 > e.draw.x + e.draw.width / 2)
+                            {
+                                e.attackablePush.pushSideLeftRight = PushSideLeftRight.Right;
+                            }
+                            else
+                            {
+                                e.attackablePush.pushSideLeftRight = PushSideLeftRight.Left;
+                            }
+                        }
                     }
                     bool right = x > oldx;
                     if (right && x + w >= e.draw.x && x + w < e.draw.x + 3)
@@ -600,6 +612,11 @@ public class AttackHelper
                             e.attackablePush.pushed = pushType;
                             side = PushSide.LeftPipeEnter;
                         }
+                        if (e.attackablePush.pushSide == PushSide.LeftRightKoopa)
+                        {
+                            e.attackablePush.pushed = pushType;
+                            e.attackablePush.pushSideLeftRight = PushSideLeftRight.Left;
+                        }
                     }
                     bool left = x < oldx;
                     if (left && x < e.draw.x + e.draw.width && x > e.draw.x + e.draw.width - 3)
@@ -608,6 +625,11 @@ public class AttackHelper
                         {
                             e.attackablePush.pushed = pushType;
                             side = PushSide.Right;
+                        }
+                        if (e.attackablePush.pushSide == PushSide.LeftRightKoopa)
+                        {
+                            e.attackablePush.pushed = pushType;
+                            e.attackablePush.pushSideLeftRight = PushSideLeftRight.Right;
                         }
                     }
                 }

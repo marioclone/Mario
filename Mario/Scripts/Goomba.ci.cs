@@ -4,16 +4,16 @@
     {
         t = 0;
         dead = false;
-        deadFromFireball = false;
         constAnimSpeed = 4;
         constDeadTime = one / 2;
+        deadFromFireball = new DeadFromFireball();
     }
 
     float t;
     bool dead;
-    bool deadFromFireball;
     float constAnimSpeed;
     float constDeadTime;
+    DeadFromFireball deadFromFireball;
 
     public override void Update(Game game, int entity, float dt)
     {
@@ -44,54 +44,9 @@
             }
         }
 
-        // If touched by fireball, the goomba dies
-        if (e.attackableFireball != null)
-        {
-            if (e.attackableFireball.attacked
-                && (!dead))
-            {
-                e.draw.mirror = MirrorType.MirrorY;
-                if (e.collider != null)
-                {
-#if CITO
-                    delete e.collider;
-#endif
-                    e.collider = null;
-                }
-                dead = true;
-                deadFromFireball = true;
-                t = 0;
-                game.AudioPlay("Shot");
-                Spawn_.Score(game, e.draw.x, e.draw.y, Game.ScoreGoomba);
-            }
-        }
-
-        if (deadFromFireball)
-        {
-            e.draw.y += dt * 100;
-        }
-
-        // Remove dead goomba
-        if (dead && t > constDeadTime)
-        {
-            game.DeleteEntity(entity);
-        }
-
         if (!dead)
         {
-            // Attack player who is touching goomba
-            for (int i = 0; i < game.entitiesCount; i++)
-            {
-                Entity e2 = game.entities[i];
-                if (e2 == null) { continue; }
-                if (e2.attackableTouch == null) { continue; }
-                if (Misc.RectIntersect(e.draw.x , e.draw.y, e.draw.width, e.draw.height,
-                    e2.draw.x+ e2.draw.collisionOffsetX, e2.draw.y + e2.draw.collisionOffsetY, e2.draw.width + e2.draw.collisionOffsetWidth, e2.draw.height + e2.draw.collisionOffsetHeight))
-                {
-                    e2.attackableTouch.touched = true;
-                    return;
-                }
-            }
+            HelperAttackWithTouch.Update(game, e);
 
             // Walk animation
             if ((game.platform.FloatToInt(t * constAnimSpeed) % 2) == 1)
@@ -101,6 +56,35 @@
             else
             {
                 e.draw.mirror = MirrorType.None;
+            }
+        }
+        
+        deadFromFireball.Update(game, entity, dt, Game.ScoreGoomba);
+
+        // Remove dead goomba
+        if (dead && t > constDeadTime)
+        {
+            game.DeleteEntity(entity);
+        }
+    }
+}
+
+public class HelperAttackWithTouch
+{
+    // Attack player who is touching goomba
+    public static void Update(Game game, Entity e)
+    {
+        for (int i = 0; i < game.entitiesCount; i++)
+        {
+            Entity e2 = game.entities[i];
+            if (e2 == null) { continue; }
+            if (e2 == e) { continue; }
+            if (e2.attackableTouch == null) { continue; }
+            if (Misc.RectIntersect(e.draw.x, e.draw.y, e.draw.width, e.draw.height,
+                e2.draw.x + e2.draw.collisionOffsetX, e2.draw.y + e2.draw.collisionOffsetY, e2.draw.width + e2.draw.collisionOffsetWidth, e2.draw.height + e2.draw.collisionOffsetHeight))
+            {
+                e2.attackableTouch.touched = true;
+                return;
             }
         }
     }
