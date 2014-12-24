@@ -129,6 +129,15 @@
             }
         }
 
+        if (direction <= 0)
+        {
+            e.draw.mirror = MirrorType.None;
+        }
+        else
+        {
+            e.draw.mirror = MirrorType.MirrorX;
+        }
+
         if (direction == 0)
         {
             reviveTime += dt;
