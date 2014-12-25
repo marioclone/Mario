@@ -460,6 +460,11 @@ public class SystemSpawn : GameSystem
             SpawnKoopa.Spawn(game, t.x, t.y);
         }
 
+        if (t.piranha)
+        {
+            SpawnPiranha.Spawn(game, t.x + 4, t.y + t.pipeHeight + 12);
+        }
+
         // Scenery
         if (t.type == ThingType.HillLarge)
         {
@@ -627,6 +632,25 @@ public class SettingApply
             if (sprite == "CharactersKoopaNormalNormalNormalNormalTwo")
             {
                 sprite = "CharactersKoopaNormalNormalNormalUnderworldTwo";
+            }
+            if (sprite == "CharactersPiranhaNormalNormal")
+            {
+                sprite = "CharactersPiranhaUnderworldNormal";
+            }
+            if (sprite == "CharactersPiranhaNormalTwo")
+            {
+                sprite = "CharactersPiranhaUnderworldTwo";
+            }
+        }
+        if (setting == SettingType.Castle)
+        {
+            if (sprite == "CharactersPiranhaNormalNormal")
+            {
+                sprite = "CharactersPiranhaCastleNormal";
+            }
+            if (sprite == "CharactersPiranhaNormalTwo")
+            {
+                sprite = "CharactersPiranhaCastleTwo";
             }
         }
         return sprite;

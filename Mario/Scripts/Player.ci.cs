@@ -268,6 +268,12 @@
             }
         }
 
+        // Don't get killed by piranha when entering pipe
+        if (topPipeEnter != -1)
+        {
+            e.attackableTouch.touched = false;
+        }
+
         // Death
         if (invulnerable > 0)
         {
@@ -508,30 +514,6 @@
         else
         {
             e.draw.mirror = MirrorType.None;
-        }
-    }
-
-    float Max(float a, float b)
-    {
-        if (a >= b)
-        {
-            return a;
-        }
-        else
-        {
-            return b;
-        }
-    }
-
-    float Abs(float value)
-    {
-        if (value >= 0)
-        {
-            return value;
-        }
-        else
-        {
-            return -value;
         }
     }
 }

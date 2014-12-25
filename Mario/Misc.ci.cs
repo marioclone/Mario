@@ -134,6 +134,30 @@ public class Misc
         }
         return strA == strB;
     }
+
+    public static float Max(float a, float b)
+    {
+        if (a >= b)
+        {
+            return a;
+        }
+        else
+        {
+            return b;
+        }
+    }
+
+    public static float Abs(float value)
+    {
+        if (value >= 0)
+        {
+            return value;
+        }
+        else
+        {
+            return -value;
+        }
+    }
 }
 
 public class CollisionHelper

@@ -53,6 +53,7 @@ public class ThingType
     public const int Ceiling = 32;
     public const int PlatformGenerator = 33;
     public const int Koopa = 34;
+    public const int Piranha = 35;
 }
 
 public class Map
@@ -86,6 +87,7 @@ public class Thing
     internal string entrance;
     internal bool hidden;
     internal int direction;
+    internal bool piranha;
 }
 
 public class Pattern
@@ -143,6 +145,7 @@ public class MapBinding : TableBinding
             if (column == "entrance") { k.entrance = value; }
             if (column == "hidden") { k.hidden = value != null && value != ""; }
             if (column == "direction") { k.direction = IntParse(value); }
+            if (column == "piranha") { k.piranha = value != null && value != ""; }
         }
         if (table == "patterns")
         {

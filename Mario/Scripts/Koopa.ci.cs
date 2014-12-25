@@ -200,7 +200,7 @@ public class DeadFromFireball
     internal float t;
     internal float constDeadTime;
 
-    public void Update(Game game, int entity, float dt, int score)
+    public bool Update(Game game, int entity, float dt, int score)
     {
         Entity e = game.entities[entity];
 
@@ -236,5 +236,7 @@ public class DeadFromFireball
         {
             game.DeleteEntity(entity);
         }
+
+        return deadFromFireball;
     }
 }

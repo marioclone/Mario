@@ -75,6 +75,7 @@
     <Compile Include="Scripts\FlagPole.ci.cs" />
     <Compile Include="Scripts\Koopa.ci.cs" />
     <Compile Include="Scripts\PipeTransport.ci.cs" />
+    <Compile Include="Scripts\Piranha.ci.cs" />
     <Compile Include="Scripts\Platform.ci.cs" />
     <Compile Include="Scripts\PlatformGenerator.ci.cs" />
     <Compile Include="Scripts\Score.ci.cs" />
