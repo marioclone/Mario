@@ -367,7 +367,27 @@
             game.AudioPlay("Fireball");
         }
         controlsFirePreviously = controls.fire;
+
+        // Skidding
+        if (onGround && (!crouching)
+            && (((controls.left) && (!controls.right) && (velX > 0))
+            || ((controls.right) && (!controls.left) && (velX < 0))))
+        {
+            if (growth == 0)
+            {
+                e.draw.sprite = "CharactersPlayerNormalNormalNormalRunningSkidding";
+            }
+            if (growth == 1)
+            {
+                e.draw.sprite = "CharactersPlayerNormalLargeNormalRunningSkidding";
+            }
+            if (growth == 2)
+            {
+                e.draw.sprite = "CharactersPlayerNormalFieryNormalRunningSkidding";
+            }
+        }
     }
+
     bool controlsFirePreviously;
 
     float DeathAnimation(float time)
