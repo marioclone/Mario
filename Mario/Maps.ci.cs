@@ -54,6 +54,7 @@ public class ThingType
     public const int PlatformGenerator = 33;
     public const int Koopa = 34;
     public const int Piranha = 35;
+    public const int Tree = 36;
 }
 
 public class Map
@@ -228,6 +229,7 @@ public class MapBinding : TableBinding
         if (value == "Ceiling") { return ThingType.Ceiling; }
         if (value == "PlatformGenerator") { return ThingType.PlatformGenerator; }
         if (value == "Koopa") { return ThingType.Koopa; }
+        if (value == "Tree") { return ThingType.Tree; }
         return -1;
     }
 

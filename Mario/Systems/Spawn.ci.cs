@@ -442,6 +442,25 @@ public class SystemSpawn : GameSystem
             script.direction = t.direction;
             e.scripts[e.scriptsCount++] = script;
         }
+        if (t.type == ThingType.Tree)
+        {
+            Entity topLeft = Spawn(game, "SolidsTreeTopNormalLeft", t.x, t.y);
+            topLeft.collider = new EntityCollider();
+            topLeft.draw.z = 1;
+            Entity topMiddle = Spawn(game, "SolidsTreeTopNormalMiddle", t.x + 8, t.y);
+            topMiddle.draw.xrepeat = t.width - 2;
+            topMiddle.collider = new EntityCollider();
+            topMiddle.draw.z = 1;
+            Entity topRight = Spawn(game, "SolidsTreeTopNormalRight", t.x + (t.width - 1) * 8, t.y);
+            topRight.collider = new EntityCollider();
+            topRight.draw.z = 1;
+            Entity trunk = Spawn(game, "SceneryTreeTrunkNormal", t.x + 8, t.y - 8);
+            trunk.draw.width = 8;
+            trunk.draw.height = 8;
+            trunk.draw.xrepeat = (t.width - 2) * 2;
+            trunk.draw.yrepeat = 16 * 2;
+            trunk.draw.z = 0;
+        }
 
         // Characters
 
