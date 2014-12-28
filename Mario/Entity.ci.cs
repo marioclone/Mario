@@ -4,6 +4,7 @@
     {
         draw = null;
         collider = null;
+        enemyCollider = false;
         attackablePush = null;
         attackableTouch = null;
         growable = null;
@@ -19,6 +20,7 @@
     internal EntityDraw draw;
     // Can stand on. Can't walk through. Example: floor, brick.
     internal EntityCollider collider;
+    internal bool enemyCollider;
     // Pushed from any of 4 sides
     // Examples:
     // - Brick destroyed when player jumps from bottom

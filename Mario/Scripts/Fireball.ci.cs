@@ -59,7 +59,7 @@
         }
         float newx = e.draw.x + dt * constSpeed * dirx;
         float newy = e.draw.y + dt * velY;
-        if (CollisionHelper.IsEmpty(game, entity, newx, e.draw.y, e.draw.width, e.draw.height))
+        if (CollisionHelper.IsEmpty(game, entity, newx, e.draw.y, e.draw.width, e.draw.height, false))
         {
             e.draw.x = newx;
         }
@@ -69,7 +69,7 @@
             game.AudioPlay("Blockhit");
             return;
         }
-        if (CollisionHelper.IsEmpty(game, entity, e.draw.x, newy, e.draw.width, e.draw.height))
+        if (CollisionHelper.IsEmpty(game, entity, e.draw.x, newy, e.draw.width, e.draw.height, false))
         {
             e.draw.y = newy;
         }

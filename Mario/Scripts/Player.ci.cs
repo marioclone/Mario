@@ -210,13 +210,13 @@
         }
 
 
-        if (CollisionHelper.IsEmpty(game, -1, newx + e.draw.collisionOffsetX, e.draw.y + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight)
+        if (CollisionHelper.IsEmpty(game, -1, newx + e.draw.collisionOffsetX, e.draw.y + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight, false)
             && newx >= game.scrollx)
         {
             e.draw.x = newx;
         }
 
-        if (CollisionHelper.IsEmpty(game, -1, e.draw.x + e.draw.collisionOffsetX, newy + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight))
+        if (CollisionHelper.IsEmpty(game, -1, e.draw.x + e.draw.collisionOffsetX, newy + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight, false))
         {
             e.draw.y = newy;
         }

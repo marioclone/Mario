@@ -466,12 +466,7 @@ public class SystemSpawn : GameSystem
 
         if (t.type == ThingType.Goomba)
         {
-            Entity e = Spawn(game, "CharactersGoombaNormal", t.x, t.y);
-            e.attackablePush = new EntityAttackablePush();
-            e.attackablePush.pushSide = PushSide.TopJumpOnEnemy;
-            e.attackableFireball = new EntityAttackableFireball();
-            e.scripts[e.scriptsCount++] = new ScriptGoomba();
-            e.scripts[e.scriptsCount++] = new ScriptMoving();
+            SpawnGoomba.Spawn(game, t.x, t.y);
         }
 
         if (t.type == ThingType.Koopa)

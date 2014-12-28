@@ -69,6 +69,20 @@
     }
 }
 
+public class SpawnGoomba
+{
+    public static void Spawn(Game game, int x, int y)
+    {
+        Entity e = SystemSpawn.Spawn(game, "CharactersGoombaNormal", x, y);
+        e.attackablePush = new EntityAttackablePush();
+        e.attackablePush.pushSide = PushSide.TopJumpOnEnemy;
+        e.attackableFireball = new EntityAttackableFireball();
+        e.enemyCollider = true;
+        e.scripts[e.scriptsCount++] = new ScriptGoomba();
+        e.scripts[e.scriptsCount++] = new ScriptMoving();
+    }
+}
+
 public class HelperAttackWithTouch
 {
     // Attack player who is touching goomba

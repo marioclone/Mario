@@ -95,7 +95,7 @@
             float newy = e.draw.y + 1;
 
             // Move horizontally
-            if (CollisionHelper.IsEmpty(game, entity, newx + e.draw.collisionOffsetX, oldy + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight))
+            if (CollisionHelper.IsEmpty(game, entity, newx + e.draw.collisionOffsetX, oldy + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight, !slide))
             {
                 e.draw.x = newx;
             }
@@ -107,8 +107,8 @@
             }
 
             // Move vertically (down)
-            if (CollisionHelper.IsEmpty(game, entity, oldx + e.draw.collisionOffsetX, newy + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight)
-                && CollisionHelper.IsEmpty(game, entity, oldx + e.draw.collisionOffsetX, newy + 1 + e.draw.collisionOffsetY, e.draw.width +e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight))
+            if (CollisionHelper.IsEmpty(game, entity, oldx + e.draw.collisionOffsetX, newy + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight, !slide)
+                && CollisionHelper.IsEmpty(game, entity, oldx + e.draw.collisionOffsetX, newy + 1 + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight, !slide))
             {
                 e.draw.y = newy;
             }
@@ -191,6 +191,7 @@ public class SpawnKoopa
         e.attackableFireball = new EntityAttackableFireball();
         e.draw.collisionOffsetY = 8;
         e.draw.collisionOffsetHeight = -8;
+        e.enemyCollider = true;
         e.scripts[e.scriptsCount++] = new ScriptKoopa();
     }
 }
