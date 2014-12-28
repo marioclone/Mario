@@ -92,7 +92,7 @@
             float newy = e.draw.y + 1;
 
             // Move horizontally
-            if (CollisionHelper.IsEmpty(game, entity, newx, oldy, e.draw.width, e.draw.height))
+            if (CollisionHelper.IsEmpty(game, entity, newx + e.draw.collisionOffsetX, oldy + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight))
             {
                 e.draw.x = newx;
             }
@@ -104,8 +104,8 @@
             }
 
             // Move vertically (down)
-            if (CollisionHelper.IsEmpty(game, entity, oldx, newy, e.draw.width, e.draw.height)
-                && CollisionHelper.IsEmpty(game, entity, oldx, newy + 1, e.draw.width, e.draw.height))
+            if (CollisionHelper.IsEmpty(game, entity, oldx + e.draw.collisionOffsetX, newy + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight)
+                && CollisionHelper.IsEmpty(game, entity, oldx + e.draw.collisionOffsetX, newy + 1 + e.draw.collisionOffsetY, e.draw.width +e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight))
             {
                 e.draw.y = newy;
             }
@@ -183,6 +183,8 @@ public class SpawnKoopa
         e.attackablePush = new EntityAttackablePush();
         e.attackablePush.pushSide = PushSide.TopJumpOnEnemy;
         e.attackableFireball = new EntityAttackableFireball();
+        e.draw.collisionOffsetY = 8;
+        e.draw.collisionOffsetHeight = -8;
         e.scripts[e.scriptsCount++] = new ScriptKoopa();
     }
 }
