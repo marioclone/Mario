@@ -13,6 +13,7 @@
         constReviveTime1 = 2;
         constReviveTime2 = 3;
         constReviveBlinkingSpeed = 5;
+        isDead = false;
         deadFromFireball = new DeadFromFireball();
     }
 
@@ -27,6 +28,7 @@
     float constReviveTime1;
     float constReviveTime2;
     float constReviveBlinkingSpeed;
+    bool isDead;
     DeadFromFireball deadFromFireball;
 
     public override void Update(Game game, int entity, float dt)
@@ -67,7 +69,7 @@
             e.attackablePush.pushed = PushType.None;
         }
 
-        deadFromFireball.Update(game, entity, dt, Game.ScoreKoopa);
+        isDead = deadFromFireball.Update(game, entity, dt, Game.ScoreKoopa);
 
         if (slide)
         {
@@ -85,6 +87,7 @@
         }
 
         // Walk and slide
+        if (!isDead)
         {
             float oldx = e.draw.x;
             float oldy = e.draw.y;
@@ -129,13 +132,16 @@
             }
         }
 
-        if (direction <= 0)
+        if (!isDead)
         {
-            e.draw.mirror = MirrorType.None;
-        }
-        else
-        {
-            e.draw.mirror = MirrorType.MirrorX;
+            if (direction <= 0)
+            {
+                e.draw.mirror = MirrorType.None;
+            }
+            else
+            {
+                e.draw.mirror = MirrorType.MirrorX;
+            }
         }
 
         if (direction == 0)
