@@ -442,6 +442,17 @@ public class SystemSpawn : GameSystem
             script.direction = t.direction;
             e.scripts[e.scriptsCount++] = script;
         }
+        if (t.type == ThingType.Platform)
+        {
+            if (t.platformType == PlatformDirection.Floating)
+            {
+                SpawnPlatform.Spawn(game, t.x, t.y, t.platformType, GetY(t.platformStart), GetY(t.platformEnd));
+            }
+            else
+            {
+                SpawnPlatform.Spawn(game, t.x, t.y, t.platformType, GetX(t.platformStart), GetX(t.platformEnd));
+            }
+        }
         if (t.type == ThingType.Tree)
         {
             Entity topLeft = Spawn(game, "SolidsTreeTopNormalLeft", t.x, t.y);
@@ -537,6 +548,16 @@ public class SystemSpawn : GameSystem
         e.draw.z = 1;
         game.AddEntity(e);
         return e;
+    }
+
+    public static float GetX(float mapx)
+    {
+        return mapx * 2;
+    }
+
+    public static float GetY(float mapy)
+    {
+        return 240 - mapy * 2 - 16 * 2;
     }
 }
 

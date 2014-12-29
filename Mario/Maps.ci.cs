@@ -55,6 +55,7 @@ public class ThingType
     public const int Koopa = 34;
     public const int Piranha = 35;
     public const int Tree = 36;
+    public const int Platform = 37;
 }
 
 public class Map
@@ -89,6 +90,19 @@ public class Thing
     internal bool hidden;
     internal int direction;
     internal bool piranha;
+    internal PlatformDirection platformType;
+    internal float platformStart;
+    internal float platformEnd;
+    internal float platformSpeed;
+    internal bool platformNoCollideChar;
+}
+
+public enum PlatformType
+{
+    None,
+    Floating,
+    Sliding,
+    Falling
 }
 
 public class Pattern
@@ -147,6 +161,11 @@ public class MapBinding : TableBinding
             if (column == "hidden") { k.hidden = value != null && value != ""; }
             if (column == "direction") { k.direction = IntParse(value); }
             if (column == "piranha") { k.piranha = value != null && value != ""; }
+            if (column == "platformType") { k.platformType = PlatformTypeParse(value); }
+            if (column == "platformStart") { k.platformStart = FloatParse(value); }
+            if (column == "platformEnd") { k.platformEnd = FloatParse(value); }
+            if (column == "platformSpeed") { k.platformSpeed = FloatParse(value); }
+            if (column == "platformNoCollideChar") { k.platformNoCollideChar = value != null && value != ""; }
         }
         if (table == "patterns")
         {
@@ -169,7 +188,24 @@ public class MapBinding : TableBinding
             if (column == "setting") { k.setting = GetSetting(value); }
         }
     }
-    
+
+    PlatformDirection PlatformTypeParse(string value)
+    {
+        if (value == "sliding")
+        {
+            return PlatformDirection.Sliding;
+        }
+        if (value == "floating")
+        {
+            return PlatformDirection.Floating;
+        }
+        if (value == "falling")
+        {
+            return PlatformDirection.Falling;
+        }
+        return PlatformDirection.None;
+    }
+
     SettingType GetSetting(string value)
     {
         if (value == "Overworld")
@@ -230,6 +266,7 @@ public class MapBinding : TableBinding
         if (value == "PlatformGenerator") { return ThingType.PlatformGenerator; }
         if (value == "Koopa") { return ThingType.Koopa; }
         if (value == "Tree") { return ThingType.Tree; }
+        if (value == "Platform") { return ThingType.Platform; }
         return -1;
     }
 

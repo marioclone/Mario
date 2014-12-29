@@ -17,26 +17,16 @@
         if (t > constGenerateEverySeconds)
         {
             t = 0;
-            Entity p = new Entity();
-            p.draw = new EntityDraw();
-            p.draw.x = e.draw.x;
-            p.draw.xrepeat = 6;
+            PlatformDirection dir;
             if (direction >= 0)
             {
-                p.draw.y = 0;
+                dir = PlatformDirection.Down;
             }
             else
             {
-                p.draw.y = 240;
+                dir = PlatformDirection.Up;
             }
-            p.draw.sprite = "SolidsPlatformNormal";
-            p.draw.width = 8;
-            p.draw.height = 8;
-            p.collider = new EntityCollider();
-            ScriptPlatform script = new ScriptPlatform();
-            script.direction = direction;
-            p.scripts[p.scriptsCount++] = script;
-            game.AddEntity(p);
+            SpawnPlatform.Spawn(game, e.draw.x / 2, 0, dir, 0, 0);
         }
     }
 }
