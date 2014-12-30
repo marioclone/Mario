@@ -56,6 +56,14 @@ public class ThingType
     public const int Piranha = 35;
     public const int Tree = 36;
     public const int Platform = 37;
+    public const int StartInsideCastle = 38;
+    public const int CastleBridge = 39;
+    public const int Water = 40;
+    public const int CastleChain = 41;
+    public const int CastleAxe = 42;
+    public const int CastleNpc = 43;
+    public const int Bowser = 44;
+    public const int CastleBlock = 45;
 }
 
 public class Map
@@ -76,6 +84,31 @@ public class Map
 
 public class Thing
 {
+    public Thing()
+    {
+        level = null;
+        type = 0;
+        x = 0;
+        y = 0;
+        width = 0;
+        height = 0;
+        contents = 0;
+        pipeHeight = 0;
+        pattern = null;
+        transport = null;
+        entrance = null;
+        hidden = false;
+        direction = 0;
+        piranha = false;
+        platformType = PlatformDirection.None;
+        platformStart = 0;
+        platformEnd = 0;
+        platformSpeed = 0;
+        platformNoCollideChar = false;
+        castleBlockFireballs = 0;
+        castleBlockSpeed = 0;
+        castleBlockDirection = 0;
+    }
     internal string level;
     internal int type;
     internal int x;
@@ -95,6 +128,9 @@ public class Thing
     internal float platformEnd;
     internal float platformSpeed;
     internal bool platformNoCollideChar;
+    internal int castleBlockFireballs;
+    internal float castleBlockSpeed;
+    internal float castleBlockDirection;
 }
 
 public enum PlatformType
@@ -166,6 +202,9 @@ public class MapBinding : TableBinding
             if (column == "platformEnd") { k.platformEnd = FloatParse(value); }
             if (column == "platformSpeed") { k.platformSpeed = FloatParse(value); }
             if (column == "platformNoCollideChar") { k.platformNoCollideChar = value != null && value != ""; }
+            if (column == "castleBlockFireballs") { k.castleBlockFireballs = IntParse(value); }
+            if (column == "castleBlockSpeed") { k.castleBlockSpeed = FloatParse(value); }
+            if (column == "castleBlockDirection") { k.castleBlockDirection = FloatParse(value); }
         }
         if (table == "patterns")
         {
@@ -267,6 +306,14 @@ public class MapBinding : TableBinding
         if (value == "Koopa") { return ThingType.Koopa; }
         if (value == "Tree") { return ThingType.Tree; }
         if (value == "Platform") { return ThingType.Platform; }
+        if (value == "StartInsideCastle") { return ThingType.StartInsideCastle; }
+        if (value == "CastleBridge") { return ThingType.CastleBridge; }
+        if (value == "Water") { return ThingType.Water; }
+        if (value == "Bowser") { return ThingType.Bowser; }
+        if (value == "CastleChain") { return ThingType.CastleChain; }
+        if (value == "CastleAxe") { return ThingType.CastleAxe; }
+        if (value == "CastleNpc") { return ThingType.CastleNpc; }
+        if (value == "CastleBlock") { return ThingType.CastleBlock; }
         return -1;
     }
 

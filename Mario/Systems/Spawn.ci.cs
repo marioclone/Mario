@@ -64,7 +64,14 @@ public class SystemSpawn : GameSystem
                 }
 
                 spawnX = 32 - 8;
-                spawnY = 208 - playerHeight;
+                if (game.setting == SettingType.Castle)
+                {
+                    spawnY = 208 - playerHeight - 16 * 6;
+                }
+                else
+                {
+                    spawnY = 208 - playerHeight;
+                }
             }
             
             game.restartPositionX = 0;
@@ -168,7 +175,8 @@ public class SystemSpawn : GameSystem
             //    game.AddEntity(copyright);
             //}
 
-            if (game.setting == SettingType.Underworld)
+            if (game.setting == SettingType.Underworld
+                || game.setting == SettingType.Castle)
             {
                 game.backgroundColor = Misc.ColorFromArgb(255, 0, 0, 0);
             }
@@ -246,7 +254,14 @@ public class SystemSpawn : GameSystem
             Entity e = Spawn(game, "SolidsFloorNormal", t.x, t.y);
             e.collider = new EntityCollider();
             e.draw.xrepeat = t.width;
-            e.draw.yrepeat = 2;
+            if (game.setting == SettingType.Overworld)
+            {
+                e.draw.yrepeat = 2;
+            }
+            else
+            {
+                e.draw.yrepeat = 5;
+            }
         }
         if (t.type == ThingType.Ceiling)
         {
@@ -326,6 +341,11 @@ public class SystemSpawn : GameSystem
                 {
                     Entity e = Spawn(game, "CharactersCoinNormalNormalNormal", t.x + x * 8, t.y - y * 8);
                     e.scripts[e.scriptsCount++] = new ScriptCoinStatic();
+                }
+                if (t.type == ThingType.CastleBridge)
+                {
+                    Entity e = Spawn(game, "SolidsCastleBridge", t.x + x * 8, t.y + y * 8);
+                    e.collider = new EntityCollider();
                 }
             }
         }
@@ -472,6 +492,10 @@ public class SystemSpawn : GameSystem
             trunk.draw.yrepeat = 16 * 2;
             trunk.draw.z = 0;
         }
+        if (t.type == ThingType.CastleBlock)
+        {
+            SpawnCastleBlock.Spawn(game, t.x, t.y, t.castleBlockFireballs, t.castleBlockSpeed, t.castleBlockDirection);
+        }
 
         // Characters
 
@@ -522,6 +546,15 @@ public class SystemSpawn : GameSystem
         if (t.type == ThingType.Bush3)
         {
             SpawnScenery(game, "SceneryBush3", t.x, t.y, 64, 16);
+        }
+        if (t.type == ThingType.Water)
+        {
+            Entity top = SpawnScenery(game, "SceneryWaterNormalTop", t.x, t.y, 8, 8);
+            top.draw.xrepeat = t.width * 2;
+
+            Entity middle = SpawnScenery(game, "SceneryWaterNormalMiddle", t.x, t.y - 4, 8, 8);
+            middle.draw.xrepeat = t.width * 2;
+            middle.draw.yrepeat = 20;
         }
     }
 
@@ -686,6 +719,37 @@ public class SettingApply
             if (sprite == "CharactersPiranhaNormalTwo")
             {
                 sprite = "CharactersPiranhaCastleTwo";
+            }
+            if (sprite == "SolidsFloorNormal")
+            {
+                sprite = "SolidsCastleStoneNormal";
+            }
+            if (sprite == "SolidsStoneNormal")
+            {
+                sprite = "SolidsCastleStoneNormal";
+            }
+            if (sprite == "SceneryWaterNormalMiddle")
+            {
+                sprite = "SceneryWaterCastleNormalMiddle";
+            }
+            if (sprite == "SceneryWaterNormalTop")
+            {
+                sprite = "SceneryWaterCastleNormalTop";
+            }
+            if (sprite == "SolidsBlockNormalUsed")
+            {
+                sprite = "SolidsCastleBlock";
+            }
+        }
+        if (setting == SettingType.Underwater)
+        {
+            if (sprite == "SceneryWaterNormalMiddle")
+            {
+                sprite = "SceneryWaterUnderwaterMiddle";
+            }
+            if (sprite == "SceneryWaterNormalTop")
+            {
+                sprite = "SceneryWaterUnderwaterTop";
             }
         }
         return sprite;

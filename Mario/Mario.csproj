@@ -68,6 +68,7 @@
     </Compile>
     <Compile Include="Scripts\BrickBumpAnimation.ci.cs" />
     <Compile Include="Scripts\BrickShard.ci.cs" />
+    <Compile Include="Scripts\CastleBlock.ci.cs" />
     <Compile Include="Scripts\CoinInQuestionBlock.ci.cs" />
     <Compile Include="Scripts\CoinStatic.ci.cs" />
     <Compile Include="Scripts\Fireball.ci.cs" />

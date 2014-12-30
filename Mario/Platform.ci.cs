@@ -3,6 +3,7 @@
     // Primitive
     public abstract int FloatToInt(float value);
     public abstract float MathSqrt(float p);
+    public abstract float MathSin(float value);
     public abstract int StringLength(string a);
 
     public abstract string StringTrim(string s);

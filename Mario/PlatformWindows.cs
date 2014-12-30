@@ -386,6 +386,11 @@ namespace Mario
         {
             return true;
         }
+
+        public override float MathSin(float value)
+        {
+            return (float)Math.Sin(value);
+        }
     }
 
     public class BitmapCiCs : BitmapCi
