@@ -18,17 +18,18 @@
         if (game.gamePaused) { return; }
         t += dt;
         Entity e = game.entities[entity];
-        e.draw.z = 0; // Draw growing mushroom behind question block
 
         // Grow mushroom
         float growProgress = t / constGrowTime;
         if (growProgress < 1)
         {
             e.draw.yOffset = 16 - growProgress * 16;
+            e.draw.z = 0; // Draw growing mushroom behind question block
         }
         else
         {
             e.draw.yOffset = 0;
+            e.draw.z = 1;
             if (!done)
             {
                 done = true;
