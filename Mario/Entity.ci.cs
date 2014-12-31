@@ -8,6 +8,7 @@
         attackablePush = null;
         attackableTouch = null;
         growable = null;
+        attackableBump = null;
 
         scripts = new Script[scriptsMax];
         for (int i = 0; i < scriptsMax; i++)
@@ -33,6 +34,7 @@
     internal EntityAttackableFireball attackableFireball;
     // Touched by mushroom
     internal EntityGrowable growable;
+    internal EntityAttackableBump attackableBump;
 
     internal Script[] scripts;
     internal int scriptsCount;
@@ -182,6 +184,26 @@ public class EntityGrowable
     public void Delete()
     {
     }
+}
+
+public class EntityAttackableBump
+{
+    public EntityAttackableBump()
+    {
+        bumped = BumpType.None;
+    }
+    internal BumpType bumped;
+
+    public void Delete()
+    {
+    }
+}
+
+public enum BumpType
+{
+    None,
+    Left,
+    Right
 }
 
 public class EntityDraw

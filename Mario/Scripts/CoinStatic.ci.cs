@@ -11,13 +11,21 @@
     {
         Entity e = game.entities[entity];
 
-        // Touched by player
+        // Touched or bumped by player
         if (e.attackableTouch == null)
         {
             e.attackableTouch = new EntityAttackableTouch();
         }
-        if (e.attackableTouch.touched)
+        if (e.attackableBump == null)
         {
+            e.attackableBump = new EntityAttackableBump();
+        }
+        if (e.attackableTouch.touched || e.attackableBump.bumped != BumpType.None)
+        {
+            if (e.attackableBump.bumped != BumpType.None)
+            {
+                SpawnCoinInQuestionBlock.Spawn(game, e.draw.x, e.draw.y);
+            }
             game.score += Game.ScoreCoin;
             game.coins++;
             game.AudioPlay("Coin");

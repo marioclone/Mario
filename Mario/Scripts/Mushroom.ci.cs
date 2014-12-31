@@ -76,3 +76,57 @@ public enum MushroomType
     MushroomDeathly,
     FireFlower
 }
+
+public class SpawnMushroom
+{
+    public static void Spawn(Game game, int x, int y, int thingType)
+    {
+        int spawnX = x * 2;
+        int spawnY = 240 - y * 2 - 16 * 2;
+
+        Entity e = new Entity();
+        e.draw = new EntityDraw();
+        e.draw.x = spawnX;
+        e.draw.y = spawnY;
+        e.attackableBump = new EntityAttackableBump();
+        ScriptMushroom script = new ScriptMushroom();
+
+        if (thingType == ThingType.Mushroom)
+        {
+            if (game.playerGrowth == 0)
+            {
+                script.mushroomType = MushroomType.Mushroom;
+                e.draw.sprite = "CharactersMushroom";
+            }
+            else
+            {
+                script.mushroomType = MushroomType.FireFlower;
+                e.draw.sprite = "CharactersFireFlowerNormalNormal";
+                ScriptAnimation animation = new ScriptAnimation();
+                animation.constAnimCount = 4;
+                animation.constAnimSpeed = 20;
+                animation.constAnims = new string[4];
+                animation.constAnims[0] = "CharactersFireFlowerNormalNormal";
+                animation.constAnims[1] = "CharactersFireFlowerNormalTwo";
+                animation.constAnims[2] = "CharactersFireFlowerNormalThree";
+                animation.constAnims[3] = "CharactersFireFlowerNormalFour";
+                animation.constGlobalTime = true;
+                e.scripts[e.scriptsCount++] = animation;
+            }
+        }
+        if (thingType == ThingType.Mushroom1Up)
+        {
+            script.mushroomType = MushroomType.Mushroom1Up;
+            e.draw.sprite = "CharactersMushroom1Up";
+        }
+        if (thingType == ThingType.MushroomDeathly)
+        {
+            script.mushroomType = MushroomType.MushroomDeathly;
+            e.draw.sprite = "CharactersMushroomDeathly";
+        }
+
+        e.scripts[e.scriptsCount++] = script;
+        game.AddEntity(e);
+        game.AudioPlay("MushroomAppear");
+    }
+}

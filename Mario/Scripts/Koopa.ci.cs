@@ -14,7 +14,7 @@
         constReviveTime2 = 3;
         constReviveBlinkingSpeed = 5;
         isDead = false;
-        deadFromFireball = new DeadFromFireball();
+        deadFromFireball = new DeadFromFireballOrBump();
     }
 
     float t;
@@ -29,7 +29,7 @@
     float constReviveTime2;
     float constReviveBlinkingSpeed;
     bool isDead;
-    DeadFromFireball deadFromFireball;
+    DeadFromFireballOrBump deadFromFireball;
 
     public override void Update(Game game, int entity, float dt)
     {
@@ -200,9 +200,9 @@ public class SpawnKoopa
     }
 }
 
-public class DeadFromFireball
+public class DeadFromFireballOrBump
 {
-    public DeadFromFireball()
+    public DeadFromFireballOrBump()
     {
         float one = 1;
         constDeadTime = one / 2;
@@ -217,24 +217,21 @@ public class DeadFromFireball
     {
         Entity e = game.entities[entity];
 
-        // If touched by fireball, the goomba dies
+        // If touched by fireball, entity dies
         if (e.attackableFireball != null)
         {
             if (e.attackableFireball.attacked
                 && (!dead))
             {
-                if (e.collider != null)
-                {
-#if CITO
-                    delete e.collider;
-#endif
-                    e.collider = null;
-                }
-                dead = true;
-                deadFromFireball = true;
-                t = 0;
-                game.AudioPlay("Shot");
-                Spawn_.Score(game, e.draw.x, e.draw.y, score);
+                Die(game, score, e);
+            }
+        }
+        // If bumped, entity dies
+        if (e.attackableBump != null)
+        {
+            if (e.attackableBump.bumped != BumpType.None && (!dead))
+            {
+                Die(game, score, e);
             }
         }
 
@@ -251,5 +248,21 @@ public class DeadFromFireball
         }
 
         return deadFromFireball;
+    }
+
+    void Die(Game game, int score, Entity e)
+    {
+        if (e.collider != null)
+        {
+#if CITO
+            delete e.collider;
+#endif
+            e.collider = null;
+        }
+        dead = true;
+        deadFromFireball = true;
+        t = 0;
+        game.AudioPlay("Shot");
+        Spawn_.Score(game, e.draw.x, e.draw.y, score);
     }
 }

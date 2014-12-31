@@ -44,3 +44,20 @@
         }
     }
 }
+
+public class SpawnCoinInQuestionBlock
+{
+    public static void Spawn(Game game, float x, float y)
+    {
+        Entity e = new Entity();
+        e.draw = new EntityDraw();
+        e.draw.sprite = "CharactersCoinAnimNormal";
+        e.draw.x = x;
+        e.draw.y = y;
+        e.scripts[e.scriptsCount++] = new ScriptCoinInQuestionBlock();
+        game.AddEntity(e);
+
+        game.coins++;
+        game.AudioPlay("Coin");
+    }
+}

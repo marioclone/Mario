@@ -7,11 +7,11 @@
         startY = -1;
         dead = false;
         constCycleSeconds = 5;
-        d = new DeadFromFireball();
+        d = new DeadFromFireballOrBump();
     }
 
     float t;
-    DeadFromFireball d;
+    DeadFromFireballOrBump d;
     float constAnimSpeed;
     float startY;
     float constCycleSeconds;

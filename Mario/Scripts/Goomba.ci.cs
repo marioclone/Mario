@@ -4,16 +4,18 @@
     {
         t = 0;
         dead = false;
+        deadFromFireball_ = false;
         constAnimSpeed = 4;
         constDeadTime = one / 2;
-        deadFromFireball = new DeadFromFireball();
+        deadFromFireball = new DeadFromFireballOrBump();
     }
 
     float t;
     bool dead;
+    bool deadFromFireball_;
     float constAnimSpeed;
     float constDeadTime;
-    DeadFromFireball deadFromFireball;
+    DeadFromFireballOrBump deadFromFireball;
 
     public override void Update(Game game, int entity, float dt)
     {
@@ -44,7 +46,7 @@
             }
         }
 
-        if (!dead)
+        if (!dead && !deadFromFireball_)
         {
             HelperAttackWithTouch.Update(game, e);
 
@@ -58,8 +60,11 @@
                 e.draw.mirror = MirrorType.None;
             }
         }
-        
-        deadFromFireball.Update(game, entity, dt, Game.ScoreGoomba);
+
+        if (deadFromFireball.Update(game, entity, dt, Game.ScoreGoomba))
+        {
+            deadFromFireball_ = true;
+        }
 
         // Remove dead goomba
         if (dead && t > constDeadTime)
@@ -77,6 +82,7 @@ public class SpawnGoomba
         e.attackablePush = new EntityAttackablePush();
         e.attackablePush.pushSide = PushSide.TopJumpOnEnemy;
         e.attackableFireball = new EntityAttackableFireball();
+        e.attackableBump = new EntityAttackableBump();
         e.enemyCollider = true;
         e.scripts[e.scriptsCount++] = new ScriptGoomba();
         e.scripts[e.scriptsCount++] = new ScriptMoving();

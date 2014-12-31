@@ -321,7 +321,7 @@ public class SystemSpawn : GameSystem
                     action.y = t.y + y * 8 + 8;
                     script.onUse = action;
                     e.scripts[e.scriptsCount++] = script;
-                    e.scripts[e.scriptsCount++] = new ScriptBrickBumpAnimation();
+                    e.scripts[e.scriptsCount++] = new ScriptBrickBump();
                 }
                 if (t.type == ThingType.Brick)
                 {
@@ -329,7 +329,7 @@ public class SystemSpawn : GameSystem
                     e.collider = new EntityCollider();
                     e.attackablePush = new EntityAttackablePush();
                     e.attackablePush.pushSide = PushSide.BottomBrickDestroy;
-                    e.scripts[e.scriptsCount++] = new ScriptBrickBumpAnimation();
+                    e.scripts[e.scriptsCount++] = new ScriptBrickBump();
                     e.scripts[e.scriptsCount++] = new ScriptBrickDestroy();
                 }
                 if (t.type == ThingType.Stone)
@@ -777,62 +777,11 @@ public class ActionSpawnThing
             || thingType == ThingType.Mushroom1Up
             || thingType == ThingType.MushroomDeathly)
         {
-            Entity e = new Entity();
-            e.draw = new EntityDraw();
-            e.draw.x = spawnX;
-            e.draw.y = spawnY;
-            ScriptMushroom script = new ScriptMushroom();
-
-            if (thingType == ThingType.Mushroom)
-            {
-                if (game.playerGrowth == 0)
-                {
-                    script.mushroomType = MushroomType.Mushroom;
-                    e.draw.sprite = "CharactersMushroom";
-                }
-                else
-                {
-                    script.mushroomType = MushroomType.FireFlower;
-                    e.draw.sprite = "CharactersFireFlowerNormalNormal";
-                    ScriptAnimation animation = new ScriptAnimation();
-                    animation.constAnimCount = 4;
-                    animation.constAnimSpeed = 20;
-                    animation.constAnims = new string[4];
-                    animation.constAnims[0] = "CharactersFireFlowerNormalNormal";
-                    animation.constAnims[1] = "CharactersFireFlowerNormalTwo";
-                    animation.constAnims[2] = "CharactersFireFlowerNormalThree";
-                    animation.constAnims[3] = "CharactersFireFlowerNormalFour";
-                    animation.constGlobalTime = true;
-                    e.scripts[e.scriptsCount++] = animation;
-                }
-            }
-            if (thingType == ThingType.Mushroom1Up)
-            {
-                script.mushroomType = MushroomType.Mushroom1Up;
-                e.draw.sprite = "CharactersMushroom1Up";
-            }
-            if (thingType == ThingType.MushroomDeathly)
-            {
-                script.mushroomType = MushroomType.MushroomDeathly;
-                e.draw.sprite = "CharactersMushroomDeathly";
-            }
-
-            e.scripts[e.scriptsCount++] = script;
-            game.AddEntity(e);
-            game.AudioPlay("MushroomAppear");
+            SpawnMushroom.Spawn(game, x, y, thingType);
         }
         if (thingType == ThingType.CoinAnimation)
         {
-            Entity e = new Entity();
-            e.draw = new EntityDraw();
-            e.draw.sprite = "CharactersCoinAnimNormal";
-            e.draw.x = spawnX;
-            e.draw.y = spawnY;
-            e.scripts[e.scriptsCount++] = new ScriptCoinInQuestionBlock();
-            game.AddEntity(e);
-            
-            game.coins++;
-            game.AudioPlay("Coin");
+            SpawnCoinInQuestionBlock.Spawn(game, spawnX, spawnY);
         }
         if (thingType == ThingType.Score)
         {
