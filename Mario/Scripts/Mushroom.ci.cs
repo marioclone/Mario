@@ -52,14 +52,16 @@
             if (Misc.RectIntersect(e.draw.x, e.draw.y, e.draw.width, e.draw.height,
                 e2.draw.x, e2.draw.y, e2.draw.width, e2.draw.height))
             {
-                e2.growable.grow = true;
                 if (mushroomType == MushroomType.Mushroom
                     || mushroomType == MushroomType.FireFlower)
                 {
+                    e2.growable.grow = true;
                     Spawn_.Score(game, e.draw.x, e.draw.y, Game.ScoreMushroom);
                 }
                 else if (mushroomType == MushroomType.Mushroom1Up)
                 {
+                    game.lifesLeft += 1;
+                    game.AudioPlay("OneUp");
                     Spawn_.Score(game, e.draw.x, e.draw.y, Spawn_.Score1Up);
                 }
                 game.DeleteEntity(entity);
