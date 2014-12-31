@@ -37,7 +37,7 @@
         bool worldRestarted = false;
         if (coinEntityId != -1)
         {
-            if (game.entities[coinEntityId] == null)
+            if (game.entities[coinEntityId] != coin)
             {
                 worldRestarted = true;
             }
