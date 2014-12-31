@@ -55,6 +55,7 @@
         gameScreenWidth = 0;
         gameStarted = false;
         gamePaused = true;
+        gamePausedByGrowthShrink = false;
         gameShowDeathScreen = false;
         restart = false;
         restartPositionX = 0;
@@ -103,6 +104,7 @@
     internal float addY;
     internal bool gameStarted;
     internal bool gamePaused;
+    internal bool gamePausedByGrowthShrink;
     internal bool gameShowDeathScreen;
     internal bool restart;
     internal int restartPositionX;

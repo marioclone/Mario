@@ -22,6 +22,7 @@ public class ScriptMoving : Script
     {
         Entity e = game.entities[entity];
         if (game.gamePaused) { return; }
+        if (game.gamePausedByGrowthShrink) { return; }
         if (!IsActiveHelper.IsActive(game, e.draw.x)) { return; }
         if (direction == 0) { return; }
         t += dt;

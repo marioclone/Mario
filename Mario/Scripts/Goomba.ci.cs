@@ -21,6 +21,7 @@
     {
         Entity e = game.entities[entity];
         if (game.gamePaused) { return; }
+        if (game.gamePausedByGrowthShrink) { return; }
         if (!IsActiveHelper.IsActive(game, e.draw.x)) { return; }
 
         t += dt;

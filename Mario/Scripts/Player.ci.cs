@@ -16,6 +16,8 @@
         topPipeEnter = -1;
         leftPipeEnter = -1;
         fireballTime = 999;
+        growthAnimationTime = -1;
+        shrinkAnimationTime = -1;
         controlsFirePreviously = false;
 
         controlsTemp = new Controls();
@@ -27,9 +29,11 @@
         constAnimSpeed = 10;
         constMaxJumpTime = one * 2 / 10;
         constJumpVelocity = -200;
-        constInvulnerableTime = 3;
+        constInvulnerableTime = one * 20 / 10;
         constRunningMultiplier = one * 16 / 10;
         constFireballFrequency = one * 50 / 10;
+        constGrowthShrinkAnimationLength = one * 10 / 10;
+        constGrowthShrinkAnimationSpeed = 10;
     }
 
     float t;
@@ -46,6 +50,8 @@
     float topPipeEnter;
     float leftPipeEnter;
     float fireballTime;
+    float growthAnimationTime;
+    float shrinkAnimationTime;
 
     Controls controlsTemp;
 
@@ -59,6 +65,8 @@
     float constInvulnerableTime;
     float constRunningMultiplier;
     float constFireballFrequency;
+    float constGrowthShrinkAnimationLength;
+    float constGrowthShrinkAnimationSpeed;
 
     public override void Update(Game game, int entity, float dt)
     {
@@ -92,6 +100,21 @@
         }
 
         if (game.gamePaused) { return; }
+        if (growthAnimationTime != -1 && growthAnimationTime < constGrowthShrinkAnimationLength)
+        {
+            game.gamePausedByGrowthShrink = true;
+            return;
+        }
+        if (shrinkAnimationTime != -1 && shrinkAnimationTime < constGrowthShrinkAnimationLength)
+        {
+            game.gamePausedByGrowthShrink = true;
+            return;
+        }
+        game.gamePausedByGrowthShrink = false;
+        if (growthAnimationTime > constGrowthShrinkAnimationLength)
+        {
+            growthAnimationTime = -1;
+        }
 
         bool crouchingSlide = crouching && onGround;
 
@@ -262,6 +285,10 @@
                 e.draw.y -= 16;
             }
             growth++;
+            if (growth <= 2)
+            {
+                growthAnimationTime = 0;
+            }
             if (growth > 2)
             {
                 growth = 2;
@@ -296,6 +323,7 @@
                 else
                 {
                     growth--;
+                    shrinkAnimationTime = 0;
                     crouching = false;
                     invulnerable = constInvulnerableTime;
                     game.AudioPlay("Shrink");
@@ -408,18 +436,81 @@
 
     void UpdateSprite(Game game, float dt, Entity e, Controls controls)
     {
-        // Sprite
-        if (velX == 0)
+        int currentGrowth = growth;
+        float currentVelX = velX;
+
+        // Growth animation
+        if (growthAnimationTime != -1)
         {
-            if (growth == 0)
+            growthAnimationTime += dt;
+            if (game.platform.FloatToInt(growthAnimationTime * constGrowthShrinkAnimationSpeed) % 2 == 0)
+            {
+                currentGrowth = growth;
+                e.draw.yOffset = 0;
+            }
+            else
+            {
+                currentGrowth = growth - 1;
+                if (currentGrowth == 0)
+                {
+                    e.draw.yOffset = 16;
+                }
+            }
+            currentVelX = 0;
+        }
+        else
+        {
+            e.draw.yOffset = 0;
+        }
+
+        // Shrink animation
+        if (shrinkAnimationTime != -1)
+        {
+            shrinkAnimationTime += dt;
+            if (game.platform.FloatToInt(shrinkAnimationTime * constGrowthShrinkAnimationSpeed) % 2 == 0)
+            {
+                currentGrowth = growth;
+                e.draw.yOffset = 0;
+            }
+            else
+            {
+                currentGrowth = growth + 1;
+                if (currentGrowth == 1)
+                {
+                    e.draw.yOffset = -16;
+                }
+            }
+        }
+        if (shrinkAnimationTime != -1)
+        {
+            if (game.platform.FloatToInt(shrinkAnimationTime * constGrowthShrinkAnimationSpeed * 2) % 2 == 0)
+            {
+                e.draw.hidden = true;
+            }
+            else
+            {
+                e.draw.hidden = false;
+            }
+        }
+        if (shrinkAnimationTime > constGrowthShrinkAnimationLength)
+        {
+            shrinkAnimationTime = -1;
+            e.draw.hidden = false;
+        }
+
+
+        // Sprite
+        if (currentVelX == 0)
+        {
+            if (currentGrowth == 0)
             {
                 e.draw.sprite = "CharactersPlayerNormalNormalNormalNormal";
             }
-            if (growth == 1)
+            if (currentGrowth == 1)
             {
                 e.draw.sprite = "CharactersPlayerNormalLargeNormalNormal";
             }
-            if (growth == 2)
+            if (currentGrowth == 2)
             {
                 e.draw.sprite = "CharactersPlayerNormalFieryNormalNormal";
             }
@@ -440,21 +531,21 @@
             }
             float stagesCount = 4;
             int stage = game.platform.FloatToInt(t * constAnimSpeed % stagesCount);
-            if (growth == 0)
+            if (currentGrowth == 0)
             {
                 if (stage == 0) { e.draw.sprite = "CharactersPlayerNormalNormalNormalRunningNormalTwo"; }
                 if (stage == 1) { e.draw.sprite = "CharactersPlayerNormalNormalNormalRunningNormalNormal"; }
                 if (stage == 2) { e.draw.sprite = "CharactersPlayerNormalNormalNormalRunningNormalTwo"; }
                 if (stage == 3) { e.draw.sprite = "CharactersPlayerNormalNormalNormalRunningNormalThree"; }
             }
-            if (growth == 1)
+            if (currentGrowth == 1)
             {
                 if (stage == 0) { e.draw.sprite = "CharactersPlayerNormalLargeNormalRunningNormalTwo"; }
                 if (stage == 1) { e.draw.sprite = "CharactersPlayerNormalLargeNormalRunningNormalNormal"; }
                 if (stage == 2) { e.draw.sprite = "CharactersPlayerNormalLargeNormalRunningNormalTwo"; }
                 if (stage == 3) { e.draw.sprite = "CharactersPlayerNormalLargeNormalRunningNormalThree"; }
             }
-            if (growth == 2)
+            if (currentGrowth == 2)
             {
                 if (stage == 0) { e.draw.sprite = "CharactersPlayerNormalFieryNormalRunningNormalTwo"; }
                 if (stage == 1) { e.draw.sprite = "CharactersPlayerNormalFieryNormalRunningNormalNormal"; }
@@ -464,20 +555,20 @@
         }
         if (!onGround)
         {
-            if (growth == 0)
+            if (currentGrowth == 0)
             {
                 e.draw.sprite = "CharactersPlayerNormalNormalJumping";
             }
-            if (growth == 1)
+            if (currentGrowth == 1)
             {
                 e.draw.sprite = "CharactersPlayerNormalLargeJumping";
             }
-            if (growth == 2)
+            if (currentGrowth == 2)
             {
                 e.draw.sprite = "CharactersPlayerNormalFieryJumping";
             }
         }
-        if (growth == 0)
+        if (currentGrowth == 0)
         {
             e.draw.width = 16;
             e.draw.height = 16;
@@ -494,11 +585,11 @@
         {
             if (crouching)
             {
-                if (growth == 1)
+                if (currentGrowth == 1)
                 {
                     e.draw.sprite = "CharactersPlayerNormalLargeNormalCrouching";
                 }
-                if (growth == 2)
+                if (currentGrowth == 2)
                 {
                     e.draw.sprite = "CharactersPlayerNormalFieryNormalCrouching";
                 }
