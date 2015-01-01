@@ -271,4 +271,6 @@ public class EntityCollider
     public void Delete()
     {
     }
+
+    internal bool playerStuck;
 }

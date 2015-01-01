@@ -95,11 +95,11 @@
             float newx = e.draw.x + velX * dt;
             float newy = e.draw.y + 1;
 
-            bool isOnGroundOld = !CollisionHelper.IsEmpty(game, entity, oldx + e.draw.collisionOffsetX + e.draw.width / 2, oldy + e.draw.collisionOffsetY + 1, 1, e.draw.height + e.draw.collisionOffsetHeight + 1, !slide);
-            bool isOnGroundNew = !CollisionHelper.IsEmpty(game, entity, newx + e.draw.collisionOffsetX + e.draw.width / 2, oldy + e.draw.collisionOffsetY + 1, 1, e.draw.height + e.draw.collisionOffsetHeight + 1, !slide);
+            bool isOnGroundOld = !CollisionHelper.IsEmpty(game, entity, oldx + e.draw.collisionOffsetX + e.draw.width / 2, oldy + e.draw.collisionOffsetY + 1, 1, e.draw.height + e.draw.collisionOffsetHeight + 1, !slide, false);
+            bool isOnGroundNew = !CollisionHelper.IsEmpty(game, entity, newx + e.draw.collisionOffsetX + e.draw.width / 2, oldy + e.draw.collisionOffsetY + 1, 1, e.draw.height + e.draw.collisionOffsetHeight + 1, !slide, false);
 
             // Move horizontally
-            if (CollisionHelper.IsEmpty(game, entity, newx + e.draw.collisionOffsetX, oldy + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight, !slide)
+            if (CollisionHelper.IsEmpty(game, entity, newx + e.draw.collisionOffsetX, oldy + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight, !slide, false)
                 && (!(isOnGroundOld && (!isOnGroundNew) && (!slide))))
             {
                 e.draw.x = newx;
@@ -112,8 +112,8 @@
             }
 
             // Move vertically (down)
-            if (CollisionHelper.IsEmpty(game, entity, oldx + e.draw.collisionOffsetX, newy + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight, !slide)
-                && CollisionHelper.IsEmpty(game, entity, oldx + e.draw.collisionOffsetX, newy + 1 + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight, !slide))
+            if (CollisionHelper.IsEmpty(game, entity, oldx + e.draw.collisionOffsetX, newy + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight, !slide, false)
+                && CollisionHelper.IsEmpty(game, entity, oldx + e.draw.collisionOffsetX, newy + 1 + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight, !slide, false))
             {
                 e.draw.y = newy;
             }

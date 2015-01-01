@@ -53,7 +53,7 @@
                 if (Misc.RectIntersect(e.draw.x, newy, e.draw.width * e.draw.xrepeat, e.draw.height * e.draw.yrepeat,
                     e2.draw.x, e2.draw.y, e2.draw.width * e2.draw.xrepeat, e2.draw.height * e2.draw.yrepeat))
                 {
-                    e2.draw.y -= constSpeed * dt + one / 2;
+                    e2.draw.y -= constSpeed * dt + one;
                 }
             }
             

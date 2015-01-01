@@ -233,13 +233,13 @@
         }
 
 
-        if (CollisionHelper.IsEmpty(game, -1, newx + e.draw.collisionOffsetX, e.draw.y + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight, false)
+        if (CollisionHelper.IsEmpty(game, -1, newx + e.draw.collisionOffsetX, e.draw.y + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight, false, true)
             && newx >= game.scrollx)
         {
             e.draw.x = newx;
         }
 
-        if (CollisionHelper.IsEmpty(game, -1, e.draw.x + e.draw.collisionOffsetX, newy + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight, false))
+        if (CollisionHelper.IsEmpty(game, -1, e.draw.x + e.draw.collisionOffsetX, newy + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight, false, true))
         {
             e.draw.y = newy;
         }
@@ -292,6 +292,27 @@
             if (growth > 2)
             {
                 growth = 2;
+            }
+        }
+
+        // If player is stuck colliding with an entity, disable collision with that entity
+        // Example: player can get stuck when he grows and there is a block above him
+        for (int i = 0; i < game.entitiesCount; i++)
+        {
+            if (i == entity) { continue; }
+            if (game.entities[i] == null) { continue; }
+            Entity e2 = game.entities[i];
+            if (e2.collider != null)
+            {
+                if (Misc.RectIntersect(e.draw.x + e.draw.collisionOffsetX, e.draw.y + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight,
+                    e2.draw.x, e2.draw.y, e2.draw.width * e2.draw.xrepeat, e2.draw.height * e2.draw.yrepeat))
+                {
+                    e2.collider.playerStuck = true;
+                }
+                else
+                {
+                    e2.collider.playerStuck = false;
+                }
             }
         }
 

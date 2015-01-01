@@ -37,7 +37,7 @@ public class ScriptMoving : Script
         }
 
         // Move horizontally
-        if (CollisionHelper.IsEmpty(game, entity, newx, oldy, e.draw.width, e.draw.height, true))
+        if (CollisionHelper.IsEmpty(game, entity, newx, oldy, e.draw.width, e.draw.height, true, false))
         {
             e.draw.x = newx;
         }
@@ -49,7 +49,7 @@ public class ScriptMoving : Script
         }
 
         // Move vertically (down)
-        if (CollisionHelper.IsEmpty(game, entity, oldx, newy, e.draw.width, e.draw.height, true))
+        if (CollisionHelper.IsEmpty(game, entity, oldx, newy, e.draw.width, e.draw.height, true, false))
         //  && CollisionHelper.IsEmpty(game, entity, oldx, newy + 1, e.draw.width, e.draw.height, true))
         {
             e.draw.y = newy;

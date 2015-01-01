@@ -162,7 +162,7 @@ public class Misc
 
 public class CollisionHelper
 {
-    public static bool IsEmpty(Game game, int exceptEntity, float x, float y, float w, float h, bool collideWithEnemies)
+    public static bool IsEmpty(Game game, int exceptEntity, float x, float y, float w, float h, bool collideWithEnemies, bool forPlayer)
     {
         for (int i = 0; i < game.entitiesCount; i++)
         {
@@ -177,6 +177,10 @@ public class CollisionHelper
             Entity e = game.entities[i];
             if (e.collider != null || (collideWithEnemies && e.enemyCollider))
             {
+                if (forPlayer && e.collider.playerStuck)
+                {
+                    continue;
+                }
                 if (Misc.RectIntersect(x, y, w, h, e.draw.x, e.draw.y, e.draw.width * e.draw.xrepeat, e.draw.height * e.draw.yrepeat))
                 {
                     return false;
