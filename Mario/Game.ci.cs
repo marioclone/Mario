@@ -114,6 +114,7 @@
     internal bool controlsOverrideActive;
     internal float playerx; // for mouse controls
     internal int playerGrowth; // for FireFlower
+    internal bool scrollBlock;
     
     internal AudioControl audio;
 

@@ -66,8 +66,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PlatformWindows.cs">
     </Compile>
+    <Compile Include="Scripts\Bowser.ci.cs" />
     <Compile Include="Scripts\BrickBump.ci.cs" />
     <Compile Include="Scripts\BrickShard.ci.cs" />
+    <Compile Include="Scripts\CastleAxe.ci.cs" />
     <Compile Include="Scripts\CastleBlock.ci.cs" />
     <Compile Include="Scripts\CoinInQuestionBlock.ci.cs" />
     <Compile Include="Scripts\CoinStatic.ci.cs" />

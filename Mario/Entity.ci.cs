@@ -9,6 +9,7 @@
         attackableTouch = null;
         growable = null;
         attackableBump = null;
+        IsCastleBridge = false;
 
         scripts = new Script[scriptsMax];
         for (int i = 0; i < scriptsMax; i++)
@@ -35,6 +36,7 @@
     // Touched by mushroom
     internal EntityGrowable growable;
     internal EntityAttackableBump attackableBump;
+    internal bool IsCastleBridge;
 
     internal Script[] scripts;
     internal int scriptsCount;

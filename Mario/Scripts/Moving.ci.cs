@@ -75,4 +75,8 @@ public class IsActiveHelper
     {
         return x >= game.scrollx - 32 && x < game.scrollx + 256 + 64;
     }
+    public static bool IsActiveBowser(Game game, float x)
+    {
+        return x >= game.scrollx - 32 && x < game.scrollx + 256 + 256 * 3;
+    }
 }

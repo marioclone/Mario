@@ -19,6 +19,7 @@
         growthAnimationTime = -1;
         shrinkAnimationTime = -1;
         controlsFirePreviously = false;
+        wasScrollBlock = false;
 
         controlsTemp = new Controls();
 
@@ -34,6 +35,7 @@
         constFireballFrequency = one * 50 / 10;
         constGrowthShrinkAnimationLength = one * 10 / 10;
         constGrowthShrinkAnimationSpeed = 10;
+        constScrollSpeed = 140;
     }
 
     float t;
@@ -52,6 +54,7 @@
     float fireballTime;
     float growthAnimationTime;
     float shrinkAnimationTime;
+    bool wasScrollBlock;
 
     Controls controlsTemp;
 
@@ -67,6 +70,7 @@
     float constFireballFrequency;
     float constGrowthShrinkAnimationLength;
     float constGrowthShrinkAnimationSpeed;
+    float constScrollSpeed;
 
     public override void Update(Game game, int entity, float dt)
     {
@@ -89,14 +93,33 @@
         UpdateSprite(game, dt, e, controls);
 
         // Scroll
-        float scrollX = e.draw.x - 256 / 2 + 8;
-        if (scrollX >= game.scrollxMax - 256)
+        float newScrollX = e.draw.x - 256 / 2 + 8;
+        if (!game.scrollBlock && (!wasScrollBlock))
         {
-            scrollX = game.scrollxMax - 256;
+            if (newScrollX >= game.scrollxMax - 256)
+            {
+                newScrollX = game.scrollxMax - 256;
+            }
+            if (newScrollX > game.scrollx)
+            {
+                game.scrollx = newScrollX;
+            }
         }
-        if (scrollX >= game.scrollx)
+        if (!game.scrollBlock && wasScrollBlock)
         {
-            game.scrollx = scrollX;
+            if (newScrollX >= game.scrollx)
+            {
+                game.scrollx += constScrollSpeed * dt;
+                if (game.scrollx > newScrollX)
+                {
+                    game.scrollx = newScrollX;
+                    wasScrollBlock = false;
+                }
+            }
+        }
+        else
+        {
+            wasScrollBlock = game.scrollBlock;
         }
 
         if (game.gamePaused) { return; }

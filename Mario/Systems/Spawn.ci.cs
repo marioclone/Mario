@@ -73,6 +73,7 @@ public class SystemSpawn : GameSystem
                     spawnY = 208 - playerHeight;
                 }
             }
+            //spawnX = 2000;
             
             game.restartPositionX = 0;
             game.restartPositionY = 0;
@@ -91,7 +92,11 @@ public class SystemSpawn : GameSystem
             player.draw.hidden = false;
             game.AddEntity(player);
 
-            game.scrollx = 0;
+            game.scrollx = spawnX - 256 / 2 + 8;
+            if (game.scrollx < 0)
+            {
+                game.scrollx = 0;
+            }
 
             // Main menu
             //{
@@ -193,6 +198,10 @@ public class SystemSpawn : GameSystem
             if (game.setting == SettingType.Underworld)
             {
                 game.audio.audioPlayMusic = "Underground";
+            }
+            else if (game.setting == SettingType.Castle)
+            {
+                game.audio.audioPlayMusic = "Castle";
             }
             else
             {
@@ -346,6 +355,7 @@ public class SystemSpawn : GameSystem
                 {
                     Entity e = Spawn(game, "SolidsCastleBridge", t.x + x * 8, t.y + y * 8);
                     e.collider = new EntityCollider();
+                    e.IsCastleBridge = true;
                 }
             }
         }
@@ -496,6 +506,16 @@ public class SystemSpawn : GameSystem
         {
             SpawnCastleBlock.Spawn(game, t.x, t.y, t.castleBlockFireballs, t.castleBlockSpeed, t.castleBlockDirection);
         }
+        if (t.type == ThingType.CastleAxe)
+        {
+            Entity e = SpawnCastleAxe.Spawn(game, t.x, t.y, t.transport);
+            e.IsCastleBridge = true;
+        }
+        if (t.type == ThingType.CastleChain)
+        {
+            Entity e = Spawn(game, "SceneryCastleChain", t.x, t.y);
+            e.IsCastleBridge = true;
+        }
 
         // Characters
 
@@ -512,6 +532,10 @@ public class SystemSpawn : GameSystem
         if (t.piranha)
         {
             SpawnPiranha.Spawn(game, t.x + 4, t.y + t.pipeHeight + 12);
+        }
+        if (t.type == ThingType.Bowser)
+        {
+            SpawnBowser.Spawn(game, t.x, t.y);
         }
 
         // Scenery
