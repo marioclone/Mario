@@ -64,6 +64,7 @@ public class ThingType
     public const int CastleNpc = 43;
     public const int Bowser = 44;
     public const int CastleBlock = 45;
+    public const int WarpWorld = 46;
 }
 
 public class Map
@@ -314,6 +315,7 @@ public class MapBinding : TableBinding
         if (value == "CastleAxe") { return ThingType.CastleAxe; }
         if (value == "CastleNpc") { return ThingType.CastleNpc; }
         if (value == "CastleBlock") { return ThingType.CastleBlock; }
+        if (value == "WarpWorld") { return ThingType.WarpWorld; }
         return -1;
     }
 

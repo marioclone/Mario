@@ -73,7 +73,7 @@ public class SystemSpawn : GameSystem
                     spawnY = 208 - playerHeight;
                 }
             }
-            //spawnX = 2000;
+            //spawnX = 2850;
             
             game.restartPositionX = 0;
             game.restartPositionY = 0;
@@ -401,9 +401,9 @@ public class SystemSpawn : GameSystem
         if (t.type == ThingType.PipeVertical)
         {
             Entity e = Spawn(game, "SolidsPipeVerticalNormal", t.x, t.y);
-            e.draw.width = 16;
+            e.draw.width = 32;
             e.draw.height = 16;
-            e.draw.z = 3;
+            e.draw.z = 2;
             e.draw.yrepeat = t.height;
             e.collider = new EntityCollider();
         }
@@ -516,6 +516,73 @@ public class SystemSpawn : GameSystem
             Entity e = Spawn(game, "SceneryCastleChain", t.x, t.y);
             e.IsCastleBridge = true;
         }
+        if (t.type == ThingType.WarpWorld)
+        {
+            {
+                ScriptDrawText script = SpawnText(game, t.x + 8, t.y + 48, 21);
+                script.text[0] = CharType.CharW;
+                script.text[1] = CharType.CharE;
+                script.text[2] = CharType.CharL;
+                script.text[3] = CharType.CharC;
+                script.text[4] = CharType.CharO;
+                script.text[5] = CharType.CharM;
+                script.text[6] = CharType.CharE;
+                script.text[7] = CharType.CharSpace;
+                script.text[8] = CharType.CharT;
+                script.text[9] = CharType.CharO;
+                script.text[10] = CharType.CharSpace;
+                script.text[11] = CharType.CharW;
+                script.text[12] = CharType.CharA;
+                script.text[13] = CharType.CharR;
+                script.text[14] = CharType.CharP;
+                script.text[15] = CharType.CharSpace;
+                script.text[16] = CharType.CharZ;
+                script.text[17] = CharType.CharO;
+                script.text[18] = CharType.CharN;
+                script.text[19] = CharType.CharE;
+                script.text[20] = CharType.CharExclamation;
+                
+            }
+            {
+                ScriptDrawText script4 = SpawnText(game, t.x + 12, t.y + 36, 1);
+                script4.text[0] = CharType.Char4;
+                ScriptDrawText script3 = SpawnText(game, t.x + 44, t.y + 36, 1);
+                script3.text[0] = CharType.Char3;
+                ScriptDrawText script2 = SpawnText(game, t.x + 76, t.y + 36, 1);
+                script2.text[0] = CharType.Char2;
+            }
+            {
+
+                Thing t2 = new Thing();
+                t2.type = ThingType.Pipe;
+                t2.pipeHeight = 24;
+                t2.x = t.x + 8;
+                t2.y = t.y;
+                t2.piranha = true;
+                t2.transport = "4-1-0";
+                SpawnThing(game, map, t2);
+            }
+            {
+                Thing t2 = new Thing();
+                t2.type = ThingType.Pipe;
+                t2.pipeHeight = 24;
+                t2.x = t.x + 40;
+                t2.y = t.y;
+                t2.piranha = true;
+                t2.transport = "3-1-0";
+                SpawnThing(game, map, t2);
+            }
+            {
+                Thing t2 = new Thing();
+                t2.type = ThingType.Pipe;
+                t2.pipeHeight = 24;
+                t2.x = t.x + 72;
+                t2.y = t.y;
+                t2.piranha = true;
+                t2.transport = "2-1-0";
+                SpawnThing(game, map, t2);
+            }
+        }
 
         // Characters
 
@@ -580,6 +647,19 @@ public class SystemSpawn : GameSystem
             middle.draw.xrepeat = t.width * 2;
             middle.draw.yrepeat = 20;
         }
+    }
+
+    static ScriptDrawText SpawnText(Game game, float x, float y, int length)
+    {
+        Entity e = Spawn(game, "", x, y);
+        ScriptDrawText script = new ScriptDrawText();
+        script.absoluteScreenPosition = false;
+        script.x = game.platform.FloatToInt(e.draw.x);
+        script.y = game.platform.FloatToInt(e.draw.y);
+        script.text = new int[length];
+        script.textLength = length;
+        e.scripts[e.scriptsCount++] = script;
+        return script;
     }
 
     bool IsOnScreen(Game game, int x)
@@ -732,6 +812,22 @@ public class SettingApply
             if (sprite == "CharactersPiranhaNormalTwo")
             {
                 sprite = "CharactersPiranhaUnderworldTwo";
+            }
+            if (sprite == "SolidsPipeHorizontal")
+            {
+                sprite = "SolidsPipeHorizontalUnderworld";
+            }
+            if (sprite == "SolidsPipeVerticalNormal")
+            {
+                sprite = "SolidsPipeVerticalUnderworld";
+            }
+            if (sprite == "SolidsPipeNormalTop")
+            {
+                sprite = "SolidsPipeUnderworldTop";
+            }
+            if (sprite == "SolidsPipeNormalMiddle")
+            {
+                sprite = "SolidsPipeUnderworldMiddle";
             }
         }
         if (setting == SettingType.Castle)

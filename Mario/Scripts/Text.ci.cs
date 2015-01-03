@@ -28,7 +28,7 @@
     int loadedTextLength;
     int[] loadedText;
     int[] loadedEntities;
-    const int constMaxLength = 16;
+    const int constMaxLength = 32;
 
     public override void Delete(Game game)
     {
