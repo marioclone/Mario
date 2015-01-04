@@ -65,6 +65,9 @@ public class ThingType
     public const int Bowser = 44;
     public const int CastleBlock = 45;
     public const int WarpWorld = 46;
+    public const int Fence = 47;
+    public const int PlantSmall = 48;
+    public const int PlantLarge = 49;
 }
 
 public class Map
@@ -316,6 +319,9 @@ public class MapBinding : TableBinding
         if (value == "CastleNpc") { return ThingType.CastleNpc; }
         if (value == "CastleBlock") { return ThingType.CastleBlock; }
         if (value == "WarpWorld") { return ThingType.WarpWorld; }
+        if (value == "Fence") { return ThingType.Fence; }
+        if (value == "PlantSmall") { return ThingType.PlantSmall; }
+        if (value == "PlantLarge") { return ThingType.PlantLarge; }
         return -1;
     }
 

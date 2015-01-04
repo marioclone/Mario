@@ -487,20 +487,20 @@ public class SystemSpawn : GameSystem
         {
             Entity topLeft = Spawn(game, "SolidsTreeTopNormalLeft", t.x, t.y);
             topLeft.collider = new EntityCollider();
-            topLeft.draw.z = 1;
+            topLeft.draw.z = 2;
             Entity topMiddle = Spawn(game, "SolidsTreeTopNormalMiddle", t.x + 8, t.y);
             topMiddle.draw.xrepeat = t.width - 2;
             topMiddle.collider = new EntityCollider();
-            topMiddle.draw.z = 1;
+            topMiddle.draw.z = 2;
             Entity topRight = Spawn(game, "SolidsTreeTopNormalRight", t.x + (t.width - 1) * 8, t.y);
             topRight.collider = new EntityCollider();
-            topRight.draw.z = 1;
+            topRight.draw.z = 2;
             Entity trunk = Spawn(game, "SceneryTreeTrunkNormal", t.x + 8, t.y - 8);
             trunk.draw.width = 8;
             trunk.draw.height = 8;
             trunk.draw.xrepeat = (t.width - 2) * 2;
             trunk.draw.yrepeat = 16 * 2;
-            trunk.draw.z = 0;
+            trunk.draw.z = 1;
         }
         if (t.type == ThingType.CastleBlock)
         {
@@ -637,6 +637,24 @@ public class SystemSpawn : GameSystem
         if (t.type == ThingType.Bush3)
         {
             SpawnScenery(game, "SceneryBush3", t.x, t.y, 64, 16);
+        }
+        for (int x = 0; x < t.width; x++)
+        {
+            for (int y = 0; y < t.height; y++)
+            {
+                if (t.type == ThingType.Fence)
+                {
+                    SpawnScenery(game, "SceneryFence", t.x + x * 8, t.y + y * 8, 16, 16);
+                }
+                if (t.type == ThingType.PlantSmall)
+                {
+                    SpawnScenery(game, "SceneryPlantSmallNormal", t.x + x * 8, t.y + y * 8, 16, 32);
+                }
+                if (t.type == ThingType.PlantLarge)
+                {
+                    SpawnScenery(game, "SceneryPlantLargeNormal", t.x + x * 8, t.y + y * 8, 16, 48);
+                }
+            }
         }
         if (t.type == ThingType.Water)
         {
