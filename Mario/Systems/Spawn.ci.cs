@@ -73,7 +73,6 @@ public class SystemSpawn : GameSystem
                     spawnY = 208 - playerHeight;
                 }
             }
-            //spawnX = 2850;
             
             game.restartPositionX = 0;
             game.restartPositionY = 0;
@@ -593,7 +592,7 @@ public class SystemSpawn : GameSystem
 
         if (t.type == ThingType.Koopa)
         {
-            SpawnKoopa.Spawn(game, t.x, t.y);
+            SpawnKoopa.Spawn(game, t.x, t.y, t.koopaType, GetY(t.platformStart), GetY(t.platformEnd));
         }
 
         if (t.piranha)

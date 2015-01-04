@@ -8,13 +8,23 @@
         direction = -1;
         slide = false;
         slideTime = 0;
+        isDead = false;
+        velY = 0;
+
         constWalkSpeed = 30;
         constSlideSpeed = 150;
         constReviveTime1 = 2;
         constReviveTime2 = 3;
         constReviveBlinkingSpeed = 5;
-        isDead = false;
+        constUpDownSpeed = one / 3;
+        constGravity = one;
+        constJumpVel = one * 100;
+
         deadFromFireball = new DeadFromFireballOrBump();
+
+        type = KoopaType.Normal;
+        floatingStart = 0;
+        floatingEnd = 0;
     }
 
     float t;
@@ -23,13 +33,23 @@
     float direction;
     bool slide;
     float slideTime;
+    bool isDead;
+    float velY;
+
     float constWalkSpeed;
     float constSlideSpeed;
     float constReviveTime1;
     float constReviveTime2;
     float constReviveBlinkingSpeed;
-    bool isDead;
+    float constUpDownSpeed;
+    float constGravity;
+    float constJumpVel;
+
     DeadFromFireballOrBump deadFromFireball;
+
+    internal KoopaType type;
+    internal float floatingStart;
+    internal float floatingEnd;
 
     public override void Update(Game game, int entity, float dt)
     {
@@ -45,12 +65,25 @@
             {
                 if (direction != 0)
                 {
-                    // Player jumps on walking Koopa
-                    direction = 0;
-                    e.draw.y += 10;
-                    game.AudioPlay("Stomp");
-                    Spawn_.Score(game, e.draw.x, e.draw.y, Game.ScoreKoopa);
-                    e.attackablePush.pushSide = PushSide.LeftRightKoopa;
+                    if (type == KoopaType.Floating
+                        || type == KoopaType.Jumping)
+                    {
+                        type = KoopaType.Normal;
+                        e.attackablePush.pushed = PushType.None;
+                        velY = 0;
+                        game.AudioPlay("Stomp");
+                        Spawn_.Score(game, e.draw.x, e.draw.y, Game.ScoreKoopaJumping);
+                        return;
+                    }
+                    else
+                    {
+                        // Player jumps on walking Koopa
+                        direction = 0;
+                        e.draw.y += 10;
+                        game.AudioPlay("Stomp");
+                        Spawn_.Score(game, e.draw.x, e.draw.y, Game.ScoreKoopa);
+                        e.attackablePush.pushSide = PushSide.LeftRightKoopa;
+                    }
                 }
                 else
                 {
@@ -78,45 +111,63 @@
         }
 
         float velX = 0;
-        if (slide)
-        {
-            velX = direction * constSlideSpeed;
-        }
-        else
-        {
-            velX = direction * constWalkSpeed;
-        }
 
-        // Walk and slide
-        if (!isDead)
+        if (type == KoopaType.Normal || type == KoopaType.Jumping)
         {
-            float oldx = e.draw.x;
-            float oldy = e.draw.y;
-            float newx = e.draw.x + velX * dt;
-            float newy = e.draw.y + 1;
-
-            bool isOnGroundOld = !CollisionHelper.IsEmpty(game, entity, oldx + e.draw.collisionOffsetX + e.draw.width / 2, oldy + e.draw.collisionOffsetY + 1, 1, e.draw.height + e.draw.collisionOffsetHeight + 1, !slide, false);
-            bool isOnGroundNew = !CollisionHelper.IsEmpty(game, entity, newx + e.draw.collisionOffsetX + e.draw.width / 2, oldy + e.draw.collisionOffsetY + 1, 1, e.draw.height + e.draw.collisionOffsetHeight + 1, !slide, false);
-
-            // Move horizontally
-            if (CollisionHelper.IsEmpty(game, entity, newx + e.draw.collisionOffsetX, oldy + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight, !slide, false)
-                && (!(isOnGroundOld && (!isOnGroundNew) && (!slide))))
+            if (slide)
             {
-                e.draw.x = newx;
+                velX = direction * constSlideSpeed;
             }
             else
             {
-                // Bounce from walls
-                // Also fixes falling down of mushroom on 1x1 gap
-                direction = -direction;
+                velX = direction * constWalkSpeed;
             }
 
-            // Move vertically (down)
-            if (CollisionHelper.IsEmpty(game, entity, oldx + e.draw.collisionOffsetX, newy + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight, !slide, false)
-                && CollisionHelper.IsEmpty(game, entity, oldx + e.draw.collisionOffsetX, newy + 1 + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight, !slide, false))
+            // Walk and slide
+            if (!isDead)
             {
-                e.draw.y = newy;
+                float oldx = e.draw.x;
+                float oldy = e.draw.y;
+
+                bool isOnGroundOld = !CollisionHelper.IsEmpty(game, entity, oldx + e.draw.collisionOffsetX + e.draw.width / 2, oldy + e.draw.collisionOffsetY + 1, 1, e.draw.height + e.draw.collisionOffsetHeight + 1, !slide, false);
+                if (!isOnGroundOld)
+                {
+                    velY += constGravity;
+                }
+
+                float newx = e.draw.x + velX * dt;
+                float newy = e.draw.y + velY * dt;
+                bool isOnGroundNew = !CollisionHelper.IsEmpty(game, entity, newx + e.draw.collisionOffsetX + e.draw.width / 2, oldy + e.draw.collisionOffsetY + 1, 1, e.draw.height + e.draw.collisionOffsetHeight + 1, !slide, false);
+
+                // Move horizontally
+                if (CollisionHelper.IsEmpty(game, entity, newx + e.draw.collisionOffsetX, oldy + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight, !slide, false)
+                    && (!(isOnGroundOld && (!isOnGroundNew) && (!slide))))
+                {
+                    e.draw.x = newx;
+                }
+                else
+                {
+                    // Bounce from walls
+                    // Also fixes falling down of mushroom on 1x1 gap
+                    direction = -direction;
+                }
+
+                // Move vertically (down)
+                if (CollisionHelper.IsEmpty(game, entity, oldx + e.draw.collisionOffsetX, newy + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight, !slide, false)
+                    && CollisionHelper.IsEmpty(game, entity, oldx + e.draw.collisionOffsetX, newy + 1 + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight, !slide, false))
+                {
+                    e.draw.y = newy;
+                }
+
+                if (type == KoopaType.Jumping && isOnGroundNew)
+                {
+                    velY = -constJumpVel;
+                }
             }
+        }
+        if (type == KoopaType.Floating)
+        {
+            e.draw.y = ScriptPlatform.PlatformPosition(game, t, floatingEnd, floatingStart, constUpDownSpeed);
         }
 
         if (direction == 0 || slide)
@@ -126,14 +177,39 @@
         }
         else
         {
-            // Walk animation
-            if ((game.platform.FloatToInt(t * constAnimSpeed) % 2) == 1)
+            int anim = game.platform.FloatToInt(t * constAnimSpeed) % 2;
+            if (type == KoopaType.Normal)
             {
-                e.draw.sprite = "CharactersKoopaNormalNormalNormalNormalNormal";
+                if (anim == 1)
+                {
+                    e.draw.sprite = "CharactersKoopaNormalNormalNormalNormalNormal";
+                }
+                else
+                {
+                    e.draw.sprite = "CharactersKoopaNormalNormalNormalNormalTwo";
+                }
             }
-            else
+            if (type == KoopaType.Floating)
             {
-                e.draw.sprite = "CharactersKoopaNormalNormalNormalNormalTwo";
+                if (anim == 1)
+                {
+                    e.draw.sprite = "CharactersKoopaNormalNormalFlyingNormal";
+                }
+                else
+                {
+                    e.draw.sprite = "CharactersKoopaNormalNormalFlyingTwo";
+                }
+            }
+            if (type == KoopaType.Jumping)
+            {
+                if (anim == 1)
+                {
+                    e.draw.sprite = "CharactersKoopaNormalNormalJumpingNormal";
+                }
+                else
+                {
+                    e.draw.sprite = "CharactersKoopaNormalNormalJumpingTwo";
+                }
             }
         }
 
@@ -187,9 +263,9 @@
 
 public class SpawnKoopa
 {
-    public static void Spawn(Game game, int x, int y)
+    public static void Spawn(Game game, int x, int y, KoopaType type, float floatingStart, float floatingEnd)
     {
-        Entity e = SystemSpawn.Spawn(game, "CharactersKoopaNormalNormalNormalNormalNormal", x, y);
+        Entity e = SystemSpawn.Spawn(game, GetImage(type), x, y);
         e.draw.height = 24;
         e.attackablePush = new EntityAttackablePush();
         e.attackablePush.pushSide = PushSide.TopJumpOnEnemy;
@@ -197,7 +273,24 @@ public class SpawnKoopa
         e.draw.collisionOffsetY = 8;
         e.draw.collisionOffsetHeight = -8;
         e.enemyCollider = true;
-        e.scripts[e.scriptsCount++] = new ScriptKoopa();
+        ScriptKoopa script = new ScriptKoopa();
+        script.type = type;
+        script.floatingStart = floatingStart;
+        script.floatingEnd = floatingEnd;
+        e.scripts[e.scriptsCount++] = script;
+    }
+
+    static string GetImage(KoopaType type)
+    {
+        if (type == KoopaType.Floating)
+        {
+            return "CharactersKoopaNormalNormalFlyingNormal";
+        }
+        if (type == KoopaType.Jumping)
+        {
+            return "CharactersKoopaNormalNormalJumpingNormal";
+        }
+        return "CharactersKoopaNormalNormalNormalNormalNormal";
     }
 }
 

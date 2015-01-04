@@ -4,11 +4,11 @@
     {
         start = 0;
         end = 0;
-        upDownSpeed = one / 3;
+        constUpDownSpeed = one / 3;
         constSpeed = 64;
     }
 
-    float upDownSpeed;
+    float constUpDownSpeed;
     float constSpeed;
     internal PlatformDirection direction;
     internal float start;
@@ -30,11 +30,11 @@
         }
         if (direction == PlatformDirection.Floating)
         {
-            newy = PlatformPosition(game, game.t, start, end);
+            newy = PlatformPosition(game, game.t, start, end, constUpDownSpeed);
         }
         if (direction == PlatformDirection.Sliding)
         {
-            newx = PlatformPosition(game, game.t, start, end);
+            newx = PlatformPosition(game, game.t, start, end, constUpDownSpeed);
         }
 
         // Down
@@ -103,11 +103,11 @@
         }
     }
 
-    float PlatformPosition(Game game, float t, float start_, float end_)
+    public static float PlatformPosition(Game game, float t, float start_, float end_, float upDownSpeed_)
     {
         float maxY = end_ - start_;
-        int a = game.platform.FloatToInt(t * upDownSpeed);
-        float b = Smoothstep(t * upDownSpeed - a) * maxY;
+        int a = game.platform.FloatToInt(t * upDownSpeed_);
+        float b = Smoothstep(t * upDownSpeed_ - a) * maxY;
         if (a % 2 == 1)
         {
             b = maxY - b;

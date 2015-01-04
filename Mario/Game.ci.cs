@@ -342,6 +342,7 @@
 
     public const int ScoreGoomba = 100;
     public const int ScoreCoin = 200;
+    public const int ScoreKoopaJumping = 400;
     public const int ScoreKoopa = 500;
     public const int ScoreMushroom = 1000;
     public const int ScorePiranha = 500;

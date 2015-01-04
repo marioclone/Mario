@@ -112,6 +112,7 @@ public class Thing
         castleBlockFireballs = 0;
         castleBlockSpeed = 0;
         castleBlockDirection = 0;
+        koopaType = KoopaType.Normal;
     }
     internal string level;
     internal int type;
@@ -135,6 +136,14 @@ public class Thing
     internal int castleBlockFireballs;
     internal float castleBlockSpeed;
     internal float castleBlockDirection;
+    internal KoopaType koopaType;
+}
+
+public enum KoopaType
+{
+    Normal,
+    Floating,
+    Jumping
 }
 
 public enum PlatformType
@@ -209,6 +218,7 @@ public class MapBinding : TableBinding
             if (column == "castleBlockFireballs") { k.castleBlockFireballs = IntParse(value); }
             if (column == "castleBlockSpeed") { k.castleBlockSpeed = FloatParse(value); }
             if (column == "castleBlockDirection") { k.castleBlockDirection = FloatParse(value); }
+            if (column == "koopaType") { k.koopaType = GetKoopaType(value); }
         }
         if (table == "patterns")
         {
@@ -230,6 +240,19 @@ public class MapBinding : TableBinding
             if (column == "level") { k.level = value; }
             if (column == "setting") { k.setting = GetSetting(value); }
         }
+    }
+
+    KoopaType GetKoopaType(string value)
+    {
+        if (value == "floating")
+        {
+            return KoopaType.Floating;
+        }
+        if (value == "jumping")
+        {
+            return KoopaType.Jumping;
+        }
+        return KoopaType.Normal;
     }
 
     PlatformDirection PlatformTypeParse(string value)
