@@ -70,13 +70,12 @@ PlatformJs.prototype.floatTryParse = function(s, ret) {
 }
 
 PlatformJs.prototype.stringFromUtf8ByteArray = function(value, valueLength) {
-	var arr = new Uint8Array(valueLength);
+	var encodedString = new Array(valueLength);
 	for(var i = 0; i < valueLength;i++)
 	{
-		arr[i] = value[i];
+		encodedString[i] = String.fromCharCode(value[i]);
 	}
-	var encodedString = String.fromCharCode.apply(null, arr),
-	decodedString = decodeURIComponent(escape(encodedString));
+	decodedString = decodeURIComponent(escape(encodedString.join("")));
 	return decodedString;
 }
 
