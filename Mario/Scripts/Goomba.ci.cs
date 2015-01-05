@@ -102,7 +102,7 @@ public class HelperAttackWithTouch
             if (e2 == e) { continue; }
             if (e2.attackableTouch == null) { continue; }
             if (Misc.RectIntersect(e.draw.x, e.draw.y, e.draw.width, e.draw.height,
-                e2.draw.x + e2.draw.collisionOffsetX, e2.draw.y + e2.draw.collisionOffsetY, e2.draw.width + e2.draw.collisionOffsetWidth, e2.draw.height + e2.draw.collisionOffsetHeight))
+                e2.draw.x + e2.draw.collisionOffsetX, e2.draw.y + e2.draw.collisionOffsetY, e2.draw.width + e2.draw.collisionOffsetWidth, e2.draw.height + e2.draw.collisionOffsetHeight - 1)) // -1 fixes jumping on koopa flying upwards
             {
                 e2.attackableTouch.touched = true;
                 return;
