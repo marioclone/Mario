@@ -458,8 +458,8 @@ public class SystemSpawn : GameSystem
         {
             Entity e = Spawn(game, "SceneryCastleDoor", t.x, t.y);
             e.draw.width = 16;
-            e.draw.height = 24;
-            e.draw.z = 1;
+            e.draw.height = 32;
+            e.draw.z = 2;
         }
         if (t.type == ThingType.CastleOutside)
         {
