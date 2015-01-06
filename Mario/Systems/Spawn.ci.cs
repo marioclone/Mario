@@ -437,6 +437,7 @@ public class SystemSpawn : GameSystem
             Entity e = Spawn(game, "SceneryCastleRailingNormal", t.x, t.y);
             e.draw.xrepeat = t.width;
             e.draw.yrepeat = t.height;
+            e.draw.z = 2;
         }
         if (t.type == ThingType.SceneryCastleTop)
         {
@@ -445,7 +446,7 @@ public class SystemSpawn : GameSystem
             e.draw.height = 8;
             e.draw.xrepeat = t.width;
             e.draw.yrepeat = t.height;
-            e.draw.z = 0;
+            e.draw.z = 1;
         }
         if (t.type == ThingType.SceneryCastleWindow)
         {
