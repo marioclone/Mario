@@ -103,9 +103,9 @@
         coins.text[0] = CharType.CharTimes;
         coins.text[1] = CharType.Char0 + ((game.coins / 10) % 10);
         coins.text[2] = CharType.Char0 + (game.coins) % 10;
-        worldValue.text[0] = CharType.Char1;
-        worldValue.text[1] = CharType.CharMinus;
-        worldValue.text[2] = CharType.Char0 + 1; //(game.level + 1);
+        worldValue.text[0] = game.level[0];
+        worldValue.text[1] = game.level[1];
+        worldValue.text[2] = game.level[2];
 
         int stage = (game.platform.FloatToInt(game.t * constAnimSpeed) % 5);
         if (stage == 0) { coin.draw.sprite = "FontCoin"; }

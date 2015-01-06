@@ -54,9 +54,9 @@
 
             deathScreenWorldValue = new Entity();
             ScriptDrawText worldValue = CreateText(game, 3, deathScreenWorldValue);
-            worldValue.text[0] = CharType.Char1;
-            worldValue.text[1] = CharType.CharMinus;
-            worldValue.text[2] = CharType.Char0 + 1; // (game.level + 1);
+            worldValue.text[0] = game.level[0];
+            worldValue.text[1] = game.level[1];
+            worldValue.text[2] = game.level[2];
             worldValue.x = 164;
             worldValue.y = 100;
 
