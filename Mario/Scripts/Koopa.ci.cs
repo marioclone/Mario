@@ -105,6 +105,11 @@
 
         isDead = deadFromFireball.Update(game, entity, dt, Game.ScoreKoopa);
 
+        if (isDead)
+        {
+            type = KoopaType.Normal;
+        }
+
         if (slide)
         {
             slideTime += dt;
@@ -178,6 +183,10 @@
         else
         {
             int anim = game.platform.FloatToInt(t * constAnimSpeed) % 2;
+            if (isDead)
+            {
+                anim = 0;
+            }
             if (type == KoopaType.Normal)
             {
                 if (anim == 1)
