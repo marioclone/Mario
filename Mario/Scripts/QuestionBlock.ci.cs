@@ -27,6 +27,8 @@
             if (stage == 4) { e.draw.sprite = "SolidsBlockNormalNormalTwo"; }
         }
 
+        AttackEntitiesAboveBumpedBrick.Update(game, e);
+
         // When player jumps from bottom, spawn a Thing.
         if (!used)
         {

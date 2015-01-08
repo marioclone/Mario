@@ -25,11 +25,34 @@
         {
             e.draw.yOffset = -Bump(bumpTime * constBumpSpeed) * constBumpForce;
         }
-        
-        if (e.attackablePush.pushed == PushType.SmallMario
-            || e.attackablePush.pushed == PushType.BigMario)
+
+        AttackEntitiesAboveBumpedBrick.Update(game, e);
+
+        if (e.attackablePush.pushed == PushType.SmallMario)
         {
-            // Bump entities above brick
+            // Start animation
+            game.AudioPlay("Blockhit");
+            bumpTime = 0;
+            e.attackablePush.pushed = PushType.None;
+        }
+    }
+
+    float Bump(float t)
+    {
+        float one = 1;
+        if (t < one / 2) { return t / 2; }
+        if (t < 1) { return one - t / 2; }
+        return 0;
+    }
+}
+
+public class AttackEntitiesAboveBumpedBrick
+{
+    public static void Update(Game game, Entity e)
+    {
+        if (e.attackablePush.pushed == PushType.SmallMario
+         || e.attackablePush.pushed == PushType.BigMario)
+        {
             for (int i = 0; i < game.entitiesCount; i++)
             {
                 Entity e2 = game.entities[i];
@@ -49,21 +72,5 @@
                 }
             }
         }
-
-        if (e.attackablePush.pushed == PushType.SmallMario)
-        {
-            // Start animation
-            game.AudioPlay("Blockhit");
-            bumpTime = 0;
-            e.attackablePush.pushed = PushType.None;
-        }
-    }
-
-    float Bump(float t)
-    {
-        float one = 1;
-        if (t < one / 2) { return t / 2; }
-        if (t < 1) { return one - t / 2; }
-        return 0;
     }
 }
