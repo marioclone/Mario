@@ -121,9 +121,14 @@ public class EntityAttackableTouch
 {
     public EntityAttackableTouch()
     {
+        attackableByEnemy = false;
+        attackableByPlayer = false;
         touched = false;
         touchedEntity = -1;
     }
+
+    internal bool attackableByEnemy;
+    internal bool attackableByPlayer;
     internal bool touched;
     internal int touchedEntity;
 

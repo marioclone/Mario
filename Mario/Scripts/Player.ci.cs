@@ -408,6 +408,7 @@
             if (e2 == null) { continue; }
             if (e2 == e) { continue; }
             if (e2.attackableTouch == null) { continue; }
+            if (!e2.attackableTouch.attackableByPlayer) { continue; }
             if (Misc.RectIntersect(e.draw.x, e.draw.y, e.draw.width * e.draw.xrepeat, e.draw.height * e.draw.yrepeat,
                 e2.draw.x, e2.draw.y, e2.draw.width * e2.draw.xrepeat, e2.draw.height * e2.draw.yrepeat))
             {

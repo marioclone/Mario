@@ -15,6 +15,7 @@
         if (e.attackableTouch == null)
         {
             e.attackableTouch = new EntityAttackableTouch();
+            e.attackableTouch.attackableByPlayer = true;
         }
         if (e.attackableBump == null)
         {

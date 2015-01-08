@@ -79,6 +79,7 @@ public class SpawnCastleAxe
     {
         Entity e = SystemSpawn.Spawn(game, "SolidsCastleAxeNormal", x, y);
         e.attackableTouch = new EntityAttackableTouch();
+        e.attackableTouch.attackableByPlayer = true;
         ScriptCastleAxe script = new ScriptCastleAxe();
         script.targetLevelOrEntrance = transport;
         e.scripts[e.scriptsCount++] = script;

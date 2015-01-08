@@ -30,6 +30,7 @@
         if (e.attackableTouch == null)
         {
             e.attackableTouch = new EntityAttackableTouch();
+            e.attackableTouch.attackableByPlayer = true;
         }
         flag.draw.x = e.draw.x - 16;
         flag.draw.y = e.draw.y + flagY;

@@ -84,6 +84,7 @@ public class SystemSpawn : GameSystem
                 player.draw.z = 2;
                 player.growable = new EntityGrowable();
                 player.attackableTouch = new EntityAttackableTouch();
+                player.attackableTouch.attackableByEnemy = true;
                 player.scripts[player.scriptsCount++] = new ScriptPlayer();
             }
             player.draw.x = spawnX;
