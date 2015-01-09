@@ -90,7 +90,7 @@
         }
         if (game.gameStarted)
         {
-            SetIntCharTypes(game.timeLeft(), timeValue.text, 3);
+            SetIntCharTypes(game.platform.FloatToInt(game.timeLeft), timeValue.text, 3);
         }
         else
         {

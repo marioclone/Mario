@@ -65,6 +65,7 @@
         controlsOverrideActive = false;
         constBlueBackgroundColor = Misc.ColorFromArgb(255, 92, 148, 252);
         backgroundColor = constBlueBackgroundColor;
+        timeLeft = 0;
 
         audio = new AudioControl();
     }
@@ -305,11 +306,7 @@
         return id;
     }
 
-    const int timeSpeed = 2;
-    internal int timeLeft()
-    {
-        return platform.FloatToInt(400 - time * timeSpeed);
-    }
+    internal float timeLeft;
 
     public void AudioPlay(string p)
     {

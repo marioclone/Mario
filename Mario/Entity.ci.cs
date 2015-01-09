@@ -10,6 +10,7 @@
         growable = null;
         attackableBump = null;
         IsCastleBridge = false;
+        flagpoleClimbing = null;
 
         scripts = new Script[scriptsMax];
         for (int i = 0; i < scriptsMax; i++)
@@ -101,6 +102,15 @@
         delete scripts;
 #endif
     }
+
+    internal EntityFlagpoleClimbing flagpoleClimbing;
+}
+
+public class EntityFlagpoleClimbing
+{
+    internal int startY;
+    internal float endY;
+    internal bool flagDone;
 }
 
 public class EntityAttackableFireball

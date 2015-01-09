@@ -10,6 +10,7 @@ public class SystemSpawn : GameSystem
     {
         loaded = false;
         wasGameStarted = false;
+        constTimeSpeed = 2;
     }
 
     bool loaded;
@@ -73,6 +74,7 @@ public class SystemSpawn : GameSystem
                     spawnY = 208 - playerHeight;
                 }
             }
+            // spawnX = 3100;
             
             game.restartPositionX = 0;
             game.restartPositionY = 0;
@@ -208,11 +210,19 @@ public class SystemSpawn : GameSystem
                 game.audio.audioPlayMusic = "Overworld";
             }
             game.time = 0;
+            game.timeLeft = 400;
         }
         if (!game.gamePaused)
         {
             game.time += dt;
         }
+
+        game.timeLeft -= dt * constTimeSpeed;
+        if (game.timeLeft < 0)
+        {
+            game.timeLeft = 0;
+        }
+
         if (game.restart)
         {
             Restart();
@@ -234,6 +244,8 @@ public class SystemSpawn : GameSystem
             game.entitiesCount = 0;
         }
     }
+
+    float constTimeSpeed;
 
     static int MaxX(Game game)
     {

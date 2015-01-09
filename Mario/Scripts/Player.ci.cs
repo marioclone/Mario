@@ -20,6 +20,7 @@
         shrinkAnimationTime = -1;
         controlsFirePreviously = false;
         wasScrollBlock = false;
+        flagpoleClimbingPlayerDone = false;
 
         controlsTemp = new Controls();
 
@@ -90,6 +91,7 @@
         game.playerx = e.draw.x;
         game.playerGrowth = growth;
 
+        FlagPoleClimbing(game, e);
         UpdateSprite(game, dt, e, controls);
 
         // Scroll
@@ -123,6 +125,7 @@
         }
 
         if (game.gamePaused) { return; }
+        if (e.flagpoleClimbing != null) { return; }
         if (growthAnimationTime != -1 && growthAnimationTime < constGrowthShrinkAnimationLength)
         {
             game.gamePausedByGrowthShrink = true;
@@ -545,7 +548,31 @@
 
 
         // Sprite
-        if (currentVelX == 0)
+        if (e.flagpoleClimbing != null)
+        {
+            if (!flagpoleClimbingPlayerDone)
+            {
+                t += dt;
+            }
+            float stagesCount = 2;
+            int stage = game.platform.FloatToInt(t * constAnimSpeed % stagesCount);
+            if (currentGrowth == 0)
+            {
+                if (stage == 0) { e.draw.sprite = "CharactersPlayerNormalNormalNormalClimbingNormal"; }
+                if (stage == 1) { e.draw.sprite = "CharactersPlayerNormalNormalNormalClimbingTwo"; }
+            }
+            if (currentGrowth == 1)
+            {
+                if (stage == 0) { e.draw.sprite = "CharactersPlayerNormalLargeNormalClimbingNormal"; }
+                if (stage == 1) { e.draw.sprite = "CharactersPlayerNormalLargeNormalClimbingTwo"; }
+            }
+            if (currentGrowth == 2)
+            {
+                if (stage == 0) { e.draw.sprite = "CharactersPlayerNormalFieryNormalClimbingNormal"; }
+                if (stage == 1) { e.draw.sprite = "CharactersPlayerNormalFieryNormalClimbingTwo"; }
+            }
+        }
+        else if (currentVelX == 0)
         {
             if (currentGrowth == 0)
             {
@@ -598,7 +625,7 @@
                 if (stage == 3) { e.draw.sprite = "CharactersPlayerNormalFieryNormalRunningNormalThree"; }
             }
         }
-        if (!onGround)
+        if (!onGround && e.flagpoleClimbing == null)
         {
             if (currentGrowth == 0)
             {
@@ -670,6 +697,27 @@
         else
         {
             e.draw.mirror = MirrorType.None;
+        }
+    }
+
+    bool flagpoleClimbingPlayerDone;
+    void FlagPoleClimbing(Game game, Entity e)
+    {
+        if (e.flagpoleClimbing != null)
+        {
+            if (e.draw.y < e.flagpoleClimbing.endY)
+            {
+                e.draw.y += one / 2;
+            }
+            else
+            {
+                flagpoleClimbingPlayerDone = true;
+            }
+            if (e.flagpoleClimbing.flagDone)
+            {
+                flagpoleClimbingPlayerDone = false;
+                e.flagpoleClimbing = null;
+            }
         }
     }
 }
