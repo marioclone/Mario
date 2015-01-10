@@ -11,6 +11,7 @@
         attackableBump = null;
         IsCastleBridge = false;
         flagpoleClimbing = null;
+        IsSpringboard = false;
 
         scripts = new Script[scriptsMax];
         for (int i = 0; i < scriptsMax; i++)
@@ -38,6 +39,7 @@
     internal EntityGrowable growable;
     internal EntityAttackableBump attackableBump;
     internal bool IsCastleBridge;
+    internal bool IsSpringboard;
 
     internal Script[] scripts;
     internal int scriptsCount;

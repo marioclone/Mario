@@ -74,7 +74,7 @@ public class SystemSpawn : GameSystem
                     spawnY = 208 - playerHeight;
                 }
             }
-            // spawnX = 3100;
+            // spawnX = 2900;
             
             game.restartPositionX = 0;
             game.restartPositionY = 0;
@@ -595,6 +595,10 @@ public class SystemSpawn : GameSystem
                 t2.transport = "2-1-0";
                 SpawnThing(game, map, t2);
             }
+        }
+        if (t.type == ThingType.Springboard)
+        {
+            SpawnSpringboard.Spawn(game, t.x, t.y);
         }
 
         // Characters

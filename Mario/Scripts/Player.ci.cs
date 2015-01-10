@@ -8,6 +8,7 @@
         lookLeft = false;
         onGround = true;
         jumptime = -1;
+        jumpSpringboard = false;
         growth = 0;
         dead = false;
         deadT = 0;
@@ -45,6 +46,7 @@
     bool lookLeft;
     bool onGround;
     float jumptime;
+    bool jumpSpringboard;
     int growth;
     bool dead;
     float deadT;
@@ -179,6 +181,10 @@
 
         // Jump
         {
+            if (IsOnSpringboard(game, e))
+            {
+                jumpSpringboard = true;
+            }
             if (controls.jump && onGround && (!dead))
             {
                 jumptime = 0;
@@ -190,11 +196,20 @@
                 {
                     game.AudioPlay("JumpBig");
                 }
+                jumpSpringboard = false;
             }
 
             if (controls.jump && (onGround || (jumptime >= 0 && jumptime < constMaxJumpTime)))
             {
-                velY = constJumpVelocity;
+                if (jumpSpringboard)
+                {
+                    velY = Min(velY, constJumpVelocity * one * 235 / 100);
+                }
+                else
+                {
+                    velY = Min(velY, constJumpVelocity);
+                }
+                jumpSpringboard = false;
             }
 
             if (!controls.jump)
@@ -462,6 +477,34 @@
                 e.draw.sprite = "CharactersPlayerNormalFieryNormalRunningSkidding";
             }
         }
+    }
+
+    static float Min(float a, float b)
+    {
+        if (a <= b)
+        {
+            return a;
+        }
+        else
+        {
+            return b;
+        }
+    }
+
+    bool IsOnSpringboard(Game game, Entity player)
+    {
+        for (int i = 0; i < game.entitiesCount; i++)
+        {
+            Entity e = game.entities[i];
+            if (e == null) { continue; }
+            if (!e.IsSpringboard) { continue; }
+            if (Misc.RectIntersect(e.draw.x + e.draw.collisionOffsetX, e.draw.y + 1 + e.draw.collisionOffsetY, e.draw.width + e.draw.collisionOffsetWidth, e.draw.height + e.draw.collisionOffsetHeight,
+                player.draw.x + player.draw.collisionOffsetX, player.draw.y + player.draw.collisionOffsetY, player.draw.width + player.draw.collisionOffsetWidth, player.draw.height + player.draw.collisionOffsetHeight))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     bool controlsFirePreviously;
