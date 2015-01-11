@@ -393,6 +393,16 @@ progress.value = 1;
 	
 	
 	function handleTouchStart(event) {
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen();
+    } else if (document.documentElement.msRequestFullscreen) {
+      document.documentElement.msRequestFullscreen();
+    } else if (document.documentElement.mozRequestFullScreen) {
+      document.documentElement.mozRequestFullScreen();
+    } else if (document.documentElement.webkitRequestFullscreen) {
+      document.documentElement.webkitRequestFullscreen();
+    }
+		
 		var args = new TouchEventArgs();
 		for (var i = 0; i < event.changedTouches.length; i++)
 		{
