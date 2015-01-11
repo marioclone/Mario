@@ -73,7 +73,7 @@ public class IsActiveHelper
 {
     public static bool IsActive(Game game, float x)
     {
-        return x >= game.scrollx - 32 && x < game.scrollx + 256 + 64;
+        return x >= game.scrollx - 32 && x < game.scrollx + game.gameScreenWidth + 64;
     }
     public static bool IsActiveBowser(Game game, float x)
     {
