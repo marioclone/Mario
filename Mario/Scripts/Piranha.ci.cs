@@ -23,7 +23,7 @@
         if (Misc.Abs(game.playerx - e.draw.x) < 50)
         {
             // Don't emerge when player is near
-            if (t >= (one / 4) * constCycleSeconds)
+            if (!IsHiddenInsidePipe())
             {
                 t += dt;
             }
@@ -55,8 +55,16 @@
         {
             e.draw.sprite = "CharactersPiranhaNormalTwo";
         }
-        HelperAttackWithTouch.Update(game, e);
+        if (!IsHiddenInsidePipe())
+        {
+            HelperAttackWithTouch.Update(game, e);
+        }
         dead = d.Update(game, entity, dt, Game.ScorePiranha);
+    }
+
+    bool IsHiddenInsidePipe()
+    {
+        return !(t >= (one / 4) * constCycleSeconds);
     }
 
     float GetY(float time)
