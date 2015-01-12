@@ -22,16 +22,19 @@
         controlsFirePreviously = false;
         wasScrollBlock = false;
         flagpoleClimbingPlayerDone = false;
+        previousY = 0;
 
         controlsTemp = new Controls();
 
         constAcceleration = one * 50 / 10;
         constAccelerationInAir = one * 30 / 10;
         constGravity = one * 50 / 10;
+        constGravityUnderwater = one * 20 / 10;
         constMaxVel = 100;
         constAnimSpeed = 10;
         constMaxJumpTime = one * 2 / 10;
         constJumpVelocity = -200;
+        constJumpVelocityUnderwater = -120;
         constInvulnerableTime = one * 20 / 10;
         constRunningMultiplier = one * 16 / 10;
         constFireballFrequency = one * 50 / 10;
@@ -58,16 +61,19 @@
     float growthAnimationTime;
     float shrinkAnimationTime;
     bool wasScrollBlock;
+    float previousY;
 
     Controls controlsTemp;
 
     float constAcceleration;
     float constAccelerationInAir;
     float constGravity;
+    float constGravityUnderwater;
     float constMaxVel;
     float constAnimSpeed;
     float constMaxJumpTime;
     float constJumpVelocity;
+    float constJumpVelocityUnderwater;
     float constInvulnerableTime;
     float constRunningMultiplier;
     float constFireballFrequency;
@@ -177,7 +183,24 @@
         if (velX > maxVel) { velX = maxVel; }
         if (velX < -maxVel) { velX = -maxVel; }
 
-        velY += constGravity;
+        float currentJumpVelocity;
+        float currentGravity;
+        if (game.setting == SettingType.Underwater)
+        {
+            currentJumpVelocity = constJumpVelocityUnderwater;
+            currentGravity = constGravityUnderwater;
+            if (e.draw.y > 48)
+            {
+                onGround = true;
+            }
+        }
+        else
+        {
+            currentJumpVelocity = constJumpVelocity;
+            currentGravity = constGravity;
+        }
+
+        velY += currentGravity;
 
         // Jump
         {
@@ -187,15 +210,18 @@
             }
             if (controls.jump && onGround && (!dead))
             {
+                if (jumptime == -1)
+                {
+                    if (growth == 0)
+                    {
+                        game.AudioPlay("Jump");
+                    }
+                    else
+                    {
+                        game.AudioPlay("JumpBig");
+                    }
+                }
                 jumptime = 0;
-                if (growth == 0)
-                {
-                    game.AudioPlay("Jump");
-                }
-                else
-                {
-                    game.AudioPlay("JumpBig");
-                }
                 jumpSpringboard = false;
             }
 
@@ -203,11 +229,11 @@
             {
                 if (jumpSpringboard)
                 {
-                    velY = Min(velY, constJumpVelocity * one * 235 / 100);
+                    velY = Min(velY, currentJumpVelocity * one * 235 / 100);
                 }
                 else
                 {
-                    velY = Min(velY, constJumpVelocity);
+                    velY = Min(velY, currentJumpVelocity);
                 }
                 jumpSpringboard = false;
             }
@@ -260,7 +286,7 @@
         {
             // Bump
             jumptime = 0;
-            velY = constJumpVelocity;
+            velY = currentJumpVelocity;
         }
 
         if (side == PushSide.TopPipeKeyDown)
@@ -589,7 +615,7 @@
             e.draw.hidden = false;
         }
 
-
+        bool swimming = game.setting == SettingType.Underwater;
         // Sprite
         if (e.flagpoleClimbing != null)
         {
@@ -670,17 +696,65 @@
         }
         if (!onGround && e.flagpoleClimbing == null)
         {
-            if (currentGrowth == 0)
+            if (swimming)
             {
-                e.draw.sprite = "CharactersPlayerNormalNormalJumping";
+                if (previousY < e.draw.y)
+                {
+                    if (currentGrowth == 0)
+                    {
+                        e.draw.sprite = "CharactersPlayerNormalNormalNormalPaddlingNormalNormal";
+                    }
+                    if (currentGrowth == 1)
+                    {
+                        e.draw.sprite = "CharactersPlayerNormalLargeNormalPaddlingNormalNormal";
+                    }
+                    if (currentGrowth == 2)
+                    {
+                        e.draw.sprite = "CharactersPlayerNormalFieryNormalPaddlingNormalNormal";
+                    }
+                }
+                else
+                {
+                    float stagesCount = 4;
+                    int stage = game.platform.FloatToInt(t * constAnimSpeed % stagesCount);
+                    if (currentGrowth == 0)
+                    {
+                        if (stage == 0) { e.draw.sprite = "CharactersPlayerNormalNormalNormalPaddlingNormalPaddle2"; }
+                        if (stage == 1) { e.draw.sprite = "CharactersPlayerNormalNormalNormalPaddlingNormalPaddle1"; }
+                        if (stage == 2) { e.draw.sprite = "CharactersPlayerNormalNormalNormalPaddlingNormalPaddle2"; }
+                        if (stage == 3) { e.draw.sprite = "CharactersPlayerNormalNormalNormalPaddlingNormalPaddle3"; }
+                    }
+                    if (currentGrowth == 1)
+                    {
+                        if (stage == 0) { e.draw.sprite = "CharactersPlayerNormalLargeNormalPaddlingNormalPaddle2"; }
+                        if (stage == 1) { e.draw.sprite = "CharactersPlayerNormalLargeNormalPaddlingNormalPaddle1"; }
+                        if (stage == 2) { e.draw.sprite = "CharactersPlayerNormalLargeNormalPaddlingNormalPaddle2"; }
+                        if (stage == 3) { e.draw.sprite = "CharactersPlayerNormalLargeNormalPaddlingNormalPaddle3"; }
+                    }
+                    if (currentGrowth == 2)
+                    {
+                        if (stage == 0) { e.draw.sprite = "CharactersPlayerNormalFieryNormalPaddlingNormalPaddle2"; }
+                        if (stage == 1) { e.draw.sprite = "CharactersPlayerNormalFieryNormalPaddlingNormalPaddle1"; }
+                        if (stage == 2) { e.draw.sprite = "CharactersPlayerNormalFieryNormalPaddlingNormalPaddle2"; }
+                        if (stage == 3) { e.draw.sprite = "CharactersPlayerNormalFieryNormalPaddlingNormalPaddle3"; }
+                    }
+                }
+                previousY = e.draw.y;
             }
-            if (currentGrowth == 1)
+            else
             {
-                e.draw.sprite = "CharactersPlayerNormalLargeJumping";
-            }
-            if (currentGrowth == 2)
-            {
-                e.draw.sprite = "CharactersPlayerNormalFieryJumping";
+                if (currentGrowth == 0)
+                {
+                    e.draw.sprite = "CharactersPlayerNormalNormalJumping";
+                }
+                if (currentGrowth == 1)
+                {
+                    e.draw.sprite = "CharactersPlayerNormalLargeJumping";
+                }
+                if (currentGrowth == 2)
+                {
+                    e.draw.sprite = "CharactersPlayerNormalFieryJumping";
+                }
             }
         }
         if (currentGrowth == 0)

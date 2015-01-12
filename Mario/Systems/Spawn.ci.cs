@@ -52,6 +52,19 @@ public class SystemSpawn : GameSystem
             }
 
             game.scrollxMax = MaxX(game);
+            
+            if (game.setting == SettingType.Underwater)
+            {
+                Entity waterTop = Spawn(game, "SceneryWaterNormalTop", 0, 88);
+                waterTop.draw.xrepeat = game.scrollxMax / 8;
+                waterTop.draw.width = 8;
+                waterTop.draw.height = 8;
+                waterTop.draw.z = 0;
+                Entity water = Spawn(game, "SceneryWaterNormalMiddle", 0, 84);
+                water.draw.xrepeat = game.scrollxMax / 16;
+                water.draw.yrepeat = 20;
+                water.draw.z = 0;
+            }
 
             // Player
             int spawnX = game.restartPositionX;
@@ -204,6 +217,10 @@ public class SystemSpawn : GameSystem
             else if (game.setting == SettingType.Castle)
             {
                 game.audio.audioPlayMusic = "Castle";
+            }
+            else if (game.setting == SettingType.Underwater)
+            {
+                game.audio.audioPlayMusic = "Underwater";
             }
             else
             {
@@ -368,6 +385,11 @@ public class SystemSpawn : GameSystem
                     Entity e = Spawn(game, "SolidsCastleBridge", t.x + x * 8, t.y + y * 8);
                     e.collider = new EntityCollider();
                     e.IsCastleBridge = true;
+                }
+                if (t.type == ThingType.Coral)
+                {
+                    Entity e = Spawn(game, "SolidsCoral", t.x + x * 8, t.y - y * 8);
+                    e.collider = new EntityCollider();
                 }
             }
         }
@@ -905,6 +927,14 @@ public class SettingApply
             if (sprite == "SceneryWaterNormalTop")
             {
                 sprite = "SceneryWaterUnderwaterTop";
+            }
+            if (sprite == "SolidsFloorNormal")
+            {
+                sprite = "SolidsFloorUnderwaterNormal";
+            }
+            if (sprite == "SolidsStoneNormal")
+            {
+                sprite = "SolidsStoneUnderwater";
             }
         }
         return sprite;
