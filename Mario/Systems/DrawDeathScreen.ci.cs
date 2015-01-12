@@ -30,13 +30,7 @@
 
             for (int i = 0; i < game.entitiesCount; i++)
             {
-                if (game.entities[i] != null)
-                {
-                    if (game.entities[i].draw != null)
-                    {
-                        game.entities[i].draw.hidden = true;
-                    }
-                }
+                game.entities[i] = null;
             }
             game.entitiesCount = 0;
 
