@@ -134,8 +134,20 @@
 
     public override void OnTouchMove(Game game, TouchEventArgs e)
     {
+        bool wasFire = game.controls.fire;
+        bool wasJump = game.controls.jump;
         EndTouch(game, e);
         StartTouch(game, e);
+
+        // Moved touch from fire to jump. Continue fire.
+        if (wasFire)
+        {
+            if (game.controls.jump)
+            {
+                game.controls.fire = true;
+                Spawn_.Score(game, 20, 20, 100);
+            }
+        }
     }
 
     void EndTouch(Game game, TouchEventArgs e)
@@ -153,6 +165,7 @@
         if (e.GetId() == touchJump)
         {
             game.controls.jump = false;
+            game.controls.fire = false;
             touchJump = -1;
         }
         if (e.GetId() == touchFire)
