@@ -58,10 +58,20 @@
         right.draw.y = 240 - 4 * 16 + touchBelow;
         jump.draw.x = game.gameScreenWidth - 4 * 16;
         jump.draw.y = 240 - 4 * 16 + touchBelow;
-        fire.draw.x = game.gameScreenWidth - 4 * 16;
-        fire.draw.y = 240 - 8 * 16 + touchBelow;
-        down.draw.x = game.gameScreenWidth - 8 * 16;
-        down.draw.y = 240 - 4 * 16 + touchBelow;
+        if (game.platform.GetCanvasWidth() > game.platform.GetCanvasHeight())
+        {
+            fire.draw.x = game.gameScreenWidth - 8 * 16;
+            fire.draw.y = 240 - 4 * 16 + touchBelow;
+            down.draw.x = game.gameScreenWidth - 12 * 16;
+            down.draw.y = 240 - 4 * 16 + touchBelow;
+        }
+        else
+        {
+            fire.draw.x = game.gameScreenWidth - 4 * 16;
+            fire.draw.y = 240 - 8 * 16 + touchBelow;
+            down.draw.x = game.gameScreenWidth - 8 * 16;
+            down.draw.y = 240 - 4 * 16 + touchBelow;
+        }
     }
 
     public const int TouchButtonsHeight = 128;
