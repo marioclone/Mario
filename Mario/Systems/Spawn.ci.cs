@@ -101,6 +101,7 @@ public class SystemSpawn : GameSystem
                 player.attackableTouch = new EntityAttackableTouch();
                 player.attackableTouch.attackableByEnemy = true;
                 player.scripts[player.scriptsCount++] = new ScriptPlayer();
+                player.scripts[player.scriptsCount++] = new ScriptSpawnBubble();
             }
             player.draw.x = spawnX;
             player.draw.y = spawnY;
