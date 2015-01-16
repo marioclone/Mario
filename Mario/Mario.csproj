@@ -66,12 +66,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PlatformWindows.cs">
     </Compile>
+    <Compile Include="Scripts\Blooper.ci.cs" />
     <Compile Include="Scripts\Bowser.ci.cs" />
     <Compile Include="Scripts\BrickBump.ci.cs" />
     <Compile Include="Scripts\BrickShard.ci.cs" />
     <Compile Include="Scripts\Bubble.ci.cs" />
     <Compile Include="Scripts\CastleAxe.ci.cs" />
     <Compile Include="Scripts\CastleBlock.ci.cs" />
+    <Compile Include="Scripts\CheepCheep.ci.cs" />
     <Compile Include="Scripts\CoinInQuestionBlock.ci.cs" />
     <Compile Include="Scripts\CoinStatic.ci.cs" />
     <Compile Include="Scripts\Fireball.ci.cs" />

@@ -644,6 +644,14 @@ public class SystemSpawn : GameSystem
         {
             SpawnBowser.Spawn(game, t.x, t.y);
         }
+        if (t.type == ThingType.Blooper)
+        {
+            SpawnBlooper.Spawn(game, t.x, t.y);
+        }
+        if (t.type == ThingType.CheepCheep)
+        {
+            SpawnCheepCheep.Spawn(game, t.x, t.y);
+        }
 
         // Scenery
         if (t.type == ThingType.HillLarge)
@@ -936,6 +944,14 @@ public class SettingApply
             if (sprite == "SolidsStoneNormal")
             {
                 sprite = "SolidsStoneUnderwater";
+            }
+            if (sprite == "CharactersBlooperNormalNormal")
+            {
+                sprite = "CharactersBlooperUnderwaterNormal";
+            }
+            if (sprite == "CharactersBlooperNormalSqueeze")
+            {
+                sprite = "CharactersBlooperUnderwaterSqueeze";
             }
         }
         return sprite;

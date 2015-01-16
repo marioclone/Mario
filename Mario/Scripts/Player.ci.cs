@@ -97,6 +97,7 @@
         game.controlsOverrideActive = false;
         game.controlsOverride.Clear();
         game.playerx = e.draw.x;
+        game.playery = e.draw.y;
         game.playerGrowth = growth;
 
         FlagPoleClimbing(game, e);

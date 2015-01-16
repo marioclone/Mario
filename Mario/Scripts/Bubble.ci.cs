@@ -12,7 +12,7 @@
         t += dt;
         Entity e = game.entities[entity];
         e.draw.y -= Misc.Abs(game.platform.MathSin(t * 10)) / 4 + 20 * dt;
-        if (e.draw.y < 40)
+        if (e.draw.y < WaterLevel.WaterSurfaceY)
         {
             game.DeleteEntity(entity);
         }

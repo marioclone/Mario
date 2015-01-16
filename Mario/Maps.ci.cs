@@ -70,6 +70,8 @@ public class ThingType
     public const int PlantLarge = 49;
     public const int Springboard = 50;
     public const int Coral = 51;
+    public const int Blooper = 52;
+    public const int CheepCheep = 53;
 }
 
 public class Map
@@ -349,6 +351,8 @@ public class MapBinding : TableBinding
         if (value == "PlantLarge") { return ThingType.PlantLarge; }
         if (value == "Springboard") { return ThingType.Springboard; }
         if (value == "Coral") { return ThingType.Coral; }
+        if (value == "Blooper") { return ThingType.Blooper; }
+        if (value == "CheepCheep") { return ThingType.CheepCheep; }
         return -1;
     }
 
