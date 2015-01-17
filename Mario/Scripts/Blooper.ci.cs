@@ -14,6 +14,9 @@
     public override void Update(Game game, int entity, float dt)
     {
         Entity e = game.entities[entity];
+        if (game.gamePaused) { return; }
+        if (!IsActiveHelper.IsActive(game, e.draw.x)) { return; }
+
         HelperAttackWithTouch.Update(game, e);
 
         cycleProgress += dt / 2;
