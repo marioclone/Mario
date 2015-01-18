@@ -74,6 +74,7 @@
     <Compile Include="Scripts\CastleAxe.ci.cs" />
     <Compile Include="Scripts\CastleBlock.ci.cs" />
     <Compile Include="Scripts\CheepCheep.ci.cs" />
+    <Compile Include="Scripts\CheepCheepZone.ci.cs" />
     <Compile Include="Scripts\CoinInQuestionBlock.ci.cs" />
     <Compile Include="Scripts\CoinStatic.ci.cs" />
     <Compile Include="Scripts\Fireball.ci.cs" />

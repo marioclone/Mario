@@ -68,6 +68,7 @@
         timeLeft = 0;
 
         audio = new AudioControl();
+        rnd = new RandomCi();
     }
 
     float one;
@@ -119,6 +120,7 @@
     internal bool scrollBlock;
     
     internal AudioControl audio;
+    internal RandomCi rnd;
 
     const int constFps = 120;
     const int maxDt = 1;

@@ -72,6 +72,9 @@ public class ThingType
     public const int Coral = 51;
     public const int Blooper = 52;
     public const int CheepCheep = 53;
+    public const int Bridge = 54;
+    public const int CheepsStart = 55;
+    public const int CheepsStop = 56;
 }
 
 public class Map
@@ -353,6 +356,9 @@ public class MapBinding : TableBinding
         if (value == "Coral") { return ThingType.Coral; }
         if (value == "Blooper") { return ThingType.Blooper; }
         if (value == "CheepCheep") { return ThingType.CheepCheep; }
+        if (value == "Bridge") { return ThingType.Bridge; }
+        if (value == "CheepsStart") { return ThingType.CheepsStart; }
+        if (value == "CheepsStop") { return ThingType.CheepsStop; }
         return -1;
     }
 

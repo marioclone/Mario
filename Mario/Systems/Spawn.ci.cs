@@ -4,6 +4,8 @@ public class SystemSpawn : GameSystem
     public SystemSpawn()
     {
         Restart();
+        player = null;
+        cheepCheepZone = null;
     }
 
     void Restart()
@@ -52,7 +54,7 @@ public class SystemSpawn : GameSystem
             }
 
             game.scrollxMax = MaxX(game);
-            
+
             if (game.setting == SettingType.Underwater)
             {
                 Entity waterTop = Spawn(game, "SceneryWaterNormalTop", 0, 88);
@@ -88,7 +90,7 @@ public class SystemSpawn : GameSystem
                 }
             }
             // spawnX = 2900;
-            
+
             game.restartPositionX = 0;
             game.restartPositionY = 0;
 
@@ -281,6 +283,7 @@ public class SystemSpawn : GameSystem
         return game.platform.FloatToInt(maxX);
     }
 
+    ScriptCheepCheepZone cheepCheepZone;
     void SpawnThing(Game game, Map map, Thing t)
     {
         if (t.width == 0) { t.width = 1; }
@@ -577,7 +580,7 @@ public class SystemSpawn : GameSystem
                 script.text[18] = CharType.CharN;
                 script.text[19] = CharType.CharE;
                 script.text[20] = CharType.CharExclamation;
-                
+
             }
             {
                 ScriptDrawText script4 = SpawnText(game, t.x + 12, t.y + 36, 1);
@@ -623,6 +626,38 @@ public class SystemSpawn : GameSystem
         {
             SpawnSpringboard.Spawn(game, t.x, t.y);
         }
+        if (t.type == ThingType.Bridge)
+        {
+            Entity bridgeBase = Spawn(game, "SceneryBridgeBase", t.x, t.y);
+            bridgeBase.collider = new EntityCollider();
+            bridgeBase.draw.width = 8;
+            bridgeBase.draw.height = 8;
+            bridgeBase.draw.xrepeat = t.width * 2;
+            bridgeBase.draw.yrepeat = t.height;
+
+            Entity railing = Spawn(game, "SceneryRailingNormal", t.x, t.y + 4);
+            railing.draw.width = 8;
+            railing.draw.height = 8;
+            railing.draw.xrepeat = t.width * 2;
+            railing.draw.yrepeat = t.height;
+
+            if (t.width > 2)
+            {
+                Thing left = new Thing();
+                left.x = t.x;
+                left.y = t.y;
+                left.type = ThingType.Stone;
+                left.height = 6;
+                SpawnThing(game, map, left);
+
+                Thing right = new Thing();
+                right.x = t.x + (t.width) * 8;
+                right.y = t.y;
+                right.type = ThingType.Stone;
+                right.height = 6;
+                SpawnThing(game, map, right);
+            }
+        }
 
         // Characters
 
@@ -651,6 +686,20 @@ public class SystemSpawn : GameSystem
         if (t.type == ThingType.CheepCheep)
         {
             SpawnCheepCheep.Spawn(game, t.x, t.y);
+        }
+        if (t.type == ThingType.CheepsStart)
+        {
+            Entity e = Spawn(game, "", t.x, t.y);
+            cheepCheepZone = new ScriptCheepCheepZone();
+            e.scripts[e.scriptsCount++] = cheepCheepZone;
+            game.AddEntity(e);
+        }
+        if (t.type == ThingType.CheepsStop)
+        {
+            if (cheepCheepZone != null)
+            {
+                cheepCheepZone.stop = t.x * 2;
+            }
         }
 
         // Scenery

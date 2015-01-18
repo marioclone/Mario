@@ -18,6 +18,14 @@ public class SpawnCheepCheep
         bool red = x % 16 == 0; // random
         Entity e = SystemSpawn.Spawn(game, "CharactersCheepCheepNormalNormal", x, y);
         e.scripts[e.scriptsCount++] = new ScriptCheepCheep();
+        e.scripts[e.scriptsCount++] = CheepCheepAnimation.Create(red);
+    }
+}
+
+public class CheepCheepAnimation
+{
+    public static ScriptAnimation Create(bool red)
+    {
         ScriptAnimation anim = new ScriptAnimation();
         anim.constAnimCount = 2;
         anim.constAnims = new string[2];
@@ -32,6 +40,6 @@ public class SpawnCheepCheep
             anim.constAnims[1] = "CharactersCheepCheepNormalTwo";
         }
         anim.constAnimSpeed = 2;
-        e.scripts[e.scriptsCount++] = anim;
+        return anim;
     }
 }
