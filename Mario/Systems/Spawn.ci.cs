@@ -115,6 +115,7 @@ public class SystemSpawn : GameSystem
             {
                 game.scrollx = 0;
             }
+            game.scrollBlock = false;
 
             // Main menu
             //{

@@ -100,6 +100,7 @@
             }
             if (t > 2 - one / 4)
             {
+                game.scrollBlock = true;
                 game.entities[playerEntityId].draw.hidden = true;
 
                 if (game.timeLeft > 0)
